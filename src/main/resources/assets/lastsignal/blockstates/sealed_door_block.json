@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "lastsignal:block/sealed_door_block"
+    }
+  }
+}

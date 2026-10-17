@@ -1,0 +1,89 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "min": 4,
+        "max": 7
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lastsignal:signal_blade",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lastsignal:distorted_compass",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lastsignal:silent_bell",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lastsignal:memory_shard",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lastsignal:signal_fragment",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 5
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lastsignal:protective_charm",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lastsignal:echo_whistle",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lastsignal:archivist_stamp",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,2 +1,50 @@
-# TheLastSignal
-Minecraft 1.20.1 Forge horror mod
+# THE LAST SIGNAL — Forge 1.20.1 horror mod (source project)
+
+Mod ID `lastsignal` · Minecraft 1.20.1 · Forge 47.x · Java 17 · **no other mod dependencies** (no GeckoLib, Essential is NOT required).
+
+## STATUS — READ THIS FIRST (honest)
+
+| Thing | State |
+|---|---|
+| Java source | Written (~4,800 lines). **Syntax-checked with `javac` only.** |
+| Compiled against Forge | **NOT DONE.** The authoring environment could not reach `maven.minecraftforge.net` (blocked), so no Forge compile happened. Expect a first-build round of small API/mapping errors. |
+| `TheLastSignal-1.20.1-Forge.jar` | **NOT BUILT.** Build it with the included GitHub Actions workflow (below). No jar is claimed or linked. |
+| In-game testing | **NONE.** No client, no dedicated server, no multiplayer, no Essential test was run. |
+| Generated assets | Done and verified present: 17 entity PNGs, 33 item PNGs, 19 block PNGs, 17 OGG sounds, 12 recipes, models, blockstates, loot tables, lang, 6 dimension datapacks. JSON validity and cross-references checked by script. |
+
+## How to get the JAR (5 minutes)
+
+1. Create an empty GitHub repository and push this folder (the `.github/workflows/build.yml` is included).
+2. Open the **Actions** tab, run **Build TheLastSignal** (it also runs on push).
+3. Download the artifact `TheLastSignal-1.20.1-Forge` → `TheLastSignal-1.20.1-Forge.jar`.
+4. If the build fails, send me the red error lines and I will fix them — this is expected for code that has never met the real Forge API.
+
+Local build: install JDK 17 + Gradle 8.8, then `python3 tools/generate_assets.py` (needs `pillow numpy ffmpeg`) and `gradle build`.
+
+## Install
+Put the jar in `mods/` on **every client and the server** (same version). Requires Forge 1.20.1 (47.2+). Works in singleplayer, LAN, dedicated Forge servers, and — by design, standard Forge networking only — Essential-hosted worlds (**not tested**).
+
+## What is implemented
+
+**Creatures (17):** Observer, Hollow, Mimic, Signalman, Witness, Crawler, Lost Child, Doorman, Pale Herd, Echo, Burrower, Lantern Widow, Facet, Archivist + bosses Buried King, The Unfinished, Signal Core.
+- One server-authoritative state machine (`HorrorEntity`): Idle/Roaming/Watching/Stalking/Investigating/Searching/Chasing/Attacking/Retreating/Disappearing/Special. State is synced to clients and drives the animations.
+- Archetypes: watchers that vanish when stared at and creep closer when unobserved; hunters that investigate noises (sprinting, block breaking), stalk, chase, lose track and search; ambushers (Mimic, Lantern Widow); blocker (Doorman reacts to keys); trader (Archivist: coin → document); Echo follows the player's own route ~6 s behind.
+- Bosses: 3 phases by HP, telegraphed attacks (slam, hazard columns, summons, pulse), invulnerability on phase change, HP scales with nearby players, one-time rewards, Signal Blade/Void Lens discovery-based weaknesses.
+- Models: **generated procedurally from per-creature profiles** (distinct proportions, quadruped vs biped, extra parts) in `ProfileModel`; animation is code-driven. **Not** Blockbench `.bbmodel`/GeckoLib files (not produced). Textures are original generated pixel art.
+
+**Events (60):** `/lastsignal events`. Data-declared (id, category, targeting mode, weight, cooldown, stage window, evidence/item/time/dimension/surface rules, false-alarm cancellation). Shared/area/party/global events use world-wide cooldowns so they cannot duplicate; private events use per-player sound/packets. Placement rules are real searches (forest edge, high ground, dark cave, outside window, corridor end, behind water, rooftop, open field…).
+**Threat director:** 7 stages (0–6) derived from exposure, recordings, notes, nights, encounters; hidden; passive growth capped; death relieves exposure (no death spiral).
+**Story:** 30 radio transmissions (5 bands, fine-tuning puzzles via Frequency Tuner), 30 documents, evidence flags, 5 endings (`/lastsignal ending <id>`), replay without touching the world.
+**Dimensions (6):** datapack-registered. Long Hall = perfect-maze (DFS) with loops, key in a dead end, sealed goal, Doorman; Archive Below = room chain with power-cell/key/terminal puzzle; others = platforms + structures. Entry via Signal Gate; exits via gate, checkpoint beacon, `/lastsignal recover`, void-fall rescue. *Terrain of Quiet Fields/Memory Woods/Red Silence/Signal Void uses vanilla noise settings with custom biomes — not fully custom terrain.*
+**Structures (20):** code-built templates, placed by events/commands, registered for `/lastsignal locate`. *Not data-driven worldgen structure sets; they do not generate with new chunks on their own.*
+**Items/blocks:** 33 items + 17 spawn eggs, 19 blocks (functional: radio, terminal, beacon, sealed door, puzzle blocks, lore blocks, gate).
+**Puzzles:** power, symbol sequence (◯◬◬◯), radio fine-tuning, keys, multi-room Archive, Long Hall navigation, evidence-gated endings. (Fewer than the 12 distinct types requested.)
+**Multiplayer design:** server spawns/AI/puzzles/bosses/story; one S2C presentation packet; no C2S state-changing packets; client classes isolated via `Dist.CLIENT`; shared vs individual story (`sharedStory` config).
+**Config:** `config/lastsignal-common.toml`, `lastsignal-client.toml`. **Commands:** help, status, events, event, spawn, dimension, locate, place, story, debug, resetstory, reload, recover, ending, replay.
+
+## Known limitations / not done
+- Never compiled against Forge; never run. Treat as an unverified first draft.
+- No GeckoLib / `.bbmodel` files; no Blockbench animation JSON. Mimic does not visually imitate other mobs.
+- Fewer puzzle types than requested; boss arenas are simple; Buried King has no dedicated arena structure (spawn with `/lastsignal spawn buried_king` or place `endgame_secret`).
+- No jumpscare-specific audio set beyond the 17 generated sounds (all synthesized, simple).
+- Multiplayer acceptance tests 1–13 were **not performed**.

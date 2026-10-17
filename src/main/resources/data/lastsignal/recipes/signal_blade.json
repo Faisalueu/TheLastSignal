@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " F ",
+    " F ",
+    " S "
+  ],
+  "key": {
+    "F": {
+      "item": "lastsignal:signal_fragment"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "lastsignal:signal_blade",
+    "count": 1
+  }
+}

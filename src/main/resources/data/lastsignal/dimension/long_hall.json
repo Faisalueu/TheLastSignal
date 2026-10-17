@@ -1,0 +1,18 @@
+{
+  "type": "lastsignal:long_hall",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "lastsignal:long_hall",
+      "features": false,
+      "lakes": false,
+      "structure_overrides": [],
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        }
+      ]
+    }
+  }
+}

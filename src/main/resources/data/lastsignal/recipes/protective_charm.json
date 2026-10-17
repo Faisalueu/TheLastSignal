@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lastsignal:salt_pouch"
+    },
+    {
+      "item": "minecraft:gold_nugget"
+    },
+    {
+      "item": "lastsignal:static_dust"
+    }
+  ],
+  "result": {
+    "item": "lastsignal:protective_charm",
+    "count": 1
+  }
+}

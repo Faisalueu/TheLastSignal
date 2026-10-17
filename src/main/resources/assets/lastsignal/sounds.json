@@ -1,0 +1,104 @@
+{
+  "static_loop": {
+    "sounds": [
+      "lastsignal:static_loop"
+    ],
+    "subtitle": "subtitles.lastsignal.static_loop"
+  },
+  "whisper": {
+    "sounds": [
+      "lastsignal:whisper"
+    ],
+    "subtitle": "subtitles.lastsignal.whisper"
+  },
+  "footstep_far": {
+    "sounds": [
+      "lastsignal:footstep_far"
+    ],
+    "subtitle": "subtitles.lastsignal.footstep_far"
+  },
+  "knock": {
+    "sounds": [
+      "lastsignal:knock"
+    ],
+    "subtitle": "subtitles.lastsignal.knock"
+  },
+  "rumble": {
+    "sounds": [
+      "lastsignal:rumble"
+    ],
+    "subtitle": "subtitles.lastsignal.rumble"
+  },
+  "distant_call": {
+    "sounds": [
+      "lastsignal:distant_call"
+    ],
+    "subtitle": "subtitles.lastsignal.distant_call"
+  },
+  "radio_tune": {
+    "sounds": [
+      "lastsignal:radio_tune"
+    ],
+    "subtitle": "subtitles.lastsignal.radio_tune"
+  },
+  "radio_blip": {
+    "sounds": [
+      "lastsignal:radio_blip"
+    ],
+    "subtitle": "subtitles.lastsignal.radio_blip"
+  },
+  "heartbeat": {
+    "sounds": [
+      "lastsignal:heartbeat"
+    ],
+    "subtitle": "subtitles.lastsignal.heartbeat"
+  },
+  "creature_breath": {
+    "sounds": [
+      "lastsignal:creature_breath"
+    ],
+    "subtitle": "subtitles.lastsignal.creature_breath"
+  },
+  "mimic_cry": {
+    "sounds": [
+      "lastsignal:mimic_cry"
+    ],
+    "subtitle": "subtitles.lastsignal.mimic_cry"
+  },
+  "bell_distant": {
+    "sounds": [
+      "lastsignal:bell_distant"
+    ],
+    "subtitle": "subtitles.lastsignal.bell_distant"
+  },
+  "glitch": {
+    "sounds": [
+      "lastsignal:glitch"
+    ],
+    "subtitle": "subtitles.lastsignal.glitch"
+  },
+  "ambient_drone": {
+    "sounds": [
+      "lastsignal:ambient_drone"
+    ],
+    "subtitle": "subtitles.lastsignal.ambient_drone"
+  },
+  "chase_tension": {
+    "sounds": [
+      "lastsignal:chase_tension"
+    ],
+    "subtitle": "subtitles.lastsignal.chase_tension"
+  },
+  "boss_roar": {
+    "sounds": [
+      "lastsignal:boss_roar"
+    ],
+    "subtitle": "subtitles.lastsignal.boss_roar"
+  },
+  "door_creak": {
+    "sounds": [
+      "lastsignal:door_creak"
+    ],
+    "subtitle": "subtitles.lastsignal.door_creak"
+  }
+}

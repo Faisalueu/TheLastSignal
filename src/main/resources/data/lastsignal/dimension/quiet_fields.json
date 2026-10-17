@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:quiet_fields",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "minecraft:overworld",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:quiet_fields"
+    }
+  }
+}

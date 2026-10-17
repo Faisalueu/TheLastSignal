@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:copper_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "lastsignal:signal_fragment"
+    }
+  ],
+  "result": {
+    "item": "lastsignal:power_cell",
+    "count": 1
+  }
+}

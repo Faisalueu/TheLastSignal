@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "target=0": {
+      "model": "lastsignal:block/signal_gate"
+    },
+    "target=1": {
+      "model": "lastsignal:block/signal_gate"
+    },
+    "target=2": {
+      "model": "lastsignal:block/signal_gate"
+    },
+    "target=3": {
+      "model": "lastsignal:block/signal_gate"
+    },
+    "target=4": {
+      "model": "lastsignal:block/signal_gate"
+    },
+    "target=5": {
+      "model": "lastsignal:block/signal_gate"
+    },
+    "target=6": {
+      "model": "lastsignal:block/signal_gate"
+    }
+  }
+}

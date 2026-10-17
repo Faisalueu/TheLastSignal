@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " I ",
+    "IFI",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "F": {
+      "item": "lastsignal:signal_fragment"
+    }
+  },
+  "result": {
+    "item": "lastsignal:distorted_compass",
+    "count": 1
+  }
+}

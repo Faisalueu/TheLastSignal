@@ -1,0 +1,18 @@
+{
+  "type": "lastsignal:archive_below",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "lastsignal:archive_below",
+      "features": false,
+      "lakes": false,
+      "structure_overrides": [],
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        }
+      ]
+    }
+  }
+}

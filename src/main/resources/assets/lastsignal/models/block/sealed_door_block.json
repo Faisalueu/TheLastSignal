@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "lastsignal:block/sealed_door_block"
+  }
+}

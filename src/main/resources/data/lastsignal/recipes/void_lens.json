@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:glass_pane"
+    },
+    {
+      "item": "lastsignal:signal_fragment"
+    },
+    {
+      "item": "lastsignal:memory_shard"
+    }
+  ],
+  "result": {
+    "item": "lastsignal:void_lens",
+    "count": 1
+  }
+}

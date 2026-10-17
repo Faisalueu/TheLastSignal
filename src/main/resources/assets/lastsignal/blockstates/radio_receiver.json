@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "lastsignal:block/radio_receiver"
+    }
+  }
+}
