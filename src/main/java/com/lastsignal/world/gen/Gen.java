@@ -302,7 +302,7 @@ public final class Gen {
             if (h < sea) for (int y = h + 1; y <= sea; y++) set(x, y, z, WATER);
         }
         boolean spawn = cx == 0 && cz == 0;
-        if (chance(t.p[Theme.P_MARK]) && !spawn) {
+        if (chance(Math.max(.22, t.p[Theme.P_MARK])) && !spawn) {
             int x0 = 2 + r.nextInt(2), z0 = 2 + r.nextInt(2);
             int lvl = gh[x0 + 5][z0 + 5];
             flatten(x0, z0, 11, 11, lvl, 6);
@@ -363,7 +363,7 @@ public final class Gen {
                 }
             }
             boolean spawn = cx == 0 && cz == 0;
-            if (chance(t.p[Theme.P_MARK]) && rad >= 5 && !spawn) {
+            if (chance(Math.max(.3, t.p[Theme.P_MARK])) && rad >= 5 && !spawn) {
                 int x0 = Math.max(0, Math.min(5, icx - 5)), z0 = Math.max(0, Math.min(5, icz - 5));
                 stampFloor(x0, z0, top, true);
             }
@@ -398,7 +398,7 @@ public final class Gen {
             set(x, cl + 7, z, BEDROCK);
         }
         boolean spawn = cx == 0 && cz == 0;
-        if (chance(t.p[Theme.P_MARK]) && !spawn) {
+        if (chance(Math.max(.22, t.p[Theme.P_MARK])) && !spawn) {
             int x0 = 2 + r.nextInt(2), z0 = 2 + r.nextInt(2);
             flatten(x0, z0, 11, 11, gh[x0 + 5][z0 + 5], 8);
             stampFloor(x0, z0, gh[x0 + 5][z0 + 5], false);
@@ -424,7 +424,7 @@ public final class Gen {
             for (int y = f + 1; y <= sea; y++) set(x, y, z, WATER);
         }
         boolean spawn = cx == 0 && cz == 0;
-        if (chance(t.p[Theme.P_MARK]) && !spawn) {
+        if (chance(Math.max(.22, t.p[Theme.P_MARK])) && !spawn) {
             int x0 = 2 + r.nextInt(2), z0 = 2 + r.nextInt(2);
             flatten(x0, z0, 11, 11, gh[x0 + 5][z0 + 5], 0);
             for (int x = x0; x < x0 + 11; x++) for (int z = z0; z < z0 + 11; z++) for (int y = gh[x0 + 5][z0 + 5] + 1; y <= sea; y++) set(x, y, z, WATER);

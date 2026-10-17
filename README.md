@@ -21,6 +21,9 @@ Mod ID `lastsignal` · Minecraft 1.20.1 · Forge 47.x · Java 17 · **requires G
 
 Local build: GeckoLib is pulled from its Maven repo automatically. Install JDK 17 + Gradle 8.8, then `python3 tools/generate_assets.py` (needs `pillow numpy ffmpeg`) and `gradle build`.
 
+## Phase 1 — 48 horror dimensions (no monsters)
+All 48 dimensions live under `lastsignal:<id>` (list: `docs/DIMENSIONS.md`, test guide: `docs/TESTING_DIMENSIONS.md`). One custom chunk generator (`lastsignal:themed`) builds 7 terrain kinds (rooms, open, islands, void, deep, sea, stairs), 192 custom blocks (4 per dimension, one of them the dimension's *marking* with a glyph texture), 53 chunk-local set pieces, per-dimension biome/sky/fog/particles, and 144 synthesized sounds (bed + 2 accents each). Entry is by `/lastsignal dimension <id|1-48>` (op) – no portals yet; exit via the Signal Gate on the arrival pad, `/lastsignal recover`, or void auto-rescue. CI runs a headless-server smoke test that generates chunks in every dimension. Not verified: how it looks/sounds in game, multiplayer.
+
 ## Install
 Put the jar in `mods/` on **every client and the server** (same version). Requires Forge 1.20.1 (47.2+). Works in singleplayer, LAN, dedicated Forge servers, and — by design, standard Forge networking only — Essential-hosted worlds (**not tested**).
 
