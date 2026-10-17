@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:silent_monastery",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "silent_monastery",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:silent_monastery"
+    }
+  }
+}

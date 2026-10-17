@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:dead_grid",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "dead_grid",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:dead_grid"
+    }
+  }
+}

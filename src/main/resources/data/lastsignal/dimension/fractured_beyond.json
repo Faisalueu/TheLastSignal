@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:fractured_beyond",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "fractured_beyond",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:fractured_beyond"
+    }
+  }
+}

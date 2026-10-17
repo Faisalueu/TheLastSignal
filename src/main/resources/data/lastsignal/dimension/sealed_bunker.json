@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:sealed_bunker",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "sealed_bunker",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:sealed_bunker"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:black_laboratory",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "black_laboratory",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:black_laboratory"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:bloodless_desert",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "bloodless_desert",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:bloodless_desert"
+    }
+  }
+}

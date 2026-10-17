@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:yellow_silence",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "yellow_silence",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:yellow_silence"
+    }
+  }
+}

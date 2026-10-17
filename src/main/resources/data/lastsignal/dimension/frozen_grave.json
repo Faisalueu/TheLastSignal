@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:frozen_grave",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "frozen_grave",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:frozen_grave"
+    }
+  }
+}

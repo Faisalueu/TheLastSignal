@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:broken_hour",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "broken_hour",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:broken_hour"
+    }
+  }
+}

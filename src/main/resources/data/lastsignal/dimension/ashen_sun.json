@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:ashen_sun",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "ashen_sun",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:ashen_sun"
+    }
+  }
+}

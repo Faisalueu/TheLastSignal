@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:grey_forest",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "grey_forest",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:grey_forest"
+    }
+  }
+}

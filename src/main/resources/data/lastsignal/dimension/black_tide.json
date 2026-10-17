@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:black_tide",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "black_tide",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:black_tide"
+    }
+  }
+}

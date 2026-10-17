@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "lastsignal:block/d44_white_null_glass"
+  },
+  "render_type": "minecraft:translucent"
+}

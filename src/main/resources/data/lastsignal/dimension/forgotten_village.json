@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:forgotten_village",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "forgotten_village",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:forgotten_village"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "lastsignal:block/d01_corrupted_mossy_bricks"
+  }
+}

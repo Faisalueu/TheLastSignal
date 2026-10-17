@@ -11,7 +11,7 @@ Builds, for each of the 17 creatures in generate_assets.ENT:
 Conventions (Java-model parity): +X rotation = bottoms swing backward / fronts tip down (nod, lean forward, knee bend);
 negative X raises an arm forward. Model front is -Z. Bones named sway_* wobble, spinN_* orbit (N-fold symmetric).
 """
-import json, math, os, random, sys
+import json, math, os, random, sys, zlib
 from types import SimpleNamespace
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import generate_assets as GA
@@ -30,7 +30,7 @@ class Rig:
     def __init__(self, eid, sc=1.0):
         self.eid, self.sc = eid, sc
         self.bones, self.cubes, self.face = [], {}, None
-        self.rng = random.Random(hash(eid) & 0xFFFF)
+        self.rng = random.Random(zlib.crc32(eid.encode()) & 0xFFFF)
         self.maxy = 0.0
 
     def bone(self, name, parent, pivot):

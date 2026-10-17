@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:living_walls",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "living_walls",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:living_walls"
+    }
+  }
+}

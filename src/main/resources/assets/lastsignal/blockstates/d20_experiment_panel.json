@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "lastsignal:block/d20_experiment_panel"
+    }
+  }
+}

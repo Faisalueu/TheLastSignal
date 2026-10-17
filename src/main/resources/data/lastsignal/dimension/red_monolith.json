@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:red_monolith",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "red_monolith",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:red_monolith"
+    }
+  }
+}

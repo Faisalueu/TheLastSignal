@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:nameless_catacombs",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "nameless_catacombs",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:nameless_catacombs"
+    }
+  }
+}

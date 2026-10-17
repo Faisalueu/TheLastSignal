@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "lastsignal:block/d11_eclipse_glass"
+  },
+  "render_type": "minecraft:translucent"
+}

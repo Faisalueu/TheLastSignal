@@ -44,6 +44,15 @@ import java.util.Set;
 public final class Dimensions {
     public static final List<String> IDS = List.of("quiet_fields", "long_hall", "archive_below", "red_silence", "memory_woods", "signal_void");
 
+    /** The six gameplay dimensions + all Phase-1 horror dimensions (admin/command access). */
+    public static List<String> allIds() {
+        List<String> l = new ArrayList<>(IDS);
+        l.addAll(com.lastsignal.world.gen.Themes.slugs());
+        return l;
+    }
+
+    public static boolean isPhase1(String id) { return com.lastsignal.world.gen.Themes.isPhase1(id); }
+
     public static ResourceKey<Level> key(String id) {
         return ResourceKey.create(Registries.DIMENSION, new ResourceLocation(LastSignalMod.MODID, id));
     }
@@ -161,6 +170,11 @@ public final class Dimensions {
 
     // ------------------------------------------------------------------ building
     public static BlockPos ensureBuilt(ServerLevel l, String id) {
+        if (isPhase1(id)) {
+            var t = com.lastsignal.world.gen.Themes.get(id);
+            int[] a = com.lastsignal.world.gen.Gen.arrival(t);
+            return new BlockPos(a[0], a[1], a[2]);
+        }
         DimState ds = state(l);
         if (ds.built) return BlockPos.of(ds.arrival);
         RandomSource r = RandomSource.create(l.getSeed() ^ id.hashCode());

@@ -34,6 +34,21 @@ public final class ModBlocks {
         }
     }
 
+    static {
+        for (String[] def : com.lastsignal.world.gen.ThemeData.BLOCKS) {
+            String id = def[0];
+            int light = Integer.parseInt(def[1]);
+            boolean glass = def[2].equals("glass");
+            BlockBehaviour.Properties props = BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0f, 6.0f).lightLevel(s -> light);
+            if (glass) props = props.noOcclusion().isValidSpawn((a, b, c, d) -> false).isRedstoneConductor((a, b, c) -> false)
+                    .isSuffocating((a, b, c) -> false).isViewBlocking((a, b, c) -> false);
+            final BlockBehaviour.Properties fp = props;
+            RegistryObject<Block> rb = BLOCKS.register(id, () -> glass ? new net.minecraft.world.level.block.GlassBlock(fp) : new Block(fp));
+            BY_ID.put(id, rb);
+            ModItems.ITEMS.register(id, () -> new BlockItem(rb.get(), new Item.Properties()));
+        }
+    }
+
     private static Block create(String special, BlockBehaviour.Properties p) {
         return switch (special) {
             case "radio" -> new RadioReceiverBlock(p);

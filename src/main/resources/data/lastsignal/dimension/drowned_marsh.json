@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:drowned_marsh",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "drowned_marsh",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:drowned_marsh"
+    }
+  }
+}

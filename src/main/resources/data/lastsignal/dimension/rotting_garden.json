@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:rotting_garden",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "rotting_garden",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:rotting_garden"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:forbidden_index",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "forbidden_index",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:forbidden_index"
+    }
+  }
+}

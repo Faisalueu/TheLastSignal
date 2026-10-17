@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:white_void",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "white_void",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:white_void"
+    }
+  }
+}

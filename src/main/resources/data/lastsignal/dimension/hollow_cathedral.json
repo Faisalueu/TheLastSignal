@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:hollow_cathedral",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "hollow_cathedral",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:hollow_cathedral"
+    }
+  }
+}

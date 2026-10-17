@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:buried_kingdom",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "buried_kingdom",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:buried_kingdom"
+    }
+  }
+}

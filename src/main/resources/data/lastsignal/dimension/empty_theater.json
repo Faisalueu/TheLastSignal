@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:empty_theater",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "empty_theater",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:empty_theater"
+    }
+  }
+}

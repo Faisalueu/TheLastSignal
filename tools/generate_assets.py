@@ -11,7 +11,7 @@ dimension/biome JSON. It also emits Java tables so names never drift:
 Run from the project root:  python3 tools/generate_assets.py
 Requires: pillow, numpy, ffmpeg (for OGG).  Everything is procedural/original.
 """
-import json, os, random, subprocess, sys, wave, math
+import json, os, random, subprocess, sys, wave, math, zlib
 from PIL import Image, ImageDraw
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -597,7 +597,7 @@ def synth(kind, secs, sr=22050):
     import numpy as np
     n = int(secs * sr)
     t = np.linspace(0, secs, n, endpoint=False)
-    rng = np.random.default_rng(abs(hash(kind)) % (2 ** 32))
+    rng = np.random.default_rng(zlib.crc32(kind.encode()))
     noise = rng.uniform(-1, 1, n)
     env_fade = np.minimum(1, np.minimum(t / 0.05, (secs - t) / 0.1))
 
@@ -835,6 +835,8 @@ def main():
     gen_dimensions()
     gen_lang()
     gen_java_tables()
+    import dim_gen
+    dim_gen.main()
     print("entities:", len(ENT), "items:", len(ITEMS), "blocks:", len(BLOCKS), "sounds:", len(SOUNDS), "ogg_ok:", ok)
 
 

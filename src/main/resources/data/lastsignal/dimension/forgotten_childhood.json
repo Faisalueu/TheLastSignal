@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:forgotten_childhood",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "forgotten_childhood",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:forgotten_childhood"
+    }
+  }
+}

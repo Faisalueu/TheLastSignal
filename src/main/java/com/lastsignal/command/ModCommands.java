@@ -51,7 +51,7 @@ public final class ModCommands {
                         .executes(c -> spawn(c.getSource(), StringArgumentType.getString(c, "entity_id")))));
         root.then(Commands.literal("dimension").requires(s -> s.hasPermission(2))
                 .then(Commands.argument("dimension_id", StringArgumentType.word())
-                        .suggests((c, b) -> SharedSuggestionProvider.suggest(Dimensions.IDS, b))
+                        .suggests((c, b) -> SharedSuggestionProvider.suggest(Dimensions.allIds(), b))
                         .executes(c -> dimension(c.getSource(), StringArgumentType.getString(c, "dimension_id")))));
         root.then(Commands.literal("locate").requires(s -> s.hasPermission(2))
                 .then(Commands.argument("structure_id", StringArgumentType.word())
@@ -143,7 +143,11 @@ public final class ModCommands {
     }
 
     private static int dimension(CommandSourceStack s, String id) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
-        if (!Dimensions.IDS.contains(id)) { s.sendFailure(Component.literal("Unknown dimension '" + id + "'. Options: " + Dimensions.IDS)); return 0; }
+        if (!Dimensions.allIds().contains(id)) {
+            var t = id.matches("\\d+") ? com.lastsignal.world.gen.Themes.byIndex(Integer.parseInt(id)) : null;
+            if (t == null) { s.sendFailure(Component.literal("Unknown dimension '" + id + "'. Options: " + Dimensions.allIds())); return 0; }
+            id = t.slug;
+        }
         boolean ok = Dimensions.enter(s.getPlayerOrException(), id, true);
         if (!ok) s.sendFailure(Component.literal("That dimension is not loaded (is the datapack present?)."));
         return ok ? 1 : 0;

@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:silent_ward",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "silent_ward",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:silent_ward"
+    }
+  }
+}

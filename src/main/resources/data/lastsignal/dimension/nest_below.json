@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:nest_below",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "nest_below",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:nest_below"
+    }
+  }
+}

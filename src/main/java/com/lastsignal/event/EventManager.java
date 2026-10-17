@@ -156,6 +156,7 @@ public final class EventManager {
 
     public static boolean eligible(Def d, Ctx c, long now) {
         if (d.triggerOnly || d.weight <= 0) return false;
+        if (com.lastsignal.world.gen.Themes.isPhase1(c.l.dimension().location().getPath()) && Dimensions.isModDimension(c.l)) return false;  // Phase 1: no events/monsters
         if (c.stage < d.minStage || c.stage > d.maxStage) return false;
         if (d.evidence != null && !c.st.evidence.contains(d.evidence)) return false;
         if (d.item != null && !hasItem(c.p, d.item)) return false;

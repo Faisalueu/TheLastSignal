@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "lastsignal:block/d27_false_mirror"
+  },
+  "render_type": "minecraft:translucent"
+}

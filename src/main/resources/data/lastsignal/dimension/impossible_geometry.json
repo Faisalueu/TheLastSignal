@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:impossible_geometry",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "impossible_geometry",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:impossible_geometry"
+    }
+  }
+}

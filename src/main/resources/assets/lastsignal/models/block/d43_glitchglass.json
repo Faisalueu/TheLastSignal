@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "lastsignal:block/d43_glitchglass"
+  },
+  "render_type": "minecraft:translucent"
+}

@@ -29,6 +29,8 @@ public class LastSignalMod {
         ModSounds.SOUNDS.register(bus);
         ModParticles.PARTICLES.register(bus);
         ModTabs.TABS.register(bus);
+        com.lastsignal.world.gen.ModWorldgen.GENERATORS.register(bus);
+        com.lastsignal.world.gen.AmbientSounds.SOUNDS.register(bus);
         bus.addListener(this::commonSetup);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LastSignalConfig.COMMON_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, LastSignalConfig.CLIENT_SPEC);

@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:pale_moon",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "pale_moon",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:pale_moon"
+    }
+  }
+}

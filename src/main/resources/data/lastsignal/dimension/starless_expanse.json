@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:starless_expanse",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "starless_expanse",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:starless_expanse"
+    }
+  }
+}

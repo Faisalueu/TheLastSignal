@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:storm_that_waits",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "storm_that_waits",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:storm_that_waits"
+    }
+  }
+}

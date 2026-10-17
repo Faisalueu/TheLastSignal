@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:blind_observatory",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "blind_observatory",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:blind_observatory"
+    }
+  }
+}

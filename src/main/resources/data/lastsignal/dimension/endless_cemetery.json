@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:endless_cemetery",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "endless_cemetery",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:endless_cemetery"
+    }
+  }
+}

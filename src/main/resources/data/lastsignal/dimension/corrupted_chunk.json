@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:corrupted_chunk",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "corrupted_chunk",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:corrupted_chunk"
+    }
+  }
+}

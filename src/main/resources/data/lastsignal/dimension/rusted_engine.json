@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:rusted_engine",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "rusted_engine",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:rusted_engine"
+    }
+  }
+}

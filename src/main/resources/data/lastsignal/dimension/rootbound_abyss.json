@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:rootbound_abyss",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "rootbound_abyss",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:rootbound_abyss"
+    }
+  }
+}

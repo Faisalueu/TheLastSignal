@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:petrified_forest",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "petrified_forest",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:petrified_forest"
+    }
+  }
+}

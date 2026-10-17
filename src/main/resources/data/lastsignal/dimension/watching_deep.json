@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:watching_deep",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "watching_deep",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:watching_deep"
+    }
+  }
+}

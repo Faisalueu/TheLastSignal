@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:dead_server",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "dead_server",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:dead_server"
+    }
+  }
+}

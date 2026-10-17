@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:red_chapel",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "red_chapel",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:red_chapel"
+    }
+  }
+}
