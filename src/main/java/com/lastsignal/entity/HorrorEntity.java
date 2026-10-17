@@ -30,6 +30,15 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
+
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Set;
@@ -40,7 +49,7 @@ import java.util.UUID;
  * {@link Arch} (behaviour archetype) and its profile (model/texture). The synced {@link State} drives the
  * client-side procedural animations, so animation and AI cannot disagree.
  */
-public class HorrorEntity extends PathfinderMob {
+public class HorrorEntity extends PathfinderMob implements GeoEntity {
     public enum State { IDLE, ROAMING, WATCHING, STALKING, INVESTIGATING, SEARCHING, CHASING, ATTACKING, RETREATING, DISAPPEARING, SPECIAL }
 
     public enum Arch { WATCHER, HUNTER, LURE, BLOCKER, TRADER, ECHO, BOSS }
@@ -117,6 +126,44 @@ public class HorrorEntity extends PathfinderMob {
             this.entityData.set(DATA_STATE, s.ordinal());
             stateTicks = 0;
         }
+    }
+
+    // -------------------------------------------------------------------------------------------- GeckoLib
+    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "main", 6, this::animate));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return geoCache;
+    }
+
+    private RawAnimation loop(String name) {
+        return RawAnimation.begin().thenLoop("animation." + profileId + "." + name);
+    }
+
+    /** Animation is a pure function of the SYNCED AI state (+ movement), so what you see is what the server is doing. */
+    private PlayState animate(AnimationState<HorrorEntity> st) {
+        if (isDeadOrDying())
+            return st.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation." + profileId + ".death"));
+        boolean moving = st.isMoving();
+        String a;
+        switch (getHorrorState()) {
+            case DISAPPEARING -> a = "vanish";
+            case ATTACKING -> a = "attack";
+            case SPECIAL -> a = "special";
+            case CHASING -> a = moving ? "run" : "stalk";
+            case STALKING -> a = moving ? "stalk" : "watch";
+            case WATCHING -> a = "watch";
+            case RETREATING -> a = moving ? "retreat" : "idle";
+            case INVESTIGATING, SEARCHING -> a = moving ? "walk" : "search";
+            case ROAMING -> a = moving ? "walk" : "idle";
+            default -> a = moving ? "walk" : "idle";
+        }
+        return st.setAndContinue(loop(a));
     }
 
     // -------------------------------------------------------------------------------------------- tick

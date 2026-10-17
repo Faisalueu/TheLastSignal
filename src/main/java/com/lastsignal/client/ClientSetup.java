@@ -5,7 +5,6 @@ import com.lastsignal.ModParticles;
 import com.lastsignal.entity.EntityProfiles;
 import com.lastsignal.entity.ModEntities;
 import com.lastsignal.entity.client.HorrorRenderer;
-import com.lastsignal.entity.client.ProfileModel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -15,12 +14,6 @@ import net.minecraftforge.fml.common.Mod;
 /** Client-only mod-bus registrations. The Dist.CLIENT filter keeps this class off dedicated servers entirely. */
 @Mod.EventBusSubscriber(modid = LastSignalMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientSetup {
-    @SubscribeEvent
-    public static void layers(EntityRenderersEvent.RegisterLayerDefinitions e) {
-        for (EntityProfiles.Profile p : EntityProfiles.ALL)
-            e.registerLayerDefinition(HorrorRenderer.layer(p.id()), () -> ProfileModel.createLayer(p));
-    }
-
     @SubscribeEvent
     public static void renderers(EntityRenderersEvent.RegisterRenderers e) {
         for (EntityProfiles.Profile p : EntityProfiles.ALL)

@@ -825,7 +825,8 @@ def gen_java_tables():
 
 def main():
     layout()
-    gen_entity_textures()
+    import monsters
+    monsters.main()
     gen_items_blocks_assets()
     gen_particles_and_icon()
     gen_loot()
