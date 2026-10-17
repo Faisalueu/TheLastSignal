@@ -16,10 +16,6 @@ jobs:
       - uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.8
-      - name: Generate assets
-        run: |
-          pip install pillow
-          python3 tools/generate_assets.py
       - name: Build
         run: gradle build --no-daemon
       - name: Upload JAR
