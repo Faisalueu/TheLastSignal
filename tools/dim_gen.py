@@ -4,7 +4,7 @@ dimensions, Java theme table and documentation. Run via generate_assets.py (call
 import json, os, re, subprocess, sys, wave
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import generate_assets as GA
-import dim_spec, dim_glyphs, dim_tex, dim_snd
+import dim_spec, dim_glyphs, dim_tex, dim_snd, dim_profile, transit_gen
 from PIL import Image
 
 MOD = GA.MOD
@@ -68,7 +68,7 @@ def gen_blocks():
 
 def sounds_names(d):
     s = d["slug"]
-    return f"amb_{s}", f"acc_{s}_1", f"acc_{s}_2"
+    return f"amb_{s}", f"acc_{s}_1", f"acc_{s}_2", f"acc_{s}_3", f"acc_{s}_4"
 
 
 def write_ogg(path, data):
@@ -88,14 +88,21 @@ def gen_sounds():
     ok = 0
     names = []
     for d in dim_spec.DIMS48:
-        bed, a1, a2 = dim_snd.render_dim(d["snd"])
-        for n, data in zip(sounds_names(d), (bed, a1, a2)):
-            if write_ogg(os.path.join(out, n + ".ogg"), data):
+        s = d["snd"]
+        res = dim_snd.render_dim(s)
+        files = {"amb": f"amb_{s}", "amb_b": f"amb_{s}_b", "acc_1": f"acc_{s}_1", "acc_2": f"acc_{s}_2", "acc_3": f"acc_{s}_3", "acc_4": f"acc_{s}_4"}
+        for k, fn in files.items():
+            if write_ogg(os.path.join(out, fn + ".ogg"), res[k]):
                 ok += 1
-            sj[n] = {"sounds": [{"name": f"{MOD}:dim/{n}", "stream": n.startswith("amb_")}], "subtitle": f"subtitles.{MOD}.{n}"}
+        beds = [{"name": f"{MOD}:dim/amb_{s}", "stream": True}, {"name": f"{MOD}:dim/amb_{s}_b", "stream": True}]
+        sj[f"amb_{s}"] = {"sounds": beds, "subtitle": f"subtitles.{MOD}.amb_{s}"}
+        names.append(f"amb_{s}")
+        for i in (1, 2, 3, 4):
+            n = f"acc_{s}_{i}"
+            sj[n] = {"sounds": [{"name": f"{MOD}:dim/{n}", "stream": False}], "subtitle": f"subtitles.{MOD}.{n}"}
             names.append(n)
     GA.wjson(sj_path, sj)
-    assert ok == 144, f"only {ok}/144 OGG files were encoded (ffmpeg missing?)"
+    assert ok == 288, f"only {ok}/288 OGG files were encoded (ffmpeg missing?)"
     return names
 
 
@@ -144,7 +151,7 @@ def gen_java(rows):
     for d in dim_spec.DIMS48:
         roles = [role_id(d, d["roles"].get(r)) for r in dim_spec.ROLE_ORDER]
         variants = [dim_glyphs.bitmap(d["glyph"], v) for v in (range(4) if d["glyph"] == "final" else [0])]
-        am, a1, a2 = sounds_names(d)
+        am, a1, a2 = sounds_names(d)[:3]
         pr = ", ".join(repr(float(d["T"][k])) for k in PARAMS)
         L.append(f'        new Theme({d["n"]}, "{d["slug"]}", {jstr(d["en"])}, "{d["kind"]}",')
         L.append("            new String[]{" + ", ".join(jstr(r) for r in roles) + "},")
@@ -162,6 +169,8 @@ def gen_lang(rows):
     en_p = os.path.join(ASSETS, "lang/en_us.json")
     lang = json.load(open(en_p)) if os.path.exists(en_p) else {}
     ar = {}
+    lang.update(transit_gen.gen())
+    lang["lastsignal.transit.black"] = "The floor gives way."
     for bid, light, sp, name in rows:
         lang[f"block.{MOD}.{bid}"] = name
     for d in dim_spec.DIMS48:
@@ -174,13 +183,16 @@ def gen_lang(rows):
 
 
 def main():
+    dim_profile.apply_overrides()
     rows = gen_blocks()
     gen_sounds()
     gen_world_json()
     gen_java(rows)
+    dim_profile.gen_java(os.path.join(JAVA, "world/gen/ProfileData.java"))
+    dim_profile.write_loot(DATA)
     gen_lang(rows)
     write_docs(rows)
-    print("phase1:", len(dim_spec.DIMS48), "dimensions,", len(rows), "blocks, 144 sounds")
+    print("phase1:", len(dim_spec.DIMS48), "dimensions,", len(rows), "blocks, 288 sounds")
 
 
 def write_docs(rows):

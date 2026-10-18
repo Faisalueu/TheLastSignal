@@ -49,6 +49,17 @@ public final class ModBlocks {
         }
     }
 
+    static {
+        for (String id : new String[]{"black_fracture", "white_fracture"}) {
+            boolean black = id.startsWith("black");
+            BlockBehaviour.Properties props = BlockBehaviour.Properties.of().mapColor(black ? MapColor.COLOR_BLACK : MapColor.SNOW)
+                    .noCollission().strength(1.5f, 3600000f).lightLevel(s -> black ? 0 : 6).noLootTable().isValidSpawn((a, b, c, d) -> false);
+            RegistryObject<Block> rb = BLOCKS.register(id, () -> new FractureBlock(props, black));
+            BY_ID.put(id, rb);
+            ModItems.ITEMS.register(id, () -> new BlockItem(rb.get(), new Item.Properties()));
+        }
+    }
+
     private static Block create(String special, BlockBehaviour.Properties p) {
         return switch (special) {
             case "radio" -> new RadioReceiverBlock(p);

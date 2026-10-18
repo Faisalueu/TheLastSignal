@@ -35,6 +35,10 @@ public final class LastSignalConfig {
         public final ForgeConfigSpec.DoubleValue deathThreatRelief;
         public final ForgeConfigSpec.IntValue minSecondsBetweenEvents;
         public final ForgeConfigSpec.BooleanValue allowJumpscares;
+        public final ForgeConfigSpec.BooleanValue transitEnabled;
+        public final ForgeConfigSpec.DoubleValue transitDensity;
+        public final ForgeConfigSpec.DoubleValue chestDensity;
+        public final ForgeConfigSpec.DoubleValue structureDensity;
 
         Common(ForgeConfigSpec.Builder b) {
             b.push("general");
@@ -70,6 +74,12 @@ public final class LastSignalConfig {
             recoveryEnabled = b.comment("Allow /lastsignal recover and Checkpoint Beacons to pull trapped players out.")
                     .define("recoveryEnabled", true);
             b.pop();
+            b.push("dimensions");
+            transitEnabled = b.comment("Black/White fracture blocks teleport on touch.").define("transitEnabled", true);
+            transitDensity = b.comment("Chance multiplier for naturally generated Black/White fracture blocks (0 = none). Applies to chunks generated after the change.").defineInRange("transitDensity", 1.0, 0.0, 1.0);
+            chestDensity = b.comment("Multiplier on the number of chests generated in the 48 dimensions (0 = none). Applies to chunks generated after the change.").defineInRange("chestDensity", 1.0, 0.0, 1.0);
+            structureDensity = b.comment("Multiplier on scattered set-piece density in the 48 dimensions. Applies to chunks generated after the change.").defineInRange("structureDensity", 1.0, 0.0, 2.0);
+            b.pop();
         }
     }
 
@@ -78,6 +88,9 @@ public final class LastSignalConfig {
         public final ForgeConfigSpec.BooleanValue disableScreenEffects;
         public final ForgeConfigSpec.BooleanValue disableJumpscares;
         public final ForgeConfigSpec.DoubleValue audioIntensity;
+        public final ForgeConfigSpec.DoubleValue fogMultiplier;
+        public final ForgeConfigSpec.DoubleValue ambienceFrequency;
+        public final ForgeConfigSpec.DoubleValue ambienceVolume;
 
         Client(ForgeConfigSpec.Builder b) {
             b.push("accessibility");
@@ -85,6 +98,11 @@ public final class LastSignalConfig {
             disableScreenEffects = b.comment("Turns off static/vignette overlays.").define("disableScreenEffects", false);
             disableJumpscares = b.comment("Suppresses sudden loud cues on this client.").define("disableJumpscares", false);
             audioIntensity = b.comment("Multiplier on mod horror sound volume.").defineInRange("audioIntensity", 1.0, 0.0, 1.0);
+            b.pop();
+            b.push("dimensions");
+            fogMultiplier = b.comment("Multiplier on each dimension's fog distance (1 = default, subtle). Higher = clearer.").defineInRange("fogMultiplier", 1.0, 0.4, 4.0);
+            ambienceFrequency = b.comment("Multiplier on how often ambient accent sounds occur in the 48 dimensions (higher = more often).").defineInRange("ambienceFrequency", 1.0, 0.2, 4.0);
+            ambienceVolume = b.comment("Volume of dimension ambience beds and accents.").defineInRange("ambienceVolume", 1.0, 0.0, 1.0);
             b.pop();
         }
     }

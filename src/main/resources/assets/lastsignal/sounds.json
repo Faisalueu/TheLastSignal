@@ -106,6 +106,10 @@
       {
         "name": "lastsignal:dim/amb_last_signal",
         "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_last_signal_b",
+        "stream": true
       }
     ],
     "subtitle": "subtitles.lastsignal.amb_last_signal"
@@ -128,10 +132,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_last_signal_2"
   },
+  "acc_last_signal_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_last_signal_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_last_signal_3"
+  },
+  "acc_last_signal_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_last_signal_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_last_signal_4"
+  },
   "amb_forgotten_village": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_forgotten_village",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_forgotten_village_b",
         "stream": true
       }
     ],
@@ -155,10 +181,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_forgotten_village_2"
   },
+  "acc_forgotten_village_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_forgotten_village_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_forgotten_village_3"
+  },
+  "acc_forgotten_village_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_forgotten_village_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_forgotten_village_4"
+  },
   "amb_hollow_cathedral": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_hollow_cathedral",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_hollow_cathedral_b",
         "stream": true
       }
     ],
@@ -182,10 +230,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_hollow_cathedral_2"
   },
+  "acc_hollow_cathedral_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_hollow_cathedral_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_hollow_cathedral_3"
+  },
+  "acc_hollow_cathedral_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_hollow_cathedral_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_hollow_cathedral_4"
+  },
   "amb_endless_archive": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_endless_archive",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_endless_archive_b",
         "stream": true
       }
     ],
@@ -209,10 +279,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_endless_archive_2"
   },
+  "acc_endless_archive_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_endless_archive_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_endless_archive_3"
+  },
+  "acc_endless_archive_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_endless_archive_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_endless_archive_4"
+  },
   "amb_silent_ward": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_silent_ward",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_silent_ward_b",
         "stream": true
       }
     ],
@@ -236,10 +328,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_silent_ward_2"
   },
+  "acc_silent_ward_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_silent_ward_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_silent_ward_3"
+  },
+  "acc_silent_ward_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_silent_ward_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_silent_ward_4"
+  },
   "amb_last_station": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_last_station",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_last_station_b",
         "stream": true
       }
     ],
@@ -263,10 +377,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_last_station_2"
   },
+  "acc_last_station_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_last_station_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_last_station_3"
+  },
+  "acc_last_station_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_last_station_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_last_station_4"
+  },
   "amb_starless_expanse": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_starless_expanse",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_starless_expanse_b",
         "stream": true
       }
     ],
@@ -290,10 +426,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_starless_expanse_2"
   },
+  "acc_starless_expanse_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_starless_expanse_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_starless_expanse_3"
+  },
+  "acc_starless_expanse_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_starless_expanse_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_starless_expanse_4"
+  },
   "amb_watching_deep": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_watching_deep",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_watching_deep_b",
         "stream": true
       }
     ],
@@ -317,10 +475,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_watching_deep_2"
   },
+  "acc_watching_deep_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_watching_deep_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_watching_deep_3"
+  },
+  "acc_watching_deep_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_watching_deep_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_watching_deep_4"
+  },
   "amb_impossible_geometry": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_impossible_geometry",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_impossible_geometry_b",
         "stream": true
       }
     ],
@@ -344,10 +524,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_impossible_geometry_2"
   },
+  "acc_impossible_geometry_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_impossible_geometry_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_impossible_geometry_3"
+  },
+  "acc_impossible_geometry_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_impossible_geometry_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_impossible_geometry_4"
+  },
   "amb_red_monolith": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_red_monolith",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_red_monolith_b",
         "stream": true
       }
     ],
@@ -371,10 +573,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_red_monolith_2"
   },
+  "acc_red_monolith_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_red_monolith_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_red_monolith_3"
+  },
+  "acc_red_monolith_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_red_monolith_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_red_monolith_4"
+  },
   "amb_pale_moon": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_pale_moon",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_pale_moon_b",
         "stream": true
       }
     ],
@@ -398,10 +622,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_pale_moon_2"
   },
+  "acc_pale_moon_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_pale_moon_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_pale_moon_3"
+  },
+  "acc_pale_moon_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_pale_moon_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_pale_moon_4"
+  },
   "amb_fractured_beyond": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_fractured_beyond",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_fractured_beyond_b",
         "stream": true
       }
     ],
@@ -425,10 +671,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_fractured_beyond_2"
   },
+  "acc_fractured_beyond_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_fractured_beyond_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_fractured_beyond_3"
+  },
+  "acc_fractured_beyond_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_fractured_beyond_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_fractured_beyond_4"
+  },
   "amb_living_walls": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_living_walls",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_living_walls_b",
         "stream": true
       }
     ],
@@ -452,10 +720,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_living_walls_2"
   },
+  "acc_living_walls_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_living_walls_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_living_walls_3"
+  },
+  "acc_living_walls_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_living_walls_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_living_walls_4"
+  },
   "amb_rotting_garden": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_rotting_garden",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_rotting_garden_b",
         "stream": true
       }
     ],
@@ -479,10 +769,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_rotting_garden_2"
   },
+  "acc_rotting_garden_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_rotting_garden_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_rotting_garden_3"
+  },
+  "acc_rotting_garden_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_rotting_garden_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_rotting_garden_4"
+  },
   "amb_rootbound_abyss": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_rootbound_abyss",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_rootbound_abyss_b",
         "stream": true
       }
     ],
@@ -506,10 +818,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_rootbound_abyss_2"
   },
+  "acc_rootbound_abyss_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_rootbound_abyss_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_rootbound_abyss_3"
+  },
+  "acc_rootbound_abyss_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_rootbound_abyss_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_rootbound_abyss_4"
+  },
   "amb_nest_below": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_nest_below",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_nest_below_b",
         "stream": true
       }
     ],
@@ -533,10 +867,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_nest_below_2"
   },
+  "acc_nest_below_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_nest_below_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_nest_below_3"
+  },
+  "acc_nest_below_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_nest_below_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_nest_below_4"
+  },
   "amb_drowned_marsh": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_drowned_marsh",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_drowned_marsh_b",
         "stream": true
       }
     ],
@@ -560,10 +916,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_drowned_marsh_2"
   },
+  "acc_drowned_marsh_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_drowned_marsh_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_drowned_marsh_3"
+  },
+  "acc_drowned_marsh_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_drowned_marsh_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_drowned_marsh_4"
+  },
   "amb_petrified_forest": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_petrified_forest",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_petrified_forest_b",
         "stream": true
       }
     ],
@@ -587,10 +965,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_petrified_forest_2"
   },
+  "acc_petrified_forest_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_petrified_forest_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_petrified_forest_3"
+  },
+  "acc_petrified_forest_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_petrified_forest_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_petrified_forest_4"
+  },
   "amb_rusted_engine": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_rusted_engine",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_rusted_engine_b",
         "stream": true
       }
     ],
@@ -614,10 +1014,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_rusted_engine_2"
   },
+  "acc_rusted_engine_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_rusted_engine_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_rusted_engine_3"
+  },
+  "acc_rusted_engine_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_rusted_engine_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_rusted_engine_4"
+  },
   "amb_black_laboratory": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_black_laboratory",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_black_laboratory_b",
         "stream": true
       }
     ],
@@ -641,10 +1063,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_black_laboratory_2"
   },
+  "acc_black_laboratory_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_black_laboratory_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_black_laboratory_3"
+  },
+  "acc_black_laboratory_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_black_laboratory_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_black_laboratory_4"
+  },
   "amb_dead_grid": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_dead_grid",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_dead_grid_b",
         "stream": true
       }
     ],
@@ -668,10 +1112,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_dead_grid_2"
   },
+  "acc_dead_grid_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_dead_grid_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_dead_grid_3"
+  },
+  "acc_dead_grid_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_dead_grid_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_dead_grid_4"
+  },
   "amb_sealed_bunker": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_sealed_bunker",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_sealed_bunker_b",
         "stream": true
       }
     ],
@@ -695,10 +1161,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_sealed_bunker_2"
   },
+  "acc_sealed_bunker_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_sealed_bunker_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_sealed_bunker_3"
+  },
+  "acc_sealed_bunker_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_sealed_bunker_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_sealed_bunker_4"
+  },
   "amb_dead_server": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_dead_server",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_dead_server_b",
         "stream": true
       }
     ],
@@ -722,10 +1210,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_dead_server_2"
   },
+  "acc_dead_server_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_dead_server_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_dead_server_3"
+  },
+  "acc_dead_server_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_dead_server_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_dead_server_4"
+  },
   "amb_unfinished_mine": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_unfinished_mine",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_unfinished_mine_b",
         "stream": true
       }
     ],
@@ -749,10 +1259,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_unfinished_mine_2"
   },
+  "acc_unfinished_mine_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_unfinished_mine_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_unfinished_mine_3"
+  },
+  "acc_unfinished_mine_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_unfinished_mine_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_unfinished_mine_4"
+  },
   "amb_yellow_silence": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_yellow_silence",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_yellow_silence_b",
         "stream": true
       }
     ],
@@ -776,10 +1308,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_yellow_silence_2"
   },
+  "acc_yellow_silence_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_yellow_silence_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_yellow_silence_3"
+  },
+  "acc_yellow_silence_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_yellow_silence_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_yellow_silence_4"
+  },
   "amb_broken_hour": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_broken_hour",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_broken_hour_b",
         "stream": true
       }
     ],
@@ -803,10 +1357,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_broken_hour_2"
   },
+  "acc_broken_hour_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_broken_hour_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_broken_hour_3"
+  },
+  "acc_broken_hour_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_broken_hour_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_broken_hour_4"
+  },
   "amb_mirrorless_hall": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_mirrorless_hall",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_mirrorless_hall_b",
         "stream": true
       }
     ],
@@ -830,10 +1406,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_mirrorless_hall_2"
   },
+  "acc_mirrorless_hall_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_mirrorless_hall_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_mirrorless_hall_3"
+  },
+  "acc_mirrorless_hall_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_mirrorless_hall_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_mirrorless_hall_4"
+  },
   "amb_forgotten_childhood": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_forgotten_childhood",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_forgotten_childhood_b",
         "stream": true
       }
     ],
@@ -857,10 +1455,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_forgotten_childhood_2"
   },
+  "acc_forgotten_childhood_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_forgotten_childhood_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_forgotten_childhood_3"
+  },
+  "acc_forgotten_childhood_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_forgotten_childhood_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_forgotten_childhood_4"
+  },
   "amb_empty_theater": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_empty_theater",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_empty_theater_b",
         "stream": true
       }
     ],
@@ -884,10 +1504,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_empty_theater_2"
   },
+  "acc_empty_theater_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_empty_theater_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_empty_theater_3"
+  },
+  "acc_empty_theater_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_empty_theater_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_empty_theater_4"
+  },
   "amb_staircase_below": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_staircase_below",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_staircase_below_b",
         "stream": true
       }
     ],
@@ -911,10 +1553,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_staircase_below_2"
   },
+  "acc_staircase_below_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_staircase_below_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_staircase_below_3"
+  },
+  "acc_staircase_below_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_staircase_below_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_staircase_below_4"
+  },
   "amb_bloodless_desert": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_bloodless_desert",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_bloodless_desert_b",
         "stream": true
       }
     ],
@@ -938,10 +1602,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_bloodless_desert_2"
   },
+  "acc_bloodless_desert_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_bloodless_desert_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_bloodless_desert_3"
+  },
+  "acc_bloodless_desert_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_bloodless_desert_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_bloodless_desert_4"
+  },
   "amb_frozen_grave": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_frozen_grave",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_frozen_grave_b",
         "stream": true
       }
     ],
@@ -965,10 +1651,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_frozen_grave_2"
   },
+  "acc_frozen_grave_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_frozen_grave_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_frozen_grave_3"
+  },
+  "acc_frozen_grave_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_frozen_grave_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_frozen_grave_4"
+  },
   "amb_ashen_sun": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_ashen_sun",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_ashen_sun_b",
         "stream": true
       }
     ],
@@ -992,10 +1700,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_ashen_sun_2"
   },
+  "acc_ashen_sun_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_ashen_sun_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_ashen_sun_3"
+  },
+  "acc_ashen_sun_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_ashen_sun_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_ashen_sun_4"
+  },
   "amb_black_tide": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_black_tide",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_black_tide_b",
         "stream": true
       }
     ],
@@ -1019,10 +1749,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_black_tide_2"
   },
+  "acc_black_tide_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_black_tide_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_black_tide_3"
+  },
+  "acc_black_tide_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_black_tide_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_black_tide_4"
+  },
   "amb_storm_that_waits": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_storm_that_waits",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_storm_that_waits_b",
         "stream": true
       }
     ],
@@ -1046,10 +1798,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_storm_that_waits_2"
   },
+  "acc_storm_that_waits_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_storm_that_waits_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_storm_that_waits_3"
+  },
+  "acc_storm_that_waits_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_storm_that_waits_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_storm_that_waits_4"
+  },
   "amb_grey_forest": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_grey_forest",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_grey_forest_b",
         "stream": true
       }
     ],
@@ -1073,10 +1847,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_grey_forest_2"
   },
+  "acc_grey_forest_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_grey_forest_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_grey_forest_3"
+  },
+  "acc_grey_forest_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_grey_forest_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_grey_forest_4"
+  },
   "amb_red_chapel": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_red_chapel",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_red_chapel_b",
         "stream": true
       }
     ],
@@ -1100,10 +1896,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_red_chapel_2"
   },
+  "acc_red_chapel_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_red_chapel_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_red_chapel_3"
+  },
+  "acc_red_chapel_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_red_chapel_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_red_chapel_4"
+  },
   "amb_nameless_catacombs": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_nameless_catacombs",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_nameless_catacombs_b",
         "stream": true
       }
     ],
@@ -1127,10 +1945,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_nameless_catacombs_2"
   },
+  "acc_nameless_catacombs_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_nameless_catacombs_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_nameless_catacombs_3"
+  },
+  "acc_nameless_catacombs_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_nameless_catacombs_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_nameless_catacombs_4"
+  },
   "amb_buried_kingdom": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_buried_kingdom",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_buried_kingdom_b",
         "stream": true
       }
     ],
@@ -1154,10 +1994,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_buried_kingdom_2"
   },
+  "acc_buried_kingdom_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_buried_kingdom_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_buried_kingdom_3"
+  },
+  "acc_buried_kingdom_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_buried_kingdom_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_buried_kingdom_4"
+  },
   "amb_unfinished_ritual": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_unfinished_ritual",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_unfinished_ritual_b",
         "stream": true
       }
     ],
@@ -1181,10 +2043,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_unfinished_ritual_2"
   },
+  "acc_unfinished_ritual_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_unfinished_ritual_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_unfinished_ritual_3"
+  },
+  "acc_unfinished_ritual_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_unfinished_ritual_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_unfinished_ritual_4"
+  },
   "amb_silent_monastery": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_silent_monastery",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_silent_monastery_b",
         "stream": true
       }
     ],
@@ -1208,10 +2092,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_silent_monastery_2"
   },
+  "acc_silent_monastery_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_silent_monastery_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_silent_monastery_3"
+  },
+  "acc_silent_monastery_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_silent_monastery_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_silent_monastery_4"
+  },
   "amb_endless_cemetery": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_endless_cemetery",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_endless_cemetery_b",
         "stream": true
       }
     ],
@@ -1235,10 +2141,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_endless_cemetery_2"
   },
+  "acc_endless_cemetery_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_endless_cemetery_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_endless_cemetery_3"
+  },
+  "acc_endless_cemetery_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_endless_cemetery_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_endless_cemetery_4"
+  },
   "amb_corrupted_chunk": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_corrupted_chunk",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_corrupted_chunk_b",
         "stream": true
       }
     ],
@@ -1262,10 +2190,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_corrupted_chunk_2"
   },
+  "acc_corrupted_chunk_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_corrupted_chunk_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_corrupted_chunk_3"
+  },
+  "acc_corrupted_chunk_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_corrupted_chunk_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_corrupted_chunk_4"
+  },
   "amb_white_void": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_white_void",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_white_void_b",
         "stream": true
       }
     ],
@@ -1289,10 +2239,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_white_void_2"
   },
+  "acc_white_void_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_white_void_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_white_void_3"
+  },
+  "acc_white_void_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_white_void_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_white_void_4"
+  },
   "amb_blind_observatory": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_blind_observatory",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_blind_observatory_b",
         "stream": true
       }
     ],
@@ -1316,10 +2288,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_blind_observatory_2"
   },
+  "acc_blind_observatory_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_blind_observatory_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_blind_observatory_3"
+  },
+  "acc_blind_observatory_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_blind_observatory_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_blind_observatory_4"
+  },
   "amb_forbidden_index": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_forbidden_index",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_forbidden_index_b",
         "stream": true
       }
     ],
@@ -1343,10 +2337,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_forbidden_index_2"
   },
+  "acc_forbidden_index_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_forbidden_index_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_forbidden_index_3"
+  },
+  "acc_forbidden_index_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_forbidden_index_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_forbidden_index_4"
+  },
   "amb_signal_core": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_signal_core",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_signal_core_b",
         "stream": true
       }
     ],
@@ -1370,10 +2386,32 @@
     ],
     "subtitle": "subtitles.lastsignal.acc_signal_core_2"
   },
+  "acc_signal_core_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_signal_core_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_signal_core_3"
+  },
+  "acc_signal_core_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_signal_core_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_signal_core_4"
+  },
   "amb_unwritten_end": {
     "sounds": [
       {
         "name": "lastsignal:dim/amb_unwritten_end",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_unwritten_end_b",
         "stream": true
       }
     ],
@@ -1396,5 +2434,23 @@
       }
     ],
     "subtitle": "subtitles.lastsignal.acc_unwritten_end_2"
+  },
+  "acc_unwritten_end_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_unwritten_end_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_unwritten_end_3"
+  },
+  "acc_unwritten_end_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_unwritten_end_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_unwritten_end_4"
   }
 }

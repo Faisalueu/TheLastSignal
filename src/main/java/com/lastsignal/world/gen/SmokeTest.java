@@ -43,7 +43,46 @@ public final class SmokeTest {
                 }
                 ServerLevel l = e.getServer().getLevel(Dimensions.key(t.slug));
                 if (l == null) throw new IllegalStateException("dimension not loaded");
-                for (int cx = -3; cx <= 3; cx++) for (int cz = -3; cz <= 3; cz++) l.getChunk(cx, cz);
+                int chestN = 0, lootBad = 0, blackN = 0, whiteN = 0;
+                Block blk = ModBlocks.BY_ID.get("black_fracture").get(), wht = ModBlocks.BY_ID.get("white_fracture").get();
+                ResourceLocation tbl = new ResourceLocation(LastSignalMod.MODID, "chests/dim/" + Gen.lootName(t));
+                for (int cx = -5; cx <= 5; cx++) for (int cz = -5; cz <= 5; cz++) {
+                    net.minecraft.world.level.chunk.LevelChunk ch = l.getChunk(cx, cz);
+                    for (net.minecraft.world.level.block.entity.BlockEntity be : new ArrayList<>(ch.getBlockEntities().values())) {
+                        if (be instanceof net.minecraft.world.level.block.entity.ChestBlockEntity cb) {
+                            chestN++;
+                            String lt = cb.saveWithFullMetadata().getString("LootTable");
+                            if (!lt.isEmpty() && !lt.equals(tbl.toString())) lootBad++;
+                        }
+                    }
+                    net.minecraft.world.level.chunk.LevelChunkSection[] secs = ch.getSections();
+                    for (int si = 0; si < secs.length; si++) {
+                        net.minecraft.world.level.chunk.LevelChunkSection sec = secs[si];
+                        if (sec.hasOnlyAir()) continue;
+                        if (!sec.maybeHas(st -> st.is(blk) || st.is(wht))) continue;
+                        for (int x = 0; x < 16; x++) for (int y = 0; y < 16; y++) for (int z = 0; z < 16; z++) {
+                            BlockState st = sec.getBlockState(x, y, z);
+                            if (st.is(blk)) blackN++; else if (st.is(wht)) whiteN++;
+                        }
+                    }
+                }
+                net.minecraft.world.level.storage.loot.LootTable table = e.getServer().getLootData().getLootTable(tbl);
+                if (table == net.minecraft.world.level.storage.loot.LootTable.EMPTY) throw new IllegalStateException("loot table missing " + tbl);
+                int rolled = 0;
+                for (int k = 0; k < 20; k++) {
+                    net.minecraft.world.level.storage.loot.LootParams lp = new net.minecraft.world.level.storage.loot.LootParams.Builder(l)
+                        .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.ORIGIN, net.minecraft.world.phys.Vec3.ZERO)
+                        .create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.CHEST);
+                    for (net.minecraft.world.item.ItemStack is : table.getRandomItems(lp, 1000L + k)) if (!is.isEmpty()) rolled++;
+                }
+                if (rolled == 0) throw new IllegalStateException("loot table rolls nothing " + tbl);
+                if (lootBad > 0) throw new IllegalStateException(lootBad + " chests with wrong/missing loot table");
+                com.lastsignal.world.gen.Landing.Plan lp0 = Landing.plan(l, t.slug, 4242L, 40);
+                if (lp0 == null) throw new IllegalStateException("no landing plan");
+                BlockPos lf = lp0.pos();
+                if (l.getBlockState(lf).blocksMotion() || l.getBlockState(lf.above()).blocksMotion() || !l.getBlockState(lf.below()).blocksMotion() && lp0.fall() == 0)
+                    throw new IllegalStateException("unsafe landing " + lf);
+                for (int dy = 0; dy < lp0.fall(); dy++) if (l.getBlockState(lf.above(dy)).blocksMotion()) throw new IllegalStateException("fall column blocked at " + lf.above(dy));
                 int[] a = Gen.arrival(t);
                 BlockPos feet = new BlockPos(a[0], a[1], a[2]);
                 BlockState below = l.getBlockState(feet.below()), f = l.getBlockState(feet), h = l.getBlockState(feet.above());
@@ -60,7 +99,7 @@ public final class SmokeTest {
                     if (!s.isAir()) solid++;
                     if (s.getBlock() == markB) mark++;
                 }
-                sb.append("OK arrival=").append(feet.toShortString()).append(" sampledSolid=").append(solid).append(" markSamples=").append(mark).append(sea ? " (sea)" : "");
+                sb.append("OK arrival=").append(feet.toShortString()).append(" sampledSolid=").append(solid).append(" markSamples=").append(mark).append(" chests=").append(chestN).append(" black=").append(blackN).append(" white=").append(whiteN).append(" landFall=").append(lp0.fall()).append(sea ? " (sea)" : "");
             } catch (Throwable ex) {
                 fails++;
                 sb.append("FAIL ").append(ex);

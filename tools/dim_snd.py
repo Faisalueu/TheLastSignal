@@ -302,11 +302,17 @@ def gate(x, r, n=2, dur=.8):
     return x
 
 
-def render(layers, secs, seed, rv=0.25, fx=(), fade=.4, lp=None, vol=1.0):
+def render(layers, secs, seed, rv=0.25, fx=(), fade=.4, lp=None, vol=1.0, variant=False):
     import random
     r = random.Random(seed)
     x = np.zeros(int(secs * SR))
-    for name, g, kw in layers:
+    sc = max(1.0, secs / 16.0)
+    for li, (name, g, kw) in enumerate(layers):
+        kw = dict(kw)
+        if secs > 16 and "n" in kw:
+            kw["n"] = max(1, int(round(kw["n"] * sc)))       # keep event density constant for long beds
+        if variant:
+            g = g * (0.65 + 0.7 * random.Random(seed * 31 + li).random())
         x += P[name](secs, r, **kw) * g
     if "echo" in fx: x = echo(x)
     if "gate" in fx: x = gate(x, r)
@@ -425,13 +431,18 @@ rec("signal_core", [L("motif", .8), L("air", .5, lo=300, hi=4000, amp=.4, lfo=.3
 rec("unwritten_end", [L("bell", .4, n=1, notes=(392,), decay=1.0), L("choir", .3, notes=(110, 165), amp=.4, rev=True), L("pulse", .4, rate=.5, f=38), L("clocks", .3, rates=(.8,)), L("air", .3, lo=300, hi=3000, amp=.3)],
     [L("bell", .5, n=1, notes=(392,), decay=1.0)], [L("motif", .5, step=.6, amp=.2)], .8, fx=("fadeout",))
 
-BED_SECS, ACC_SECS = 16.0, 3.0
+BED_SECS, ACC_SECS = 60.0, 3.0
 
 
 def render_dim(slug):
+    """returns {suffix: int16 array}: bed (60 s) + bed_b (60 s variant) + 4 accents (close, far, enclosed, rare)."""
     rc = R[slug]
     seed = zlib.crc32(slug.encode())
-    bed = render(rc["bed"], BED_SECS, seed, rc["rv"], rc["fx"], fade=.6, lp=rc["lp"], vol=rc["vol"])
-    a1 = render(rc["a1"], ACC_SECS, seed + 1, rc["rv"], rc["afx"][0], fade=.03, lp=rc["lp"], vol=rc["vol"])
-    a2 = render(rc["a2"], ACC_SECS, seed + 2, rc["rv"], rc["afx"][1], fade=.03, lp=rc["lp"], vol=rc["vol"])
-    return bed, a1, a2
+    out = {}
+    out["amb"] = render(rc["bed"], BED_SECS, seed, rc["rv"], rc["fx"], fade=2.5, lp=rc["lp"], vol=rc["vol"])
+    out["amb_b"] = render(rc["bed"], BED_SECS, seed + 10, rc["rv"], rc["fx"], fade=2.5, lp=rc["lp"], vol=rc["vol"], variant=True)
+    out["acc_1"] = render(rc["a1"], ACC_SECS, seed + 1, rc["rv"], rc["afx"][0], fade=.03, lp=rc["lp"], vol=rc["vol"])
+    out["acc_2"] = render(rc["a2"], ACC_SECS, seed + 2, rc["rv"], rc["afx"][1], fade=.03, lp=rc["lp"], vol=rc["vol"])
+    out["acc_3"] = render(rc["a1"], ACC_SECS + 1, seed + 3, min(1, rc["rv"] + .15), rc["afx"][0], fade=.05, lp=rc["lp"], vol=rc["vol"] * .9, variant=True)
+    out["acc_4"] = render(rc["a2"] + rc["a1"], 6.0, seed + 4, min(1, rc["rv"] + .3), rc["afx"][1], fade=.8, lp=rc["lp"], vol=rc["vol"] * .8, variant=True)
+    return out

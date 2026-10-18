@@ -59,6 +59,8 @@ public final class Theme {
         return b == null ? Blocks.STONE.defaultBlockState() : b.defaultBlockState();
     }
 
+    public String acc(int i) { return "acc_" + slug + "_" + i; }
+
     public boolean has(String flag) { return flags.contains(flag); }
 
     public double param(int i) { return p[i]; }

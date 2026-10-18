@@ -3,6 +3,10 @@ package com.lastsignal.world.gen;
 import com.lastsignal.block.DimensionGateBlock;
 import com.lastsignal.block.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LanternBlock;
@@ -24,7 +28,10 @@ public final class Gen {
     final Theme t;
     final ChunkAccess c;
     final int cx, cz, bx, bz;
-    final Random r;
+    Random r;
+    final Profile p;
+    boolean obj; int ox, oz;               // object mode: scattered set pieces drawn from a world-anchored seed
+    int chests;
     final int[][] gh = new int[16][16];     // ground height (top solid y) per column, -1 = none
     int fx0 = 3, fx1 = 12, fz0 = 3, fz1 = 12;   // feature placement window
     int ceilY = 0;                                // rooms: ceiling row
@@ -35,6 +42,7 @@ public final class Gen {
         this.cx = c.getPos().x; this.cz = c.getPos().z;
         this.bx = cx << 4; this.bz = cz << 4;
         this.r = new Random(Noise.hash(t.seed, cx, cz));
+        this.p = ProfileData.ALL[t.index - 1];
         for (int[] row : gh) java.util.Arrays.fill(row, -1);
     }
 
@@ -79,19 +87,88 @@ public final class Gen {
 
     int rnd(int lo, int hi) { return lo + r.nextInt(Math.max(1, hi - lo + 1)); }
 
-    int px() { return rnd(fx0, fx1); }
+    int px() { return obj ? ox + r.nextInt(9) - 4 : rnd(fx0, fx1); }
 
-    int pz() { return rnd(fz0, fz1); }
+    int pz() { return obj ? oz + r.nextInt(9) - 4 : rnd(fz0, fz1); }
 
+    /** terrain height at a chunk-local column (may be outside the chunk for deterministic open terrains); -1 = no ground. */
     int groundAt(int x, int z) {
-        x = Math.max(0, Math.min(15, x)); z = Math.max(0, Math.min(15, z));
-        return gh[x][z];
+        switch (t.kind) {
+            case "open": return Math.max(openHeight(t, bx + x, bz + z), 0);
+            case "deep": return deepFloor(t, bx + x, bz + z);
+            case "sea": return seaFloor(t, bx + x, bz + z);
+            default:
+                if (x < 0 || x > 15 || z < 0 || z > 15) return -1;
+                return gh[x][z];
+        }
+    }
+
+    static String lootName(Theme t) { return ProfileData.ALL[t.index - 1].loot; }
+
+    /** Safe chest: guarantees support below, air above, deterministic loot seed. */
+    boolean chest(int x, int y, int z) {
+        if (x < 0 || x > 15 || z < 0 || z > 15 || y < 3 || y > 248) return false;
+        double cd = 1.0;
+        try { cd = com.lastsignal.config.LastSignalConfig.COMMON.chestDensity.get(); } catch (IllegalStateException e) { }
+        if (cd < 1.0 && (Noise.hash(t.seed + 1234, bx + x, bz + z) & 0x7fffffff) % 1000 / 1000.0 >= cd) return false;
+        BlockState below = get(x, y - 1, z);
+        if (below.isAir() || !below.getFluidState().isEmpty()) set(x, y - 1, z, S(Theme.STONE));
+        set(x, y, z, AIR); set(x, y + 1, z, AIR);
+        BlockPos wp = new BlockPos(bx + x, y, bz + z);
+        BlockState cs = Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.from2DDataValue(r.nextInt(4)));
+        set(x, y, z, cs);
+        ChestBlockEntity be = new ChestBlockEntity(wp, cs);
+        be.setLootTable(new ResourceLocation("lastsignal", "chests/dim/" + p.loot), Noise.hash(t.seed + 999, wp.getX(), wp.getZ()) * 31L + wp.getY());
+        c.setBlockEntity(be);
+        chests++;
+        return true;
+    }
+
+    /** A ruined cache: chest with two stone flanks, used wherever a set piece wants a hidden reward. */
+    void cache(int x, int y, int z) {
+        if (!chest(x, y, z)) return;
+        BlockState st = S(Theme.STONE);
+        set(x - 1, y, z, st); set(x + 1, y, z, st);
+        set(x, y + 1, z, S(Theme.WALL));
+    }
+
+    /** Scatter named set pieces on a world-anchored jittered grid so they continue across chunk borders. */
+    void scatter(String[] names, int cell, double dens) {
+        try { dens *= com.lastsignal.config.LastSignalConfig.COMMON.structureDensity.get(); } catch (IllegalStateException e) { }
+        if (names.length == 0 || dens <= 0) return;
+        int gx0 = Math.floorDiv(bx - 12, cell), gx1 = Math.floorDiv(bx + 16 + 12, cell);
+        int gz0 = Math.floorDiv(bz - 12, cell), gz1 = Math.floorDiv(bz + 16 + 12, cell);
+        Random saved = r;
+        for (int gx = gx0; gx <= gx1; gx++) for (int gz = gz0; gz <= gz1; gz++) {
+            int h = Noise.hash(t.seed + 600, gx, gz);
+            double zone = .35 + 1.3 * Noise.fbm(t.seed + 61, (gx * cell) / 160.0, (gz * cell) / 160.0, 2);   // dense / sparse regions
+            if ((h % 1000) / 1000.0 >= dens * zone) continue;
+            int wx = gx * cell + 5 + (h >> 10) % Math.max(1, cell - 10), wz = gz * cell + 5 + (h >> 20) % Math.max(1, cell - 10);
+            if (Math.abs(wx - 8) < 20 && Math.abs(wz - 8) < 20) continue;
+            if (Landmarks.inZone(this, wx, wz)) continue;
+            r = new Random(h * 31L + 7);
+            obj = true; ox = wx - bx; oz = wz - bz;
+            String n = names[r.nextInt(names.length)];
+            Features.build(n, this, 0, 40, false);
+            if (r.nextDouble() < .16 * p.chest && ox >= 1 && ox <= 14 && oz >= 1 && oz <= 14) {
+                int gy = groundAt(ox + 3, oz + 3);
+                if (gy > 0) cache(ox + 3, gy + 1, oz + 3);
+            }
+            obj = false;
+        }
+        r = saved;
     }
 
     /** lamp: lanterns hang from the ceiling, full-block lights replace the ceiling block. */
     void lamp(int x, int ceilRow) {
         BlockState l = S(Theme.LIGHT);
         int z = rnd(3, 12);
+        if (l.getBlock() instanceof LanternBlock) set(x, ceilRow - 1, z, l.setValue(LanternBlock.HANGING, true));
+        else set(x, ceilRow, z, l);
+    }
+
+    void lampXZ(int x, int z, int ceilRow) {
+        BlockState l = S(Theme.LIGHT);
         if (l.getBlock() instanceof LanternBlock) set(x, ceilRow - 1, z, l.setValue(LanternBlock.HANGING, true));
         else set(x, ceilRow, z, l);
     }
@@ -225,7 +302,7 @@ public final class Gen {
     // ------------------------------------------------------------------ entry point
     void run() {
         switch (t.kind) {
-            case "rooms" -> rooms();
+            case "rooms" -> Rooms.run(this);
             case "open" -> open();
             case "islands" -> islands(false);
             case "void" -> islands(true);
@@ -235,57 +312,7 @@ public final class Gen {
             default -> { }
         }
         if (cx == 0 && cz == 0) pad();
-    }
-
-    // ------------------------------------------------------------------ ROOMS
-    private void rooms() {
-        int H = (int) t.p[Theme.P_H];
-        ceilY = Y0 + H;
-        boolean dN = doorOpen(t, cx, cz - 1, cx, cz), dE = doorOpen(t, cx, cz, cx + 1, cz),
-                dS = doorOpen(t, cx, cz, cx, cz + 1), dW = doorOpen(t, cx - 1, cz, cx, cz);
-        BlockState stone = S(Theme.STONE), floor = S(Theme.FLOOR), wall = S(Theme.WALL), ceil = S(Theme.CEIL);
-        boolean rough = t.has("rough");
-        boolean courtyard = t.p[Theme.P_ROOF] > 0 && Noise.rnd(t.seed + 55, cx, cz) < t.p[Theme.P_ROOF] && !(cx == 0 && cz == 0);
-        int doorH = Math.min(H, 4);
-        for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) {
-            boolean in = x >= 2 && x <= 13 && z >= 2 && z <= 13;
-            boolean door = false;
-            if (x >= 6 && x <= 9) { if (z < 2 && dN) door = true; if (z > 13 && dS) door = true; }
-            if (z >= 6 && z <= 9) { if (x < 2 && dW) door = true; if (x > 13 && dE) door = true; }
-            boolean yard = courtyard && x >= 5 && x <= 10 && z >= 5 && z <= 10;
-            set(x, 0, z, BEDROCK);
-            for (int y = 1; y < Y0 - 1; y++) set(x, y, z, stone);
-            set(x, Y0 - 1, z, (in || door) ? floor : stone);
-            gh[x][z] = Y0 - 1;
-            if (in) {
-                set(x, ceilY, z, yard ? AIR : ceil);
-            } else if (door) {
-                for (int y = Y0 + doorH; y <= ceilY; y++) set(x, y, z, wall);
-            } else {
-                for (int y = Y0; y <= ceilY; y++) set(x, y, z, (rough && r.nextInt(5) < 2) ? stone : wall);
-            }
-            for (int y = ceilY + 1; y <= ceilY + 3; y++) set(x, y, z, yard ? AIR : stone);
-            set(x, ceilY + 4, z, BEDROCK);
-        }
-        // wall inlays: accent patches and the dimension's marking block on the inner faces
-        BlockState acc = S(Theme.ACCENT), mark = S(Theme.MARK);
-        for (int i = 2; i <= 13; i++) for (int y = Y0; y < ceilY; y++) {
-            inlay(i, y, 1, wall, acc, mark); inlay(i, y, 14, wall, acc, mark); inlay(1, y, i, wall, acc, mark); inlay(14, y, i, wall, acc, mark);
-        }
-        boolean spawn = cx == 0 && cz == 0;
-        if (chance(t.p[Theme.P_MARK])) stampFloor(2 + r.nextInt(2), 2 + r.nextInt(2), Y0 - 1, false);
-        if (H >= 12 && chance(t.p[Theme.P_MURAL])) stampWall(true, 1, 2 + r.nextInt(2), Y0 + 1 + Math.max(0, (H - 12) / 2), wall);
-        if (!spawn && t.feats.length > 0 && chance(t.p[Theme.P_FEAT])) Features.build(t.feats[r.nextInt(t.feats.length)], this, Y0, H, true);
-        int lamps = chance(t.p[Theme.P_LIGHT]) ? 1 + (chance(.4) ? 1 : 0) : 0;
-        if (spawn) lamps = 2;
-        for (int i = 0; i < lamps; i++) lamp(rnd(3, 12), ceilY);
-    }
-
-    private void inlay(int x, int y, int z, BlockState wall, BlockState acc, BlockState mark) {
-        if (get(x, y, z) != wall) return;
-        int h = Noise.hash(t.seed + 9, (bx + x) * 31 + y, (bz + z) * 17 + y * 3) % 1000;
-        if (h < 35) set(x, y, z, acc);
-        else if (h < 50) set(x, y, z, mark);
+        Fractures.apply(this);
     }
 
     // ------------------------------------------------------------------ OPEN
@@ -308,11 +335,8 @@ public final class Gen {
             flatten(x0, z0, 11, 11, lvl, 6);
             stampFloor(x0, z0, lvl, false);
         }
-        if (!spawn) {
-            double f = t.p[Theme.P_FEAT];
-            int n = (chance(f) ? 1 : 0) + (chance(f * .6) ? 1 : 0) + (chance(f * .3) ? 1 : 0);
-            for (int i = 0; i < n && t.feats.length > 0; i++) Features.build(t.feats[r.nextInt(t.feats.length)], this, 0, 40, false);
-        }
+        Landmarks.apply(this);
+        scatter(t.feats, p.cell, p.scat);
     }
 
     /** level the area to height lvl (ground/sub below, air above up to clear blocks). */
@@ -372,7 +396,12 @@ public final class Gen {
                 int n = (chance(f) ? 1 : 0) + (chance(f * .4) ? 1 : 0);
                 for (int i = 0; i < n; i++) Features.build(t.feats[r.nextInt(t.feats.length)], this, top, 40, false);
             }
+            if (!spawn && chance(.22 * p.chest)) {
+                int qx = Math.max(1, Math.min(14, icx + 2)), qz = Math.max(1, Math.min(14, icz - 2));
+                if (gh[qx][qz] == top) cache(qx, top + 1, qz);
+            }
         }
+        Landmarks.apply(this);
         if (t.has("glitch")) {
             BlockState[] pal = {S(Theme.ACCENT), S(Theme.MARK), S(Theme.GLASS), S(Theme.STONE)};
             int base = (int) t.p[Theme.P_BASE];
@@ -403,11 +432,8 @@ public final class Gen {
             flatten(x0, z0, 11, 11, gh[x0 + 5][z0 + 5], 8);
             stampFloor(x0, z0, gh[x0 + 5][z0 + 5], false);
         }
-        if (!spawn) {
-            double f = t.p[Theme.P_FEAT];
-            int n = (chance(f) ? 1 : 0) + (chance(f * .7) ? 1 : 0);
-            for (int i = 0; i < n && t.feats.length > 0; i++) Features.build(t.feats[r.nextInt(t.feats.length)], this, 0, 60, false);
-        }
+        Landmarks.apply(this);
+        scatter(t.feats, p.cell, p.scat);
         if (chance(.35) || spawn) lampAt(rnd(3, 12), gh[8][8] + 1 + 0, rnd(3, 12));
     }
 
@@ -430,11 +456,9 @@ public final class Gen {
             for (int x = x0; x < x0 + 11; x++) for (int z = z0; z < z0 + 11; z++) for (int y = gh[x0 + 5][z0 + 5] + 1; y <= sea; y++) set(x, y, z, WATER);
             stampFloor(x0, z0, gh[x0 + 5][z0 + 5], false);
         }
-        if (!spawn) {
-            double f = t.p[Theme.P_FEAT];
-            int n = (chance(f) ? 1 : 0) + (chance(f * .6) ? 1 : 0);
-            for (int i = 0; i < n && t.feats.length > 0; i++) Features.build(t.feats[r.nextInt(t.feats.length)], this, 0, 40, false);
-        }
+        Landmarks.apply(this);
+        scatter(t.feats, p.cell, p.scat);
+    }
     }
 
     // ------------------------------------------------------------------ STAIRS
@@ -474,7 +498,7 @@ public final class Gen {
             doorTunnel(2, L - 9, (cx + 1) * 37 + cz * 1013, 301, 13, 7, 3, 2, true, false); // E
             doorTunnel(3, L - 13, cx * 37 + (cz + 1) * 1013, 302, 7, 13, 2, 3, false, true); // S
         }
-        if (chance(.0)) stampFloor(2, 2, ybot, false);
+        if (chance(.3 * p.chest) && !(cx == 0 && cz == 0)) cache(6, ybot + 1, 6);
     }
 
     private void doorTunnel(int dir, int y, int edgeKey, int salt, int x0, int z0, int w, int d, boolean alongX, boolean alongZ) {
