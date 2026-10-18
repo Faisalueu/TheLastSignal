@@ -112,7 +112,7 @@ public final class DimensionAmbience {
             boolean open = mc.level.canSeeSky(pp);
             int roll = RNG.nextInt(100);
             int idx;
-            float dist, v2 = 0.7f;
+            float dist = 0, v2 = 0.7f;
             if (roll < 8) { idx = 4; dist = 20 + RNG.nextInt(14); v2 = 0.55f; }          // rare, far, unidentifiable
             else if (open) idx = RNG.nextBoolean() ? 1 : 2;
             else idx = RNG.nextBoolean() ? 3 : (RNG.nextBoolean() ? 1 : 2);
