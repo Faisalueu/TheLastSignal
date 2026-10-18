@@ -43,7 +43,8 @@ public final class SmokeTest {
                 }
                 ServerLevel l = e.getServer().getLevel(Dimensions.key(t.slug));
                 if (l == null) throw new IllegalStateException("dimension not loaded");
-                int chestN = 0, lootBad = 0, blackN = 0, whiteN = 0;
+                int chestN = 0, lootBad = 0, blackN = 0, whiteN = 0, markN = 0;
+                final Block markBlk = t.role(Theme.MARK).getBlock();
                 Block blk = ModBlocks.BY_ID.get("black_fracture").get(), wht = ModBlocks.BY_ID.get("white_fracture").get();
                 ResourceLocation tbl = new ResourceLocation(LastSignalMod.MODID, "chests/dim/" + Gen.lootName(t));
                 for (int cx = -5; cx <= 5; cx++) for (int cz = -5; cz <= 5; cz++) {
@@ -59,10 +60,10 @@ public final class SmokeTest {
                     for (int si = 0; si < secs.length; si++) {
                         net.minecraft.world.level.chunk.LevelChunkSection sec = secs[si];
                         if (sec.hasOnlyAir()) continue;
-                        if (!sec.maybeHas(st -> st.is(blk) || st.is(wht))) continue;
+                        if (!sec.maybeHas(st -> st.is(blk) || st.is(wht) || st.is(markBlk))) continue;
                         for (int x = 0; x < 16; x++) for (int y = 0; y < 16; y++) for (int z = 0; z < 16; z++) {
                             BlockState st = sec.getBlockState(x, y, z);
-                            if (st.is(blk)) blackN++; else if (st.is(wht)) whiteN++;
+                            if (st.is(blk)) blackN++; else if (st.is(wht)) whiteN++; else if (st.is(markBlk)) markN++;
                         }
                     }
                 }
@@ -99,7 +100,7 @@ public final class SmokeTest {
                     if (!s.isAir()) solid++;
                     if (s.getBlock() == markB) mark++;
                 }
-                sb.append("OK arrival=").append(feet.toShortString()).append(" sampledSolid=").append(solid).append(" markSamples=").append(mark).append(" chests=").append(chestN).append(" black=").append(blackN).append(" white=").append(whiteN).append(" landFall=").append(lp0.fall()).append(sea ? " (sea)" : "");
+                sb.append("OK arrival=").append(feet.toShortString()).append(" sampledSolid=").append(solid).append(" markSamples=").append(mark).append(" markExact=").append(markN).append(" chests=").append(chestN).append(" black=").append(blackN).append(" white=").append(whiteN).append(" landFall=").append(lp0.fall()).append(sea ? " (sea)" : "");
             } catch (Throwable ex) {
                 fails++;
                 sb.append("FAIL ").append(ex);
