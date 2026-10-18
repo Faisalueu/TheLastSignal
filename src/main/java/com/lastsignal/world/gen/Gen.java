@@ -459,7 +459,6 @@ public final class Gen {
         Landmarks.apply(this);
         scatter(t.feats, p.cell, p.scat);
     }
-    }
 
     // ------------------------------------------------------------------ STAIRS
     private void stairs() {
