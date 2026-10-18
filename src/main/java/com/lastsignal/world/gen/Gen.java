@@ -312,6 +312,15 @@ public final class Gen {
             default -> { }
         }
         if (cx == 0 && cz == 0) pad();
+        if ((t.kind.equals("open") || t.kind.equals("deep")) && !(cx == 0 && cz == 0)) {      // guaranteed trickle of hidden caches even where set pieces are sparse
+            Random sv = r;
+            r = new Random(Noise.hash(t.seed + 8200, cx, cz));
+            if (chance(.07 * p.chest)) {
+                int x = rnd(3, 12), z = rnd(3, 12), g0 = gh[x][z];
+                if (g0 > 3 && g0 < 240 && !get(x, g0, z).isAir() && get(x, g0, z).getFluidState().isEmpty() && g0 + 1 > (int) t.p[Theme.P_SEA]) cache(x, g0 + 1, z);
+            }
+            r = sv;
+        }
         Fractures.apply(this);
     }
 

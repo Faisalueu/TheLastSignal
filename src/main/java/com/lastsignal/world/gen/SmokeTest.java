@@ -82,7 +82,7 @@ public final class SmokeTest {
                 BlockPos lf = lp0.pos();
                 if (l.getBlockState(lf).blocksMotion() || l.getBlockState(lf.above()).blocksMotion() || !l.getBlockState(lf.below()).blocksMotion() && lp0.fall() == 0)
                     throw new IllegalStateException("unsafe landing " + lf);
-                for (int dy = 0; dy < lp0.fall(); dy++) if (l.getBlockState(lf.above(dy)).blocksMotion()) throw new IllegalStateException("fall column blocked at " + lf.above(dy));
+                for (int dy = 1; dy <= lp0.fall(); dy++) if (l.getBlockState(lf.below(dy)).blocksMotion()) throw new IllegalStateException("fall column blocked at " + lf.below(dy));
                 int[] a = Gen.arrival(t);
                 BlockPos feet = new BlockPos(a[0], a[1], a[2]);
                 BlockState below = l.getBlockState(feet.below()), f = l.getBlockState(feet), h = l.getBlockState(feet.above());
