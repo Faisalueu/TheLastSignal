@@ -17,7 +17,23 @@ jobs:
         with:
           gradle-version: 8.8
       - name: Build
-        run: gradle build --no-daemon
+        run: |
+          set +e
+          gradle build --no-daemon 2>&1 | tee build.log
+          rc=${PIPESTATUS[0]}
+          if [ $rc -ne 0 ]; then
+            python3 - <<'PY'
+          import re
+          L=open('build.log',errors='replace').read().splitlines()
+          E=[]
+          for i,l in enumerate(L):
+              if re.search(r'error:|\.java:\d+: |FAILED|What went wrong',l):
+                  E.append(' | '.join(x.strip() for x in L[i:i+3]))
+          for i in range(0,min(len(E),60),6):
+              print('::error title=compile %d::%s'%(i//6,'%0A'.join(E[i:i+6])[:3500]))
+          PY
+          fi
+          exit $rc
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
