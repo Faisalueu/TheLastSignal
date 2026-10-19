@@ -125,6 +125,29 @@ final class ExtraSmoke {
                 prev = y; steps++;
             }
         }
+        // BFS on the real terrain function from the road end to the crater floor (steps up <= 1, down <= 3, no lava columns): proves the hidden crater is reachable
+        int sx = (int) Math.round(pts[5][0]), sz = (int) Math.round(pts[5][1]), R = 75;
+        int W = 2 * R + 1;
+        int cx0 = ex - R, cz0 = ez - R;
+        int[][] hmap = new int[W][W];
+        for (int i = 0; i < W; i++) for (int j = 0; j < W; j++) hmap[i][j] = Volcano.height(t, cx0 + i, cz0 + j);
+        boolean[][] seen = new boolean[W][W];
+        java.util.ArrayDeque<int[]> dq = new java.util.ArrayDeque<>();
+        int si = Math.max(0, Math.min(W - 1, sx - cx0)), sj = Math.max(0, Math.min(W - 1, sz - cz0));
+        dq.add(new int[]{si, sj}); seen[si][sj] = true;
+        boolean reached = false;
+        while (!dq.isEmpty() && !reached) {
+            int[] c = dq.poll();
+            for (int[] d : new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}) {
+                int ni = c[0] + d[0], nj = c[1] + d[1];
+                if (ni < 0 || nj < 0 || ni >= W || nj >= W || seen[ni][nj]) continue;
+                int dh = hmap[ni][nj] - hmap[c[0]][c[1]];
+                if (dh > 1 || dh < -3 || hmap[ni][nj] <= 63) continue;
+                seen[ni][nj] = true; dq.add(new int[]{ni, nj});
+                if (Math.hypot(cx0 + ni - ex, cz0 + nj - ez) <= 2.5) reached = true;
+            }
+        }
+        if (!reached) throw new IllegalStateException("crater floor is not reachable on foot from the road end");
         if (bad > 0) throw new IllegalStateException("road not walkable: " + bad + " bad steps of " + steps);
         // the lip of the ring on the gap side leads into the bowl: walk from the road end around to the gap would need A*; instead check the bowl floor ring r=20 is open somewhere
         boolean gapOpen = false;
@@ -134,12 +157,17 @@ final class ExtraSmoke {
             if (Volcano.height(t, x, z) <= 70) gapOpen = true;
         }
         if (!gapOpen) throw new IllegalStateException("ring around the crater has no opening");
-        return "arrival=" + feet.toShortString() + " lavaBlocks(13x13 chunks)=" + lava + " exit=" + ex + "," + by + "," + ez + " roadSteps=" + steps + " falseExitPositions=0 chests=0";
+        return "arrival=" + feet.toShortString() + " lavaBlocks(13x13 chunks)=" + lava + " exit=" + ex + "," + by + "," + ez + " roadSteps=" + steps + " falseExitPositions=0 craterReachableFromRoadEnd=true chests=0";
     }
 
     static String lakes(ServerLevel ow) {
         // build test water bodies high above the terrain in the Overworld (sky open above them), then remove them again
         int bx = 4000, bz = 4000, y0 = 215;
+        for (int k = 0; k < 60; k++) {                                    // find a land (non-ocean, non-river) biome so the positive case is really tested
+            int tx = 1500 + k * 331, tz = -900 + k * 457;
+            var bio = ow.getBiome(new BlockPos(tx, y0, tz));
+            if (!bio.is(net.minecraft.tags.BiomeTags.IS_OCEAN) && !bio.is(net.minecraft.tags.BiomeTags.IS_RIVER) && !bio.is(net.minecraft.tags.BiomeTags.IS_DEEP_OCEAN)) { bx = tx; bz = tz; break; }
+        }
         for (int cx = (bx - 40) >> 4; cx <= (bx + 40) >> 4; cx++) for (int cz = (bz - 40) >> 4; cz <= (bz + 40) >> 4; cz++) ow.getChunk(cx, cz);
         StringBuilder sb = new StringBuilder();
         try {
@@ -147,7 +175,7 @@ final class ExtraSmoke {
             pool(ow, bx, y0, bz, 16, 5, Blocks.DIRT.defaultBlockState(), Blocks.STONE.defaultBlockState());
             boolean biomeOk = !(ow.getBiome(new BlockPos(bx + 8, y0 + 2, bz + 8)).is(net.minecraft.tags.BiomeTags.IS_OCEAN) || ow.getBiome(new BlockPos(bx + 8, y0 + 2, bz + 8)).is(net.minecraft.tags.BiomeTags.IS_RIVER));
             boolean big = LakeEntry.isNaturalLake(ow, new BlockPos(bx + 8, y0 + 2, bz + 8));
-            sb.append("bigLake=").append(big).append(biomeOk ? "" : "(biome excluded)");
+            sb.append("bigLake=").append(big).append(biomeOk ? "" : "(biome excluded)").append(" at ").append(bx).append(",").append(bz);
             if (biomeOk && !big) throw new IllegalStateException("a 16x16x5 dirt/stone lake under open sky was rejected");
             clear(ow, bx, y0, bz, 16, 5);
             // bucket pond 3x3x2
