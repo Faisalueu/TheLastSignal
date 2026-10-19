@@ -117,7 +117,12 @@ public final class Transit {
     }
 
     /** The only way out of the Infernal Volcano: called when the player stands on the floor of the REAL exit crater (Volcano.inExit). Arrives on the surface. */
-    public static void exitVolcano(ServerPlayer sp) {
+    public static void exitVolcano(ServerPlayer sp) { exitToSurface(sp, "Cold air. You are out.", "Volcano"); }
+
+    /** The only way out of the Golden Cloud Realm: standing still on the gold dais (SkyRealm.inDais) for two seconds. */
+    public static void exitSky(ServerPlayer sp) { exitToSurface(sp, "You step down through the clouds.", "Cloud realm"); }
+
+    private static void exitToSurface(ServerPlayer sp, String msg, String tag) {
         MinecraftServer server = sp.getServer();
         if (server == null || sp.isSpectator() || sp.isDeadOrDying()) return;
         CompoundTag pd = sp.getPersistentData();
@@ -138,8 +143,8 @@ public final class Transit {
         protect(sp, ow, plan.fall());
         st.dimensionsEscaped++;
         StoryManager.markDirty(sp);
-        sp.displayClientMessage(Component.literal("Cold air. You are out."), true);
-        LastSignalMod.LOGGER.info("Volcano exit: {} -> overworld {}", sp.getGameProfile().getName(), p);
+        sp.displayClientMessage(Component.literal(msg), true);
+        LastSignalMod.LOGGER.info("{} exit: {} -> overworld {}", tag, sp.getGameProfile().getName(), p);
     }
 
     public static int cooldownTicks() {

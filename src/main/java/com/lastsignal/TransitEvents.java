@@ -4,6 +4,7 @@ import com.lastsignal.world.LakeEntry;
 import com.lastsignal.world.Transit;
 import com.lastsignal.world.gen.ExtraThemes;
 import com.lastsignal.world.gen.Themes;
+import com.lastsignal.world.gen.SkyRealm;
 import com.lastsignal.world.gen.Volcano;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,8 +38,19 @@ public final class TransitEvents {
         LakeEntry.tick(sp);                                              // cheap: acts every 10th tick, only in the Overworld
         if (sp.tickCount % 5 == 0) {
             var loc = sp.level().dimension().location();
-            if (loc.getNamespace().equals(LastSignalMod.MODID) && loc.getPath().equals(ExtraThemes.VOLCANO)
-                    && Volcano.inExit(Themes.get(ExtraThemes.VOLCANO), sp.getX(), sp.getY(), sp.getZ())) Transit.exitVolcano(sp);
+            if (loc.getNamespace().equals(LastSignalMod.MODID)) {
+                String path = loc.getPath();
+                if (path.equals(ExtraThemes.VOLCANO) && Volcano.inExit(Themes.get(ExtraThemes.VOLCANO), sp.getX(), sp.getY(), sp.getZ())) Transit.exitVolcano(sp);
+                else if (path.equals(ExtraThemes.CLOUD)) {
+                    CompoundTag d = sp.getPersistentData();
+                    if (SkyRealm.inDais(Themes.get(ExtraThemes.CLOUD), sp.getX(), sp.getY(), sp.getZ())) {
+                        int n = d.getInt("ls_dais") + 1;
+                        d.putInt("ls_dais", n);
+                        if (n == 1) sp.displayClientMessage(net.minecraft.network.chat.Component.literal("The gold hums. Stay still."), true);
+                        if (n >= 8) { d.putInt("ls_dais", 0); Transit.exitSky(sp); }
+                    } else if (d.getInt("ls_dais") != 0) d.putInt("ls_dais", 0);
+                }
+            }
         }
         CompoundTag pd = sp.getPersistentData();
         if (!pd.contains(Transit.LAND_UNTIL)) return;

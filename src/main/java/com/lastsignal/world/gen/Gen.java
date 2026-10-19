@@ -315,7 +315,7 @@ public final class Gen {
             case "volcano" -> Volcano.run(this);
             default -> { }
         }
-        if (cx == 0 && cz == 0 && !t.kind.equals("volcano")) pad();      // the volcano has no gate: its only way out is the exit crater
+        if (cx == 0 && cz == 0 && !t.kind.equals("volcano") && !t.kind.equals("clouds")) pad();      // volcano: exit crater; clouds: exit dais (SkyRealm.dais) - neither uses the purple gate / green beacon
         if ((t.kind.equals("open") || t.kind.equals("deep")) && !(cx == 0 && cz == 0)) {      // guaranteed trickle of hidden caches even where set pieces are sparse
             Random sv = r;
             r = new Random(Noise.hash(t.seed + 8200, cx, cz));

@@ -76,7 +76,22 @@ final class ExtraSmoke {
         int[] a = Gen.arrival(t);
         BlockPos feet = new BlockPos(a[0], a[1], a[2]);
         if (!l.getBlockState(feet.below()).blocksMotion() || l.getBlockState(feet).blocksMotion() || l.getBlockState(feet.above()).blocksMotion()) throw new IllegalStateException("arrival unsafe " + feet);
-        if (!(l.getBlockState(feet.offset(0, 0, -3)).getBlock() instanceof com.lastsignal.block.DimensionGateBlock)) throw new IllegalStateException("return gate missing");
+        int dtop = SkyRealm.height(t, SkyRealm.DAIS_X, SkyRealm.DAIS_Z);
+        l.getChunk(SkyRealm.DAIS_X >> 4, SkyRealm.DAIS_Z >> 4);
+        if (!l.getBlockState(new BlockPos(SkyRealm.DAIS_X, dtop + 1, SkyRealm.DAIS_Z)).is(Blocks.BEACON)) throw new IllegalStateException("dais beacon missing");
+        if (!l.getBlockState(new BlockPos(SkyRealm.DAIS_X + 2, dtop, SkyRealm.DAIS_Z)).is(Blocks.GOLD_BLOCK)) throw new IllegalStateException("dais gold missing");
+        if (!SkyRealm.inDais(t, SkyRealm.DAIS_X + 1.5, dtop + 1, SkyRealm.DAIS_Z + .5)) throw new IllegalStateException("dais does not trigger on the dais");
+        if (SkyRealm.inDais(t, 8.5, feet.getY(), 8.5) || SkyRealm.inDais(t, SkyRealm.DAIS_X + 20, dtop + 1, SkyRealm.DAIS_Z)) throw new IllegalStateException("dais triggers away from the dais");
+        for (var blk : new String[]{"signal_gate", "checkpoint_beacon"}) {
+            var obsolete = com.lastsignal.block.ModBlocks.BY_ID.get(blk).get();
+            for (int cx = -6; cx <= 6; cx++) for (int cz = -6; cz <= 6; cz++) {
+                LevelChunk ch = l.getChunk(cx, cz);
+                for (LevelChunkSection sec : ch.getSections()) {
+                    if (sec.hasOnlyAir() || !sec.maybeHas(st -> st.is(obsolete))) continue;
+                    throw new IllegalStateException("obsolete block " + blk + " generated in chunk " + cx + "," + cz);
+                }
+            }
+        }
         if (gold < 1) throw new IllegalStateException("no gold generated in 13x13 chunks");
         if (gold > 400) throw new IllegalStateException("too much gold: " + gold);
         // walkable ground: a 40x40 area around spawn must contain no hole down to the void
@@ -84,7 +99,89 @@ final class ExtraSmoke {
             int h = SkyRealm.height(t, x, z);
             if (!l.getBlockState(new BlockPos(x, h, z)).blocksMotion()) throw new IllegalStateException("hole at " + x + "," + z);
         }
-        return "arrival=" + feet.toShortString() + " goldBlocksAndOre(13x13 chunks)=" + gold + " chests=0";
+        return "arrival=" + feet.toShortString() + " goldBlocksAndOre(13x13 chunks)=" + gold + " chests=0 dais=ok no-signal_gate/checkpoint_beacon; " + palace(l, t);
+    }
+
+    // ------------------------------------------------------------------------------------------------------ palace
+    private static boolean free(ServerLevel l, int x, int y, int z, java.util.Set<Long> panels) {
+        BlockPos p = new BlockPos(x, y, z);
+        if (panels != null && panels.contains(p.asLong())) return true;
+        return !l.getBlockState(p).blocksMotion() && l.getFluidState(p).isEmpty();
+    }
+
+    /** Walkable-region flood fill (step up <= 1 with headroom, drop <= 3) from the palace entrance; returns the set of reached standing cells. */
+    private static java.util.Set<Long> flood(ServerLevel l, int sx, int sy, int sz, java.util.Set<Long> panels) {
+        int x0 = SkyRealm.PX - 28, x1 = SkyRealm.PX + 28, z0 = SkyRealm.PZ - 38, z1 = SkyRealm.PZ + 30, y0 = Palace.F - 3, y1 = Palace.F + 46;
+        java.util.Set<Long> seen = new java.util.HashSet<>();
+        java.util.ArrayDeque<int[]> q = new java.util.ArrayDeque<>();
+        q.add(new int[]{sx, sy, sz}); seen.add(BlockPos.asLong(sx, sy, sz));
+        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!q.isEmpty()) {
+            int[] c = q.poll();
+            for (int[] d : dirs) for (int dy = 1; dy >= -3; dy--) {
+                int nx = c[0] + d[0], ny = c[1] + dy, nz = c[2] + d[1];
+                if (nx < x0 || nx > x1 || nz < z0 || nz > z1 || ny < y0 || ny > y1) continue;
+                if (!free(l, nx, ny, nz, panels) || !free(l, nx, ny + 1, nz, panels)) continue;
+                if (l.getBlockState(new BlockPos(nx, ny - 1, nz)).getCollisionShape(l, new BlockPos(nx, ny - 1, nz)).isEmpty() || !l.getFluidState(new BlockPos(nx, ny - 1, nz)).isEmpty()) continue;
+                if (dy == 1 && !free(l, c[0], c[1] + 2, c[2], panels)) continue;
+                if (dy < 0 && (!free(l, nx, c[1], nz, panels) || !free(l, nx, c[1] + 1, nz, panels))) continue;
+                if (seen.add(BlockPos.asLong(nx, ny, nz))) q.add(new int[]{nx, ny, nz});
+                break;
+            }
+        }
+        return seen;
+    }
+
+    static String palace(ServerLevel l, Theme t) {
+        int PX = SkyRealm.PX, PZ = SkyRealm.PZ, F = Palace.F;
+        for (int cx = (PX - 32) >> 4; cx <= (PX + 32) >> 4; cx++) for (int cz = (PZ - 40) >> 4; cz <= (PZ + 32) >> 4; cz++) l.getChunk(cx, cz);
+        int chests = 0, gold = 0;
+        for (int cx = (PX - 32) >> 4; cx <= (PX + 32) >> 4; cx++) for (int cz = (PZ - 40) >> 4; cz <= (PZ + 32) >> 4; cz++) {
+            LevelChunk ch = l.getChunk(cx, cz);
+            for (var be : ch.getBlockEntities().values()) if (be instanceof net.minecraft.world.level.block.entity.ChestBlockEntity) chests++;
+            for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) for (int y = F - 2; y <= F + 45; y++)
+                if (ch.getBlockState(new BlockPos(ch.getPos().getMinBlockX() + x, y, ch.getPos().getMinBlockZ() + z)).is(Blocks.GOLD_BLOCK)) gold++;
+        }
+        boolean cfgOn = true;
+        try { cfgOn = com.lastsignal.config.LastSignalConfig.COMMON.chestDensity.get() > 0; } catch (IllegalStateException e) { }
+        if (cfgOn && chests != 3) throw new IllegalStateException("palace chests=" + chests + " (expected exactly 3)");
+        if (gold < 100 || gold > 900) throw new IllegalStateException("palace gold blocks out of range: " + gold);
+        for (int[] c : Palace.CHESTS) {
+            BlockPos p = new BlockPos(PX + c[0], c[1], PZ + c[2]);
+            if (cfgOn && !l.getBlockState(p).is(Blocks.CHEST)) throw new IllegalStateException("chest missing at " + p);
+        }
+        if (!l.getBlockState(new BlockPos(PX, F + 23, PZ + 7)).blocksMotion() && !l.getBlockState(new BlockPos(PX, F + 24, PZ + 7)).blocksMotion()) throw new IllegalStateException("dome apex missing");
+        // the approach ramp from the north: |dh| <= 1 per block along the centre line
+        int prev = Integer.MIN_VALUE, steep = 0;
+        for (int z = PZ - 100; z <= PZ - 34; z++) {
+            int h = SkyRealm.height(t, PX, z);
+            if (prev != Integer.MIN_VALUE && Math.abs(h - prev) > 1) steep++;
+            prev = h;
+        }
+        if (steep > 0) throw new IllegalStateException("palace approach has " + steep + " steps taller than 1 block");
+        int sy = SkyRealm.height(t, PX, PZ - 35) + 1;
+        java.util.Set<Long> panels = new java.util.HashSet<>();
+        for (int[] pn : Palace.PANELS) for (int y = F + 1; y <= F + 2; y++) {
+            BlockPos pp = new BlockPos(PX + pn[0], y, PZ + pn[1]);
+            if (!l.getBlockState(pp).blocksMotion()) throw new IllegalStateException("hidden panel is not solid at " + pp);
+            panels.add(pp.asLong());
+        }
+        java.util.Set<Long> open = flood(l, PX, sy, PZ - 35, null), withPanels = flood(l, PX, sy, PZ - 35, panels);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < Palace.CHESTS.length; i++) {
+            int[] c = Palace.CHESTS[i];
+            boolean a = false, b = false;
+            for (int[] d : new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}) {
+                long k = BlockPos.asLong(PX + c[0] + d[0], c[1], PZ + c[2] + d[1]);
+                a |= open.contains(k); b |= withPanels.contains(k);
+            }
+            boolean hidden = i < 2;
+            if (!b) throw new IllegalStateException("chest " + i + " unreachable even after breaking the panel");
+            if (hidden && a) throw new IllegalStateException("hidden chest " + i + " reachable without breaking a panel");
+            if (!hidden && !a) throw new IllegalStateException("tower chest unreachable on foot");
+            sb.append(i == 0 ? "west-vault" : i == 1 ? "east-archive" : "tower-top").append(hidden ? "(hidden,reachable via panel) " : "(open) ");
+        }
+        return "palace chests=" + chests + " gold=" + gold + " approach-ramp-ok walkable-cells=" + open.size() + " " + sb;
     }
 
     static String volcano(ServerLevel l, Theme t) {
