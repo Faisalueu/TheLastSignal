@@ -19,6 +19,7 @@ final class Fractures {
 
     static void apply(Gen g) {
         if (g.cx == 0 && g.cz == 0) return;
+        if (g.t.kind.equals("volcano")) return;      // a white block would be an easy exit; the volcano exit must be found
         double dens = density();
         if (dens <= 0) return;
         int sx = Math.floorDiv(g.cx, CELL), sz = Math.floorDiv(g.cz, CELL);

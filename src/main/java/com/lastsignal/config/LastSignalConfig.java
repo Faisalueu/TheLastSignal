@@ -37,6 +37,9 @@ public final class LastSignalConfig {
         public final ForgeConfigSpec.BooleanValue allowJumpscares;
         public final ForgeConfigSpec.BooleanValue transitEnabled;
         public final ForgeConfigSpec.DoubleValue transitDensity;
+        public final ForgeConfigSpec.DoubleValue transitCooldownSeconds;
+        public final ForgeConfigSpec.BooleanValue lakeEntryEnabled;
+        public final ForgeConfigSpec.DoubleValue lakeDiveSeconds;
         public final ForgeConfigSpec.DoubleValue chestDensity;
         public final ForgeConfigSpec.DoubleValue structureDensity;
 
@@ -77,6 +80,9 @@ public final class LastSignalConfig {
             b.push("dimensions");
             transitEnabled = b.comment("Black/White fracture blocks teleport on touch.").define("transitEnabled", true);
             transitDensity = b.comment("Chance multiplier for naturally generated Black/White fracture blocks (0 = none). Applies to chunks generated after the change.").defineInRange("transitDensity", 1.0, 0.0, 1.0);
+            transitCooldownSeconds = b.comment("Per-player cooldown after any fracture / lake / exit transition.").defineInRange("transitCooldownSeconds", 5.0, 1.0, 120.0);
+            lakeEntryEnabled = b.comment("Diving in a natural lake of the Overworld can lead to the Golden Cloud Realm or the Infernal Volcano (50/50).").define("lakeEntryEnabled", true);
+            lakeDiveSeconds = b.comment("Seconds the head must stay under water in a lake before the transition starts.").defineInRange("lakeDiveSeconds", 2.0, 0.5, 15.0);
             chestDensity = b.comment("Multiplier on the number of chests generated in the 48 dimensions (0 = none). Applies to chunks generated after the change.").defineInRange("chestDensity", 1.0, 0.0, 1.0);
             structureDensity = b.comment("Multiplier on scattered set-piece density in the 48 dimensions. Applies to chunks generated after the change.").defineInRange("structureDensity", 1.0, 0.0, 2.0);
             b.pop();

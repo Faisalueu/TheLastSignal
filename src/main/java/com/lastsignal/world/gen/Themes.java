@@ -11,6 +11,21 @@ public final class Themes {
 
     static {
         for (Theme t : ThemeData.ALL) BY_SLUG.put(t.slug, t);
+        for (Theme t : ExtraThemes.ALL) BY_SLUG.put(t.slug, t);
+    }
+
+    /** the 48 horror dimensions followed by the two lake-entry dimensions */
+    public static List<Theme> all() { return new ArrayList<>(BY_SLUG.values()); }
+
+    /** the 48 horror dimensions only (black fracture destinations, original behaviour) */
+    public static List<String> horrorSlugs() {
+        List<String> l = new ArrayList<>();
+        for (Theme t : ThemeData.ALL) l.add(t.slug);
+        return l;
+    }
+
+    public static Profile profile(Theme t) {
+        return t.index <= ThemeData.ALL.length ? ProfileData.ALL[t.index - 1] : ExtraThemes.PROFILES[t.index - ThemeData.ALL.length - 1];
     }
 
     public static Theme get(String slug) { return BY_SLUG.get(slug); }
@@ -19,7 +34,11 @@ public final class Themes {
 
     public static List<String> slugs() { return new ArrayList<>(BY_SLUG.keySet()); }
 
-    public static Theme byIndex(int i) { return i >= 1 && i <= ThemeData.ALL.length ? ThemeData.ALL[i - 1] : null; }
+    public static Theme byIndex(int i) {
+        if (i >= 1 && i <= ThemeData.ALL.length) return ThemeData.ALL[i - 1];
+        int k = i - ThemeData.ALL.length - 1;
+        return k >= 0 && k < ExtraThemes.ALL.length ? ExtraThemes.ALL[k] : null;
+    }
 
     private Themes() {}
 }

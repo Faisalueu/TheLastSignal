@@ -446,3 +446,19 @@ def render_dim(slug):
     out["acc_3"] = render(rc["a1"], ACC_SECS + 1, seed + 3, min(1, rc["rv"] + .15), rc["afx"][0], fade=.05, lp=rc["lp"], vol=rc["vol"] * .9, variant=True)
     out["acc_4"] = render(rc["a2"] + rc["a1"], 6.0, seed + 4, min(1, rc["rv"] + .3), rc["afx"][1], fade=.8, lp=rc["lp"], vol=rc["vol"] * .8, variant=True)
     return out
+
+
+# ---------------------------------------------------------------- the two lake-entry dimensions (added after the 48; see tools/extra_dims.py)
+VOL["golden_cloud_realm"] = .7
+VOL["infernal_volcano"] = .85
+rec("golden_cloud_realm",
+    [L("choir", .55, notes=(261.6, 392.0, 523.3), vib=3.5), L("air", .30, lo=200, hi=1800, amp=.25, lfo=.07),
+     L("wind", .30, center=700, amp=.2, gust=.08), L("bell", .45, n=2, notes=(523.3, 659.3, 784.0, 987.8), decay=.8, amp=.2),
+     L("musicbox", .30, tempo=.95, drop=.05, amp=.16)],
+    [L("bell", 1, n=2, notes=(659.3, 784.0, 1046.5), decay=.9)], [L("choir", 1, notes=(392.0, 523.3, 659.3))], .75)
+rec("infernal_volcano",
+    [L("rumble", 1.0, f=38, amp=.6), L("drone", .5, f=31, harm=(1, .8, .5), lfo=.09), L("bursts", .45, n=14, lo=1500, hi=7000, dur=.07, amp=.25),
+     L("bubble", .5, n=5, f=140), L("wind", .35, center=250, amp=.3, gust=.2), L("creak", .35, n=2, f0=90, f1=60, dur=1.5),
+     L("hits", .4, n=2, f=55, decay=7, amp=.5)],
+    [L("hits", 1, n=2, f=50, decay=6), L("bursts", .6, n=6, lo=1000, hi=6000, dur=.06)],
+    [L("rumble", 1, f=30, amp=.7), L("thunder", .6)], .5)

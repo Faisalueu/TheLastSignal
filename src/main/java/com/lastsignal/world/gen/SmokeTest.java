@@ -108,7 +108,8 @@ public final class SmokeTest {
             }
             out.add(sb.toString());
         }
-        out.add("SMOKE_RESULT dimensions=" + ThemeData.ALL.length + " failures=" + fails);
+        fails += ExtraSmoke.run(e.getServer(), out);
+        out.add("SMOKE_RESULT dimensions=" + (ThemeData.ALL.length + ExtraThemes.ALL.length) + " failures=" + fails);
         try { Files.write(Path.of("smoke-result.txt"), out); } catch (Exception ignored) { }
         for (String s : out) LastSignalMod.LOGGER.info("SMOKE {}", s);
         e.getServer().halt(false);

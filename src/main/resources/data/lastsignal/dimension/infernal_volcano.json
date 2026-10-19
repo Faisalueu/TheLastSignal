@@ -1,0 +1,11 @@
+{
+  "type": "lastsignal:infernal_volcano",
+  "generator": {
+    "type": "lastsignal:themed",
+    "theme": "infernal_volcano",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lastsignal:infernal_volcano"
+    }
+  }
+}

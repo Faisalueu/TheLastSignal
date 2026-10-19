@@ -40,7 +40,7 @@ public final class Landing {
             l.getChunk(a);
             return scan(l, a.getX(), a.getZ(), a.getY() - 1, wanted);
         }
-        Profile p = ProfileData.ALL[t.index - 1];
+        Profile p = Themes.profile(t);
         Random r = new Random(seed);
         Plan best = null;
         for (int a = 0; a < 40; a++) {

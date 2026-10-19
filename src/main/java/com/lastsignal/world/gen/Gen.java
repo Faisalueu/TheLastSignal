@@ -42,7 +42,7 @@ public final class Gen {
         this.cx = c.getPos().x; this.cz = c.getPos().z;
         this.bx = cx << 4; this.bz = cz << 4;
         this.r = new Random(Noise.hash(t.seed, cx, cz));
-        this.p = ProfileData.ALL[t.index - 1];
+        this.p = Themes.profile(t);
         for (int[] row : gh) java.util.Arrays.fill(row, -1);
     }
 
@@ -103,7 +103,7 @@ public final class Gen {
         }
     }
 
-    static String lootName(Theme t) { return ProfileData.ALL[t.index - 1].loot; }
+    static String lootName(Theme t) { return Themes.profile(t).loot; }
 
     /** Safe chest: guarantees support below, air above, deterministic loot seed. */
     boolean chest(int x, int y, int z) {
@@ -295,6 +295,8 @@ public final class Gen {
             case "deep": return new int[]{8, deepFloor(t, 8, 8) + 1, 8};
             case "sea": return new int[]{8, (int) t.p[Theme.P_SEA] + 1, 8};
             case "stairs": return new int[]{4, stairTop(0, 0) - stairK(4, 6) / 2 + 1, 6};
+            case "clouds": return new int[]{8, SkyRealm.height(t, 8, 8) + 1, 8};
+            case "volcano": return new int[]{8, Volcano.height(t, 8, 8) + 1, 8};
             default: return new int[]{8, (int) t.p[Theme.P_BASE] + 1, 8};
         }
     }
@@ -309,9 +311,11 @@ public final class Gen {
             case "deep" -> deep();
             case "sea" -> sea();
             case "stairs" -> stairs();
+            case "clouds" -> SkyRealm.run(this);
+            case "volcano" -> Volcano.run(this);
             default -> { }
         }
-        if (cx == 0 && cz == 0) pad();
+        if (cx == 0 && cz == 0 && !t.kind.equals("volcano")) pad();      // the volcano has no gate: its only way out is the exit crater
         if ((t.kind.equals("open") || t.kind.equals("deep")) && !(cx == 0 && cz == 0)) {      // guaranteed trickle of hidden caches even where set pieces are sparse
             Random sv = r;
             r = new Random(Noise.hash(t.seed + 8200, cx, cz));

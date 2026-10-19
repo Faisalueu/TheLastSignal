@@ -11,7 +11,7 @@ public final class AmbientSounds {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, LastSignalMod.MODID);
 
     static {
-        for (Theme t : ThemeData.ALL) {
+        for (Theme t : Themes.all()) {
             for (String id : new String[]{t.bed, t.acc(1), t.acc(2), t.acc(3), t.acc(4)})
                 SOUNDS.register(id, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(LastSignalMod.MODID, id)));
         }

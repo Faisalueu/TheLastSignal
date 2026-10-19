@@ -60,6 +60,17 @@ public final class ModBlocks {
         }
     }
 
+    static {
+        for (String[] def : com.lastsignal.world.gen.ExtraThemes.BLOCKS) {
+            String id = def[0];
+            int light = Integer.parseInt(def[1]);
+            BlockBehaviour.Properties props = BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(2.0f, 6.0f).lightLevel(s -> light);
+            RegistryObject<Block> rb = BLOCKS.register(id, () -> new Block(props));
+            BY_ID.put(id, rb);
+            ModItems.ITEMS.register(id, () -> new BlockItem(rb.get(), new Item.Properties()));
+        }
+    }
+
     private static Block create(String special, BlockBehaviour.Properties p) {
         return switch (special) {
             case "radio" -> new RadioReceiverBlock(p);

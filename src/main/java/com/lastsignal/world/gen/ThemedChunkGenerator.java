@@ -79,6 +79,8 @@ public class ThemedChunkGenerator extends ChunkGenerator {
             case "sea" -> (int) theme.p[Theme.P_SEA] + 1;
             case "rooms" -> Gen.Y0;
             case "stairs" -> 25;
+            case "clouds" -> SkyRealm.height(theme, x, z) + 1;
+            case "volcano" -> Math.max(Volcano.height(theme, x, z), 62) + 1;
             default -> (int) theme.p[Theme.P_BASE] + 1;
         };
     }

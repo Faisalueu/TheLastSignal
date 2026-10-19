@@ -2452,5 +2452,103 @@
       }
     ],
     "subtitle": "subtitles.lastsignal.acc_unwritten_end_4"
+  },
+  "amb_golden_cloud_realm": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/amb_golden_cloud_realm",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_golden_cloud_realm_b",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.amb_golden_cloud_realm"
+  },
+  "acc_golden_cloud_realm_1": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_golden_cloud_realm_1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_golden_cloud_realm_1"
+  },
+  "acc_golden_cloud_realm_2": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_golden_cloud_realm_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_golden_cloud_realm_2"
+  },
+  "acc_golden_cloud_realm_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_golden_cloud_realm_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_golden_cloud_realm_3"
+  },
+  "acc_golden_cloud_realm_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_golden_cloud_realm_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_golden_cloud_realm_4"
+  },
+  "amb_infernal_volcano": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/amb_infernal_volcano",
+        "stream": true
+      },
+      {
+        "name": "lastsignal:dim/amb_infernal_volcano_b",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.amb_infernal_volcano"
+  },
+  "acc_infernal_volcano_1": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_infernal_volcano_1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_infernal_volcano_1"
+  },
+  "acc_infernal_volcano_2": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_infernal_volcano_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_infernal_volcano_2"
+  },
+  "acc_infernal_volcano_3": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_infernal_volcano_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_infernal_volcano_3"
+  },
+  "acc_infernal_volcano_4": {
+    "sounds": [
+      {
+        "name": "lastsignal:dim/acc_infernal_volcano_4",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.lastsignal.acc_infernal_volcano_4"
   }
 }

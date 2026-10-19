@@ -93,7 +93,7 @@ public final class DimensionAmbience {
             if (ended) { mc.getSoundManager().stop(bed); bed = null; bedGap = 200 + RNG.nextInt(500); }
         }
         if (t == null || mc.player == null || mc.level == null || mc.isPaused()) return;
-        Profile pr = ProfileData.ALL[t.index - 1];
+        Profile pr = Themes.profile(t);
         float vol = (float) (double) LastSignalConfig.CLIENT.audioIntensity.get() * (float) (double) LastSignalConfig.CLIENT.ambienceVolume.get();
         if (vol <= 0.01f) return;
         if (bed == null && --bedGap <= 0) {
@@ -138,7 +138,7 @@ public final class DimensionAmbience {
         Theme t = themeNow();
         if (t == null || e.getMode() != FogRenderer.FogMode.FOG_TERRAIN) return;
         if (e.getCamera().getFluidInCamera() != FogType.NONE) return;
-        float target = (float) (ProfileData.ALL[t.index - 1].fogFar * LastSignalConfig.CLIENT.fogMultiplier.get());
+        float target = (float) (Themes.profile(t).fogFar * LastSignalConfig.CLIENT.fogMultiplier.get());
         fogNow = fogNow < 0 ? Math.max(target, e.getFarPlaneDistance()) : fogNow + (target - fogNow) * 0.02f;     // eases in after entering
         float far = Math.min(fogNow, Math.max(e.getFarPlaneDistance(), 64f));
         e.setNearPlaneDistance(far * 0.45f);

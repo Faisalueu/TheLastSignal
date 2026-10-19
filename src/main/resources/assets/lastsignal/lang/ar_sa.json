@@ -46,5 +46,7 @@
   "lastsignal.dimension.blind_observatory": "المرصد الأعمى",
   "lastsignal.dimension.forbidden_index": "الفهرس المحرّم",
   "lastsignal.dimension.signal_core": "قلب الإشارة",
-  "lastsignal.dimension.unwritten_end": "النهاية التي لم تُكتب"
+  "lastsignal.dimension.unwritten_end": "النهاية التي لم تُكتب",
+  "lastsignal.dimension.golden_cloud_realm": "مملكة الغيوم الذهبية",
+  "lastsignal.dimension.infernal_volcano": "البركان المحاصر"
 }
