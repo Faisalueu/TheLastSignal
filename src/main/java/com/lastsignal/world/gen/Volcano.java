@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * Pure function of position, so chunks agree without cross-chunk writes.
  */
 public final class Volcano {
-    static final int LAVA = 62, FLAT = 72, BOWL = 68, CRATER_DEPTH = 12, CRATER_R = 14, FLOOR_R = 3, RING_R = 17, CONE_CELL = 110, PIT_CELL = 90;
+    public static final int LAVA = 62, FLAT = 72, BOWL = 68, CRATER_DEPTH = 12, CRATER_R = 14, FLOOR_R = 3, RING_R = 17, CONE_CELL = 110, PIT_CELL = 90;
 
     private static final class Route {
         double[][] pts; double[] cum; int ex, ez; double gapX, gapZ;

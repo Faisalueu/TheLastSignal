@@ -126,7 +126,7 @@ public final class LakeEntry {
             BlockPos p = q.poll();
             count++;
             minX = Math.min(minX, p.getX()); maxX = Math.max(maxX, p.getX()); minZ = Math.min(minZ, p.getZ()); maxZ = Math.max(maxZ, p.getZ());
-            if (!sky && l.getFluidState(p.above()).isEmpty() && l.canSeeSky(p.above())) sky = true;
+            if (!sky && l.getFluidState(p.above()).isEmpty() && l.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, p.getX(), p.getZ()) <= p.getY() + 1) sky = true;   // heightmap, not light: instant and exact
             for (int[] o : d) {
                 BlockPos n = p.offset(o[0], o[1], o[2]);
                 if (Math.abs(n.getX() - eye.getX()) > RADIUS_XZ || Math.abs(n.getZ() - eye.getZ()) > RADIUS_XZ || Math.abs(n.getY() - eye.getY()) > RADIUS_Y) continue;

@@ -142,7 +142,7 @@ final class ExtraSmoke {
                 int ni = c[0] + d[0], nj = c[1] + d[1];
                 if (ni < 0 || nj < 0 || ni >= W || nj >= W || seen[ni][nj]) continue;
                 int dh = hmap[ni][nj] - hmap[c[0]][c[1]];
-                if (dh > 1 || dh < -3 || hmap[ni][nj] <= 63) continue;
+                if (dh > 1 || dh < -3 || (hmap[ni][nj] <= Volcano.LAVA && Math.hypot(cx0 + ni - ex, cz0 + nj - ez) >= 34)) continue;   // lava below level 62 except inside the crater bowl
                 seen[ni][nj] = true; dq.add(new int[]{ni, nj});
                 if (Math.hypot(cx0 + ni - ex, cz0 + nj - ez) <= 2.5) reached = true;
             }
