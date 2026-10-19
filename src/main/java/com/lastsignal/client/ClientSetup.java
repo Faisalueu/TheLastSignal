@@ -21,6 +21,11 @@ public final class ClientSetup {
     }
 
     @SubscribeEvent
+    public static void whiteRenderer(EntityRenderersEvent.RegisterRenderers e) {
+        e.registerEntityRenderer(ModEntities.WHITE_PRESENCE.get(), com.lastsignal.entity.client.WhitePresenceRenderer::new);
+    }
+
+    @SubscribeEvent
     public static void particles(RegisterParticleProvidersEvent e) {
         e.registerSpriteSet(ModParticles.STATIC.get(), StaticParticle.Provider::new);
     }

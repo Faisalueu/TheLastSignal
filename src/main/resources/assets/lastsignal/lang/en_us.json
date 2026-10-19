@@ -648,5 +648,13 @@
   "subtitles.lastsignal.acc_infernal_volcano_1": "The Infernal Volcano ambience",
   "subtitles.lastsignal.acc_infernal_volcano_2": "The Infernal Volcano ambience",
   "subtitles.lastsignal.acc_infernal_volcano_3": "The Infernal Volcano ambience",
-  "subtitles.lastsignal.acc_infernal_volcano_4": "The Infernal Volcano ambience"
+  "subtitles.lastsignal.acc_infernal_volcano_4": "The Infernal Volcano ambience",
+  "entity.lastsignal.white_presence": "The White Presence",
+  "item.lastsignal.white_presence_spawn_egg": "The White Presence Spawn Egg",
+  "subtitles.lastsignal.white_presence.ambient": "A soft, airy note",
+  "subtitles.lastsignal.white_presence.hurt": "The White Presence cries softly",
+  "subtitles.lastsignal.white_presence.death": "The White Presence fades",
+  "subtitles.lastsignal.white_presence.wings": "Wings flutter",
+  "subtitles.lastsignal.white_presence.step": "Soft footsteps",
+  "subtitles.lastsignal.white_presence.takeoff": "Rising air"
 }

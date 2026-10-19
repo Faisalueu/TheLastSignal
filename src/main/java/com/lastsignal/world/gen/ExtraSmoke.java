@@ -34,6 +34,7 @@ final class ExtraSmoke {
         });
         fails += check(out, "cloud-realm", () -> cloud(server.getLevel(Dimensions.key(ExtraThemes.CLOUD)), Themes.get(ExtraThemes.CLOUD)));
         fails += check(out, "volcano", () -> volcano(server.getLevel(Dimensions.key(ExtraThemes.VOLCANO)), Themes.get(ExtraThemes.VOLCANO)));
+        fails += check(out, "white-presence", () -> whitePresence(server));
         fails += check(out, "lake-5050", () -> {
             RandomSource r = RandomSource.create(20261019L);
             int n = 20000, c = 0;
@@ -100,6 +101,50 @@ final class ExtraSmoke {
             if (!l.getBlockState(new BlockPos(x, h, z)).blocksMotion()) throw new IllegalStateException("hole at " + x + "," + z);
         }
         return "arrival=" + feet.toShortString() + " goldBlocksAndOre(13x13 chunks)=" + gold + " chests=0 dais=ok no-signal_gate/checkpoint_beacon; " + palace(l, t);
+    }
+
+    // ------------------------------------------------------------------------------------------------------ white presence
+    /** Registry/biome wiring + a 4500-tick manual simulation of one creature on the spawn island (state machine, safety, peacefulness). */
+    static String whitePresence(MinecraftServer server) {
+        ServerLevel l = server.getLevel(Dimensions.key(ExtraThemes.CLOUD));
+        Theme t = Themes.get(ExtraThemes.CLOUD);
+        var biome = server.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.BIOME).get(new net.minecraft.resources.ResourceLocation("lastsignal", ExtraThemes.CLOUD));
+        if (biome == null) throw new IllegalStateException("cloud biome not found");
+        boolean listed = false;
+        for (var sd : biome.getMobSettings().getMobs(net.minecraft.world.entity.MobCategory.CREATURE).unwrap()) if (sd.type == com.lastsignal.entity.ModEntities.WHITE_PRESENCE.get()) listed = true;
+        if (!listed) throw new IllegalStateException("white_presence missing from the cloud biome creature spawners");
+        if (!biome.getMobSettings().getMobs(net.minecraft.world.entity.MobCategory.MONSTER).unwrap().isEmpty()) throw new IllegalStateException("hostile spawners in the cloud biome");
+        int[] a = Gen.arrival(t);
+        for (int cx = -4; cx <= 4; cx++) for (int cz = -4; cz <= 4; cz++) l.getChunk(cx, cz);
+        var e = com.lastsignal.entity.ModEntities.WHITE_PRESENCE.get().create(l);
+        if (e == null) throw new IllegalStateException("could not create white_presence");
+        e.moveTo(a[0] + .5, a[1], a[2] + .5, 0, 0);
+        l.addFreshEntity(e);
+        if (!e.targetSelector.getAvailableGoals().isEmpty()) throw new IllegalStateException("white presence has target goals");
+        for (var g : e.goalSelector.getAvailableGoals()) if (g.getGoal() instanceof net.minecraft.world.entity.ai.goal.MeleeAttackGoal || g.getGoal() instanceof net.minecraft.world.entity.ai.goal.RangedAttackGoal) throw new IllegalStateException("white presence has an attack goal");
+        java.util.EnumSet<com.lastsignal.entity.WhitePresenceEntity.Mode> seen = java.util.EnumSet.noneOf(com.lastsignal.entity.WhitePresenceEntity.Mode.class);
+        double minRel = 1e9, maxRel = -1e9, far = 0, x0 = e.getX(), z0 = e.getZ();
+        float hp = e.getHealth();
+        for (int i = 0; i < 4500 && e.isAlive(); i++) {
+            e.tick();
+            seen.add(e.getMode());
+            int g = SkyRealm.height(t, (int) Math.floor(e.getX()), (int) Math.floor(e.getZ()));
+            double rel = e.getY() - (g + 1);
+            minRel = Math.min(minRel, rel); maxRel = Math.max(maxRel, rel);
+            far = Math.max(far, Math.hypot(e.getX() - x0, e.getZ() - z0));
+            if (e.getY() < 60) throw new IllegalStateException("white presence fell to y=" + e.getY());
+        }
+        boolean alive = e.isAlive();
+        float hp2 = e.getHealth();
+        com.lastsignal.entity.WhitePresenceEntity.Mode last = e.getMode();
+        e.discard();
+        if (!alive || hp2 != hp) throw new IllegalStateException("white presence lost health/died during the simulation");
+        for (var m : new com.lastsignal.entity.WhitePresenceEntity.Mode[]{com.lastsignal.entity.WhitePresenceEntity.Mode.WALK, com.lastsignal.entity.WhitePresenceEntity.Mode.TAKEOFF, com.lastsignal.entity.WhitePresenceEntity.Mode.FLY, com.lastsignal.entity.WhitePresenceEntity.Mode.LAND})
+            if (!seen.contains(m)) throw new IllegalStateException("mode never reached: " + m + " (seen " + seen + ")");
+        if (maxRel > 20) throw new IllegalStateException("flew too high above the ground: " + maxRel);
+        if (minRel < -3) throw new IllegalStateException("sank into the ground: " + minRel);
+        if (far < 4) throw new IllegalStateException("never moved (" + far + ")");
+        return "modes=" + seen + " lastMode=" + last + " heightAboveGround=[" + String.format("%.1f", minRel) + "," + String.format("%.1f", maxRel) + "] maxDistance=" + String.format("%.0f", far) + " no target/attack goals, no hostile spawners";
     }
 
     // ------------------------------------------------------------------------------------------------------ palace

@@ -2550,5 +2550,44 @@
       }
     ],
     "subtitle": "subtitles.lastsignal.acc_infernal_volcano_4"
+  },
+  "entity.white_presence.ambient": {
+    "sounds": [
+      "lastsignal:entity/white_presence/ambient1",
+      "lastsignal:entity/white_presence/ambient2",
+      "lastsignal:entity/white_presence/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.white_presence.ambient"
+  },
+  "entity.white_presence.hurt": {
+    "sounds": [
+      "lastsignal:entity/white_presence/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.white_presence.hurt"
+  },
+  "entity.white_presence.death": {
+    "sounds": [
+      "lastsignal:entity/white_presence/death"
+    ],
+    "subtitle": "subtitles.lastsignal.white_presence.death"
+  },
+  "entity.white_presence.wings": {
+    "sounds": [
+      "lastsignal:entity/white_presence/wings1",
+      "lastsignal:entity/white_presence/wings2"
+    ],
+    "subtitle": "subtitles.lastsignal.white_presence.wings"
+  },
+  "entity.white_presence.step": {
+    "sounds": [
+      "lastsignal:entity/white_presence/step"
+    ],
+    "subtitle": "subtitles.lastsignal.white_presence.step"
+  },
+  "entity.white_presence.takeoff": {
+    "sounds": [
+      "lastsignal:entity/white_presence/takeoff"
+    ],
+    "subtitle": "subtitles.lastsignal.white_presence.takeoff"
   }
 }

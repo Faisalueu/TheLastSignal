@@ -17,5 +17,17 @@ public final class ModBusEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void whiteAttributes(EntityAttributeCreationEvent e) {
+        e.put(ModEntities.WHITE_PRESENCE.get(), com.lastsignal.entity.WhitePresenceEntity.createAttributes().build());
+    }
+
+    @SubscribeEvent
+    public static void spawnRules(net.minecraftforge.event.entity.SpawnPlacementRegisterEvent e) {
+        e.register(ModEntities.WHITE_PRESENCE.get(), net.minecraft.world.entity.SpawnPlacements.Type.ON_GROUND,
+                net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, com.lastsignal.entity.WhitePresenceEntity::checkSpawn,
+                net.minecraftforge.event.entity.SpawnPlacementRegisterEvent.Operation.REPLACE);
+    }
+
     private ModBusEvents() {}
 }

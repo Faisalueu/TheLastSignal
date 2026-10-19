@@ -26,5 +26,13 @@ public final class ModEntities {
         }
     }
 
+    /** The peaceful white creature of the Golden Cloud Realm (a CREATURE, not a monster). */
+    public static final RegistryObject<EntityType<WhitePresenceEntity>> WHITE_PRESENCE = ENTITIES.register("white_presence", () ->
+            EntityType.Builder.<WhitePresenceEntity>of(WhitePresenceEntity::new, MobCategory.CREATURE)
+                    .sized(0.7f, 1.95f)
+                    .clientTrackingRange(10)
+                    .updateInterval(3)
+                    .build(LastSignalMod.MODID + ":white_presence"));
+
     private ModEntities() {}
 }

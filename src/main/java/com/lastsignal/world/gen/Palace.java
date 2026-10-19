@@ -182,10 +182,10 @@ final class Palace {
             if (loop == 0 && i == 0) continue;
             blk(cu - 2 + iu, F + i + 16 * loop, -4 + iv, SQ);
         }
-        // top-room floor: everywhere except the two cells of the last approach (ring 13, 14)
+        // top-room floor: everywhere except the cells of the last approach (ring 12..14): a floor block directly above a step would block the jump onto the next step
         for (int iu = 0; iu < 5; iu++) for (int iv = 0; iv < 5; iv++) {
             int i = ring(iu, iv);
-            if (i == 13 || i == 14) continue;
+            if (i >= 12 && i <= 14) continue;
             blk(cu - 2 + iu, ft, -4 + iv, SQ);
         }
         // door (north, next to the first step), lintel
