@@ -237,6 +237,15 @@ final class ExtraSmoke {
         if (!l.getBlockState(feet.below()).blocksMotion() || l.getBlockState(feet).blocksMotion() || l.getBlockState(feet.above()).blocksMotion()) throw new IllegalStateException("arrival unsafe " + feet);
         if (l.getBlockState(feet.below()).is(Blocks.LAVA)) throw new IllegalStateException("arrival on lava");
         int lava = count(l, 6, Blocks.LAVA);
+        // lavafalls: anchors exist, keep >= 30 blocks from the road, and the generated column/ledge/pool are really there
+        java.util.List<int[]> falls = Volcano.lavafallsNear(t, 0, 0, 400);
+        if (falls.size() < 3) throw new IllegalStateException("too few lavafalls: " + falls.size());
+        for (int[] f : falls) if (Volcano.roadDistance(t, f[0], f[1]) < 30) throw new IllegalStateException("lavafall on the road at " + f[0] + "," + f[1]);
+        int[] f0 = falls.get(0);
+        l.getChunk(f0[0] >> 4, f0[1] >> 4);
+        if (!l.getBlockState(new BlockPos(f0[0], f0[2] - 6, f0[1])).is(Blocks.LAVA)) throw new IllegalStateException("lavafall column missing at " + f0[0] + "," + (f0[2] - 6) + "," + f0[1] + " found " + l.getBlockState(new BlockPos(f0[0], f0[2] - 6, f0[1])));
+        if (!l.getBlockState(new BlockPos(f0[0], f0[2], f0[1])).is(Blocks.LAVA) || !l.getBlockState(new BlockPos(f0[0] + 4, f0[2], f0[1])).blocksMotion()) throw new IllegalStateException("lavafall ledge malformed");
+        if (!l.getBlockState(new BlockPos(f0[0] + 1, f0[3], f0[1])).is(Blocks.LAVA)) throw new IllegalStateException("lavafall landing pool missing");
         // exit crater: ember vent at the bottom, air above, trigger true inside, false outside, false at spawn
         int ex = Volcano.exitX(t), ez = Volcano.exitZ(t), by = Volcano.exitBottomY(t);
         for (int dx = -16; dx <= 16; dx += 16) for (int dz = -16; dz <= 16; dz += 16) l.getChunk((ex + dx) >> 4, (ez + dz) >> 4);

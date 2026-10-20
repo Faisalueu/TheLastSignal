@@ -17,7 +17,7 @@
     }
   },
   "spawners": {
-    "monster": [],
+    "monster": [{"type": "lastsignal:hollow", "weight": 6, "minCount": 1, "maxCount": 1}, {"type": "lastsignal:crawler", "weight": 4, "minCount": 1, "maxCount": 1}],
     "creature": [],
     "ambient": [],
     "axolotls": [],

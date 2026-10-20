@@ -3,6 +3,7 @@ package com.lastsignal.world.gen;
 import com.lastsignal.block.ModBlocks;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -171,6 +172,7 @@ public final class Volcano {
             if (crack[0]) { g.set(x, h, z, lavaS); g.set(x, h - 1, z, basalt); }
             else if (lv[0] > h) for (int y = h + 1; y <= lv[0]; y++) g.set(x, y, z, lavaS);
         }
+        lavafalls(g);
         // smoke signals on two crest points of the ring (campfires with signal smoke on hay): visible from the road end, not on the way
         for (int k = -1; k <= 1; k += 2) {
             double a = Math.atan2(r.gapZ, r.gapX) + Math.PI + k * Math.toRadians(55);
@@ -180,6 +182,81 @@ public final class Volcano {
             g.set(lx, sy + 1, lz, Blocks.HAY_BLOCK.defaultBlockState());
             g.set(lx, sy + 2, lz, Blocks.CAMPFIRE.defaultBlockState().setValue(CampfireBlock.SIGNAL_FIRE, true).setValue(CampfireBlock.LIT, true));
         }
+    }
+
+    // ---------------------------------------------------------------------------------------------------- lavafalls
+    /**
+     * Lavafalls: a floating basalt ledge 28-42 blocks above the ground with a lava pool on top; its centre column pours falling lava (level 8) down to a
+     * small lava pool on the ground. Placed as STATIC fluid blocks at generation time (no scheduled fluid ticks, nothing spreads until something disturbs it, and
+     * then vanilla flow is bounded). Anchors keep clear of the spawn plateau, the exit bowl and the ash road (>= 30 blocks), so no route depends on them.
+     * Pure function of position; the client uses the same function for particles and sound.
+     */
+    public static final int FALL_CELL = 72;
+    private static final java.util.concurrent.ConcurrentHashMap<Long, int[]> ANCHORS = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final int[] NONE = new int[0];
+
+    /** {x, z, ledgeTopY, groundY} or null */
+    public static int[] lavafall(Theme t, int gx, int gz) {
+        int[] a = ANCHORS.computeIfAbsent(((long) gx << 32) ^ (gz & 0xffffffffL), k -> compute(t, gx, gz));
+        return a.length == 0 ? null : a;
+    }
+
+    private static int[] compute(Theme t, int gx, int gz) {
+        int hh = Noise.hash(t.seed + 71, gx, gz);
+        if (hh % 100 >= 55) return NONE;
+        int ax = gx * FALL_CELL + 14 + (hh >> 8) % (FALL_CELL - 28), az = gz * FALL_CELL + 14 + (hh >> 16) % (FALL_CELL - 28);
+        Route r = route(t);
+        if (Math.hypot(ax - 8, az - 8) < 90 || Math.hypot(ax - r.ex, az - r.ez) < 90 || Math.hypot(ax, az) > 400) return NONE;
+        if (roadDistance(t, ax, az) < 30) return NONE;
+        int[] lv = new int[1];
+        int ground = terrain(t, ax, az, lv, null);
+        if (ground < LAVA + 4 || lv[0] > ground) return NONE;
+        for (int[] d : new int[][]{{2, 0}, {-2, 0}, {0, 2}, {0, -2}, {2, 2}, {-2, -2}, {2, -2}, {-2, 2}})      // the landing pool needs level ground
+            if (Math.abs(terrain(t, ax + d[0], az + d[1], null, null) - ground) > 1) return NONE;
+        int top = Math.min(185, ground + 28 + (hh >> 4) % 15);
+        return new int[]{ax, az, top, ground};
+    }
+
+    /** distance from a column to the ash road's centre line (public: spawn rules keep monsters off the route) */
+    public static double roadDistance(Theme t, double x, double z) { return roadDist(route(t), x, z, new double[2]); }
+
+    /** all lavafalls whose anchor lies within r blocks of (x, z) */
+    public static java.util.List<int[]> lavafallsNear(Theme t, double x, double z, double r) {
+        java.util.List<int[]> out = new java.util.ArrayList<>();
+        for (int gx = Math.floorDiv((int) (x - r), FALL_CELL); gx <= Math.floorDiv((int) (x + r), FALL_CELL); gx++)
+            for (int gz = Math.floorDiv((int) (z - r), FALL_CELL); gz <= Math.floorDiv((int) (z + r), FALL_CELL); gz++) {
+                int[] a = lavafall(t, gx, gz);
+                if (a != null && Math.hypot(a[0] - x, a[1] - z) <= r) out.add(a);
+            }
+        return out;
+    }
+
+    private static void lavafalls(Gen g) {
+        Theme t = g.t;
+        BlockState basalt = g.S(Theme.STONE), lava = Blocks.LAVA.defaultBlockState(), falling = lava.setValue(LiquidBlock.LEVEL, 8);
+        for (int gx = Math.floorDiv(g.bx - 8, FALL_CELL); gx <= Math.floorDiv(g.bx + 24, FALL_CELL); gx++)
+            for (int gz = Math.floorDiv(g.bz - 8, FALL_CELL); gz <= Math.floorDiv(g.bz + 24, FALL_CELL); gz++) {
+                int[] a = lavafall(t, gx, gz);
+                if (a == null) continue;
+                int cx = a[0] - g.bx, cz = a[1] - g.bz, top = a[2], ground = a[3];
+                if (cx < -8 || cx > 24 || cz < -8 || cz > 24) continue;
+                for (int dx = -6; dx <= 6; dx++) for (int dz = -6; dz <= 6; dz++) {
+                    double d = Math.hypot(dx, dz);
+                    if (d > 6.3) continue;
+                    for (int y = top - 2; y <= top; y++) g.set(cx + dx, y, cz + dz, basalt);
+                    if (d <= 3.7) g.set(cx + dx, top - 3, cz + dz, basalt);
+                    if (d <= 1.7) g.set(cx + dx, top - 4, cz + dz, basalt);
+                    if (d <= 2.5) g.set(cx + dx, top, cz + dz, lava);                       // the pool on the ledge
+                    for (int y = top + 1; y <= top + 3; y++) g.set(cx + dx, y, cz + dz, Gen.AIR);
+                    if (d >= 4.8 && d <= 6.3) g.set(cx + dx, top + 1, cz + dz, basalt);   // a low rim keeps the pool in
+                }
+                for (int y = top - 1; y > ground + 1; y--) g.set(cx, y, cz, falling);      // the fall (replaces ledge and stalactite at the centre)
+                g.set(cx, ground + 1, cz, falling);
+                for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++) {         // landing pool
+                    g.set(cx + dx, ground, cz + dz, lava);
+                    g.set(cx + dx, ground - 1, cz + dz, basalt);
+                }
+            }
     }
 
     private Volcano() {}

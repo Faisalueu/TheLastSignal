@@ -103,8 +103,9 @@ public final class DimensionAmbience {
                 mc.getSoundManager().play(bed);
             }
         }
-        if (bed != null) bed.target = 0.6f * vol;
+        if (bed != null) bed.target = VolcanoFx.silent() ? 0f : 0.6f * vol;
         double freq = LastSignalConfig.CLIENT.ambienceFrequency.get() * pr.amb;
+        if (VolcanoFx.silent()) return;                                         // a deliberate stretch of silence (volcano only)
         if (--accGap <= 0) {
             accGap = (int) ((500 + RNG.nextInt(1000)) / Math.max(.15, freq));
             if (RNG.nextInt(100) < 22) return;                               // deliberate near-silence
