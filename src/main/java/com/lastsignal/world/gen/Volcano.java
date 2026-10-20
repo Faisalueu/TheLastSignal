@@ -267,7 +267,7 @@ public final class Volcano {
      * all turned toward it. They are only blocks - nothing here moves, attacks or spawns. Pure function of position like the lavafalls; the client uses
      * {@link #statuesNear} for the "they are closer than before" cue. Never on the road, within 40 of the spawn plateau, or within 30 of the exit bowl.
      */
-    public static final int STAT_CELL = 44;
+    public static final int STAT_CELL = 36;
 
     private static double[] roadNearest(Route r, double x, double z) {
         double best = 1e9; double[] p = new double[2];
@@ -289,18 +289,18 @@ public final class Volcano {
 
     private static int[] computeStat(Theme t, int gx, int gz) {
         int hh = Noise.hash(t.seed + 313, gx, gz);
-        if (hh % 100 >= 62) return NONE;
+        if (hh % 100 >= 85) return NONE;
         int ax = gx * STAT_CELL + 8 + (hh >> 8) % (STAT_CELL - 16), az = gz * STAT_CELL + 8 + (hh >> 16) % (STAT_CELL - 16);
         Route r = route(t);
         if (Math.hypot(ax - 8, az - 8) < 40 || Math.hypot(ax - r.ex, az - r.ez) < 30) return NONE;
         double[] out = new double[2];
         double rd = roadDist(r, ax, az, out);
-        if (rd < 8 || rd > 24) return NONE;
+        if (rd < 8 || rd > 32) return NONE;
         int[] lv = new int[1];
         int ground = terrain(t, ax, az, lv, null);
         if (ground < LAVA + 3 || lv[0] > ground || ground > 100) return NONE;
         for (int[] d : new int[][]{{3, 0}, {-3, 0}, {0, 3}, {0, -3}})
-            if (Math.abs(terrain(t, ax + d[0], az + d[1], null, null) - ground) > 2) return NONE;
+            if (Math.abs(terrain(t, ax + d[0], az + d[1], null, null) - ground) > 3) return NONE;
         double[] np = roadNearest(r, ax, az);
         double dx = np[0] - ax, dz = np[1] - az, len = Math.max(1e-6, Math.hypot(dx, dz));
         return new int[]{ax, az, (int) Math.round(dx / len * 100), (int) Math.round(dz / len * 100)};

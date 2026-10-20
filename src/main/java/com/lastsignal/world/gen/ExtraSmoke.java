@@ -83,9 +83,9 @@ final class ExtraSmoke {
         }
         var d = com.lastsignal.world.Structures.data(l);
         for (String id : com.lastsignal.world.Houses.BUILT) if (d.nearest(id, new net.minecraft.core.BlockPos(3000, base, 3000), 1000) == null) throw new IllegalStateException(id + " not recorded");
-        if (com.lastsignal.world.Houses.place(l, "HOUSE_06", new net.minecraft.core.BlockPos(3000, base, 3000))) throw new IllegalStateException("reserved house placed");
+        if (com.lastsignal.world.Houses.place(l, "HOUSE_31", new net.minecraft.core.BlockPos(3000, base, 3000))) throw new IllegalStateException("unknown house placed");
         if (com.lastsignal.world.Houses.place(l, "HOUSE_01", new net.minecraft.core.BlockPos(3020, base, 3000))) throw new IllegalStateException("spacing rule failed: second HOUSE_01 placed");
-        return "30 ids, 5 built, " + signs + " sign texts fit 4x" + com.lastsignal.world.Houses.MAX_LINE + ", " + found + " signs found in world, recorded, spacing + reserved checks ok";
+        return "30 ids, " + com.lastsignal.world.Houses.BUILT.size() + " built, " + signs + " sign texts fit 4x" + com.lastsignal.world.Houses.MAX_LINE + ", " + found + " signs found in world, recorded, spacing + reserved checks ok";
     }
 
     interface Body { String go() throws Exception; }

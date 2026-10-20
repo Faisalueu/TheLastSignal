@@ -28,7 +28,7 @@ public final class Houses {
     public static final List<String> IDS = new ArrayList<>();
     static { for (int i = 1; i <= 30; i++) IDS.add(String.format("HOUSE_%02d", i)); }
 
-    public static final List<String> BUILT = List.of("HOUSE_01", "HOUSE_02", "HOUSE_03", "HOUSE_04", "HOUSE_05");
+    public static final List<String> BUILT = IDS;
 
     /** Footprint (x size, z size) used for the terrain check. */
     private static final int W = 13, D = 13;
@@ -37,6 +37,8 @@ public final class Houses {
     public static final int MAX_LINE = 15;
 
     public static String title(String id) {
+        String more = HousesB.title(id);
+        if (more != null) return more;
         return switch (id) {
             case "HOUSE_01" -> "The Silent House";
             case "HOUSE_02" -> "The Watching House";
@@ -90,20 +92,20 @@ public final class Houses {
                     "Stop walking. Turn around. It is the same hall.");
             case "HOUSE_05" -> List.of(
                     "Only the chimney showed. It was still breathing.",
-                    "0hunl0 climbed down. He did not climb up.",
+                    "0hunl0 was here. The ladder is warm.",
                     "Houses do not bury themselves.",
                     "GOLD3002 left the last page. It says: do not dig further.");
-            default -> List.of();
+            default -> HousesB.texts(id);
         };
     }
 
-    private static void wallSign(B b, int x, int y, int z, Direction facing, String text) {
+    static void wallSign(B b, int x, int y, int z, Direction facing, String text) {
         BlockState st = Blocks.DARK_OAK_WALL_SIGN.defaultBlockState().setValue(WallSignBlock.FACING, facing);
         b.set(x, y, z, st);
         fillSign(b.l, b.o.offset(x, y, z), text);
     }
 
-    private static void standSign(B b, int x, int y, int z, int rot, String text) {
+    static void standSign(B b, int x, int y, int z, int rot, String text) {
         b.set(x, y, z, Blocks.DARK_OAK_SIGN.defaultBlockState().setValue(StandingSignBlock.ROTATION, rot));
         fillSign(b.l, b.o.offset(x, y, z), text);
     }
@@ -168,14 +170,14 @@ public final class Houses {
             case "HOUSE_03" -> upsideDown(b, texts(id));
             case "HOUSE_04" -> endlessHall(b, texts(id));
             case "HOUSE_05" -> buried(b, texts(id));
-            default -> { return; }
+            default -> { if (!HousesB.build(b, id, texts(id))) return; }
         }
         Structures.data(l).add(id, o);
     }
 
     /** Removes natural clutter (leaves, logs, plants, snow) inside the building volume. Player blocks were excluded by isClear. */
     private static void clearVolume(ServerLevel l, BlockPos o) {
-        for (int x = -1; x <= W; x++) for (int z = -1; z <= D; z++) for (int y = 0; y <= 10; y++) {
+        for (int x = -1; x <= W; x++) for (int z = -1; z <= D; z++) for (int y = 0; y <= 18; y++) {
             BlockPos p = o.offset(x, y, z);
             BlockState s = l.getBlockState(p);
             if (!s.isAir() && (s.is(BlockTags.LEAVES) || s.is(BlockTags.LOGS) || s.getBlock() instanceof BushBlock || s.is(BlockTags.SNOW) || s.is(BlockTags.FLOWERS)))
@@ -320,7 +322,7 @@ public final class Houses {
         standSign(b, 5, 0, 4, 4, t.get(0));
     }
 
-    private static void door(B b, int x, int y, int z, Block door) {
+    static void door(B b, int x, int y, int z, Block door) {
         BlockState lower = door.defaultBlockState().setValue(DoorBlock.FACING, Direction.NORTH);
         b.set(x, y, z, lower);
         b.set(x, y + 1, z, lower.setValue(DoorBlock.HALF, net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER));
