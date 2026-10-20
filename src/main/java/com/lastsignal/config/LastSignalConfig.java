@@ -25,6 +25,7 @@ public final class LastSignalConfig {
         public final ForgeConfigSpec.IntValue maxSimultaneousHostiles;
         public final ForgeConfigSpec.IntValue maxThreatStage;
         public final ForgeConfigSpec.BooleanValue enableEvents;
+        public final ForgeConfigSpec.BooleanValue enableSpecialAttacks;
         public final ForgeConfigSpec.BooleanValue enableStructureEvents;
         public final ForgeConfigSpec.BooleanValue enableDimensions;
         public final ForgeConfigSpec.BooleanValue enableBosses;
@@ -59,6 +60,7 @@ public final class LastSignalConfig {
             minSecondsBetweenEvents = b.comment("Minimum gap between any two events for one player.")
                     .defineInRange("minSecondsBetweenEvents", 75, 5, 3600);
             enableEvents = b.define("enableEvents", true);
+            enableSpecialAttacks = b.comment("Allow creature special moves (lunge, step behind, tremor slam...). Bounded effects only; never breaks blocks.").define("enableSpecialAttacks", true);
             enableStructureEvents = b.comment("Allow events that place small procedural structures in the world.")
                     .define("enableStructureEvents", true);
             allowJumpscares = b.comment("Server-side switch for sudden-appearance events.").define("allowJumpscares", true);

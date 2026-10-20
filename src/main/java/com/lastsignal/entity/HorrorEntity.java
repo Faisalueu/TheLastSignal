@@ -63,6 +63,7 @@ public class HorrorEntity extends PathfinderMob implements GeoEntity {
     public final Arch arch;
 
     protected int stateTicks, observedTicks, lostSight, attackCd, scared, disappearTicks = -1, lifeTicks;
+    protected int specialCd;
     protected Vec3 lastSeen, investigatePos;
     protected UUID targetId;
     protected boolean revealed;
@@ -174,6 +175,7 @@ public class HorrorEntity extends PathfinderMob implements GeoEntity {
         stateTicks++;
         lifeTicks++;
         if (attackCd > 0) attackCd--;
+        if (specialCd > 0) specialCd--;
         if (scared > 0) scared--;
         if (disappearTicks >= 0) {
             if (disappearTicks-- == 0) {
@@ -284,6 +286,7 @@ public class HorrorEntity extends PathfinderMob implements GeoEntity {
         if ((observedTicks >= 40 && !herd) || d < (herd ? 3.5 : 5)) { vanish(); return; }
         setState(State.WATCHING);
         getNavigation().stop();
+        if (observed && canTargetPlayer(p)) SpecialAttacks.tryUse(this, p, false);
         if (!observed && stateTicks > 100 && stage >= 2 && random.nextInt(8) == 0) creepCloser(p);
     }
 
@@ -452,6 +455,7 @@ public class HorrorEntity extends PathfinderMob implements GeoEntity {
             setState(State.ATTACKING);
             tryMelee(p);
         } else {
+            if (canTargetPlayer(p)) SpecialAttacks.tryUse(this, p, false);
             setState(State.CHASING);
             getNavigation().moveTo(p, speed);
         }
@@ -459,6 +463,7 @@ public class HorrorEntity extends PathfinderMob implements GeoEntity {
 
     protected void tryMelee(Player p) {
         if (attackCd > 0 || !canTargetPlayer(p)) return;
+        if (SpecialAttacks.tryUse(this, p, true)) { attackCd = 25; return; }
         attackCd = 25;
         swing(InteractionHand.MAIN_HAND);
         float dmg = (float) (getAttributeValue(Attributes.ATTACK_DAMAGE) * aggression());

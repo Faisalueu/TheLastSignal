@@ -35,6 +35,7 @@ final class ExtraSmoke {
         fails += check(out, "cloud-realm", () -> cloud(server.getLevel(Dimensions.key(ExtraThemes.CLOUD)), Themes.get(ExtraThemes.CLOUD)));
         fails += check(out, "volcano", () -> volcano(server.getLevel(Dimensions.key(ExtraThemes.VOLCANO)), Themes.get(ExtraThemes.VOLCANO)));
         fails += check(out, "white-presence", () -> whitePresence(server));
+        fails += check(out, "special-attacks", () -> specials(server.overworld()));
         fails += check(out, "roster", () -> roster(server.overworld()));
         fails += check(out, "haunted-houses", () -> houses(server.overworld()));
         fails += check(out, "lake-5050", () -> {
@@ -69,6 +70,29 @@ final class ExtraSmoke {
         }
         if (n < 29) throw new IllegalStateException("roster too small: " + n);
         return n + " horror profiles instantiated and ticked 100 ticks (+ White Presence = " + (n + 1) + ")";
+    }
+
+    static String specials(ServerLevel l) {
+        var fp = FakePlayerFactory.getMinecraft(l);
+        l.getChunk(3000 >> 4, 3000 >> 4);
+        int ok = 0;
+        for (var en : com.lastsignal.entity.SpecialAttacks.BY_ENTITY.entrySet()) {
+            var e = com.lastsignal.entity.ModEntities.BY_ID.get(en.getKey()).get().create(l);
+            if (e == null) throw new IllegalStateException("cannot create " + en.getKey());
+            fp.moveTo(3000.5, l.getSeaLevel() + 40, 3000.5, 0, 0);
+            e.moveTo(3003.5, l.getSeaLevel() + 40, 3000.5, 0, 0);
+            l.addFreshEntity(e);
+            float hp = fp.getHealth();
+            com.lastsignal.entity.SpecialAttacks.force(e, fp);        // may legitimately decline (e.g. no room to step behind)
+            if (Float.isNaN(fp.getHealth()) || fp.getHealth() > hp) throw new IllegalStateException(en.getKey() + " corrupted player health");
+            if (!l.getBlockState(net.minecraft.core.BlockPos.containing(3000.5, l.getSeaLevel() + 39, 3000.5)).isAir()) throw new IllegalStateException(en.getKey() + " changed blocks");
+            for (int i = 0; i < 20; i++) e.tick();
+            e.discard();
+            fp.removeAllEffects();
+            ok++;
+        }
+        if (ok < 14) throw new IllegalStateException("too few specials: " + ok);
+        return ok + " special attacks executed without error, no block changes, no health corruption";
     }
 
     static String houses(ServerLevel l) {
