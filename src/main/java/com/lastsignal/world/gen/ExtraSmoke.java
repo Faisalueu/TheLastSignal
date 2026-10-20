@@ -286,6 +286,24 @@ final class ExtraSmoke {
         if (!l.getBlockState(new BlockPos(f0[0], f0[2] - 6, f0[1])).is(Blocks.LAVA)) throw new IllegalStateException("lavafall column missing at " + f0[0] + "," + (f0[2] - 6) + "," + f0[1] + " found " + l.getBlockState(new BlockPos(f0[0], f0[2] - 6, f0[1])));
         if (!l.getBlockState(new BlockPos(f0[0], f0[2], f0[1])).is(Blocks.LAVA) || !l.getBlockState(new BlockPos(f0[0] + 4, f0[2], f0[1])).blocksMotion()) throw new IllegalStateException("lavafall ledge malformed");
         if (!l.getBlockState(new BlockPos(f0[0] + 1, f0[3], f0[1])).is(Blocks.LAVA)) throw new IllegalStateException("lavafall landing pool missing");
+        // no monsters in the volcano: the biome has no spawners of any category
+        var mobs = l.getBiome(new BlockPos(8, 80, 8)).value().getMobSettings();
+        for (var cat : net.minecraft.world.entity.MobCategory.values())
+            if (!mobs.getMobs(cat).unwrap().isEmpty()) throw new IllegalStateException("volcano biome still has " + cat + " spawners: " + mobs.getMobs(cat).unwrap());
+        // the charred congregation exists, stays off the road and has its glowing heads in the world
+        java.util.List<int[]> groups = Volcano.statuesNear(t, 0, 0, 400);
+        if (groups.size() < 4) throw new IllegalStateException("too few statue groups: " + groups.size());
+        int heads = 0;
+        for (int[] gr : groups) {
+            if (Volcano.roadDistance(t, gr[0], gr[1]) < 8) throw new IllegalStateException("statue group on the road");
+            for (int[] o : Volcano.statueFigures(t, gr)) {
+                int wx = gr[0] + o[0], wz = gr[1] + o[1];
+                l.getChunk(wx >> 4, wz >> 4);
+                int y0 = Volcano.height(t, wx, wz);
+                if (l.getBlockState(new BlockPos(wx, y0 + 5, wz)).is(Blocks.MAGMA_BLOCK)) heads++;
+            }
+        }
+        if (heads < 6) throw new IllegalStateException("statue heads not found in the world (" + heads + ")");
         // exit crater: ember vent at the bottom, air above, trigger true inside, false outside, false at spawn
         int ex = Volcano.exitX(t), ez = Volcano.exitZ(t), by = Volcano.exitBottomY(t);
         for (int dx = -16; dx <= 16; dx += 16) for (int dz = -16; dz <= 16; dz += 16) l.getChunk((ex + dx) >> 4, (ez + dz) >> 4);

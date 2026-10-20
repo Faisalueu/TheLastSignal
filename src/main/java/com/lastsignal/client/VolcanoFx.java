@@ -28,7 +28,7 @@ import java.util.Random;
 @Mod.EventBusSubscriber(modid = LastSignalMod.MODID, value = Dist.CLIENT)
 public final class VolcanoFx {
     private static final Random RNG = new Random();
-    private static int ticks, nextEvent = 400, silence, bellCd;
+    private static int ticks, nextEvent = 400, silence, bellCd, tremor, statueCd, nearStatues;
     private static boolean inVolcano, announcedExit;
 
     public static boolean silent() { return silence > 0; }
@@ -79,19 +79,58 @@ public final class VolcanoFx {
             double dist = Math.min(de, 12);
             mc.level.playLocalSound(px + dir.x * dist, py, pz + dir.z * dist, ModSounds.BELL_DISTANT.get(), SoundSource.AMBIENT, (close ? 0.8f : 0.45f) * vol, close ? 0.5f : 0.75f, false);
         }
+        // ash storm: a steady drift of ash around the player, denser while a tremor runs
+        boolean screenFx = !LastSignalConfig.CLIENT.disableScreenEffects.get();
+        if (particles && ticks % 2 == 0)
+            for (int i = 0; i < (tremor > 0 ? 6 : 2); i++)
+                mc.level.addParticle(ParticleTypes.ASH, px + (RNG.nextDouble() - .5) * 28, py + RNG.nextDouble() * 12 - 2, pz + (RNG.nextDouble() - .5) * 28, 0, -.02, 0);
+        // tremor: the ground shakes (a small camera shake, skipped when screen effects are disabled)
+        if (tremor > 0) {
+            tremor--;
+            if (screenFx && tremor % 2 == 0) {
+                mc.player.setYRot(mc.player.getYRot() + (float) (RNG.nextDouble() - .5) * .9f);
+                mc.player.setXRot(Math.max(-90, Math.min(90, mc.player.getXRot() + (float) (RNG.nextDouble() - .5) * .6f)));
+            }
+        }
+        // the charred congregation: they only ever stand where they were, but the player's heart does not know that
+        if (ticks % 10 == 0) {
+            java.util.List<int[]> st = Volcano.statuesNear(t, px, pz, 22);
+            nearStatues = st.size();
+            if (statueCd > 0) statueCd -= 10;
+            if (!st.isEmpty() && statueCd <= 0 && vol > .01f) {
+                statueCd = 600 + RNG.nextInt(400);
+                mc.level.playLocalSound(px, py, pz, ModSounds.HEARTBEAT.get(), SoundSource.AMBIENT, 0.9f * vol, 0.8f, false);
+                if (RNG.nextBoolean()) mc.level.playLocalSound(px - mc.player.getLookAngle().x * 3, py + 1, pz - mc.player.getLookAngle().z * 3, ModSounds.WHISPER.get(), SoundSource.AMBIENT, 0.6f * vol, 0.7f, false);
+            }
+        }
         if (vol <= .01f || --nextEvent > 0) return;
         double freq = Math.max(.15, LastSignalConfig.CLIENT.ambienceFrequency.get());
         nextEvent = (int) ((500 + RNG.nextInt(900)) / freq);
         double a = RNG.nextDouble() * Math.PI * 2;
         int ev = RNG.nextInt(100);
-        if (ev < 22) at(mc, ModSounds.RUMBLE.get(), px, py, pz, a, 70 + RNG.nextInt(20), 0.9f * vol, 0.45f);                // distant eruption
-        else if (ev < 38) { at(mc, SoundEvents.STONE_BREAK, px, py, pz, a, 10 + RNG.nextInt(15), 0.8f * vol, 0.7f); at(mc, SoundEvents.GRAVEL_BREAK, px, py, pz, a + .2, 12 + RNG.nextInt(15), 0.7f * vol, 0.6f); }   // rocks breaking
-        else if (ev < 50) at(mc, SoundEvents.GENERIC_EXPLODE, px, py, pz, a, 45 + RNG.nextInt(20), 0.35f * vol, 0.4f);        // heavy impact
-        else if (ev < 63) at(mc, ModSounds.DISTANT_CALL.get(), px, py, pz, a, 55 + RNG.nextInt(25), 0.6f * vol, 0.6f);         // far creature
-        else if (ev < 75) at(mc, ModSounds.CREATURE_BREATH.get(), px, py - 2, pz, a, 14 + RNG.nextInt(10), 0.5f * vol, 0.5f);  // something deep in a cave
-        else if (ev < 88) {                                                                                                    // steps behind you
+        if (ev < 14) at(mc, ModSounds.RUMBLE.get(), px, py, pz, a, 70 + RNG.nextInt(20), 0.9f * vol, 0.45f);                // distant eruption
+        else if (ev < 24) { at(mc, SoundEvents.STONE_BREAK, px, py, pz, a, 10 + RNG.nextInt(15), 0.8f * vol, 0.7f); at(mc, SoundEvents.GRAVEL_BREAK, px, py, pz, a + .2, 12 + RNG.nextInt(15), 0.7f * vol, 0.6f); }   // rocks breaking
+        else if (ev < 32) at(mc, SoundEvents.GENERIC_EXPLODE, px, py, pz, a, 45 + RNG.nextInt(20), 0.35f * vol, 0.4f);        // heavy impact
+        else if (ev < 42) at(mc, ModSounds.DISTANT_CALL.get(), px, py, pz, a, 55 + RNG.nextInt(25), 0.6f * vol, 0.6f);         // far call
+        else if (ev < 50) at(mc, ModSounds.CREATURE_BREATH.get(), px, py - 2, pz, a, 14 + RNG.nextInt(10), 0.5f * vol, 0.5f);  // something deep in a cave
+        else if (ev < 60) {                                                                                                    // steps behind you
             Vec3 back = mc.player.getLookAngle().multiply(-1, 0, -1).normalize();
             mc.level.playLocalSound(px + back.x * 5, py, pz + back.z * 5, ModSounds.FOOTSTEP_FAR.get(), SoundSource.AMBIENT, 0.6f * vol, 0.8f, false);
+        } else if (ev < 68) {                                                                                                  // breathing right at your ear
+            mc.level.playLocalSound(px + Math.cos(a) * 1.5, py + 1, pz + Math.sin(a) * 1.5, ModSounds.CREATURE_BREATH.get(), SoundSource.AMBIENT, 0.75f * vol, 0.55f, false);
+        } else if (ev < 75) {                                                                                                  // whispers from three directions
+            for (int k = 0; k < 3; k++) mc.level.playLocalSound(px + Math.cos(a + k * 2.1) * 4, py + 1, pz + Math.sin(a + k * 2.1) * 4, ModSounds.WHISPER.get(), SoundSource.AMBIENT, 0.55f * vol, 0.6f + k * .08f, false);
+        } else if (ev < 81) {                                                                                                  // knocking from under the ground
+            for (int k = 0; k < 3; k++) mc.level.playLocalSound(px, py - 3, pz, ModSounds.KNOCK.get(), SoundSource.AMBIENT, 0.8f * vol, 0.5f, false);
+        } else if (ev < 91) {                                                                                                  // eruption close by: tremor, geyser of lava, rumble
+            tremor = 50 + RNG.nextInt(40);
+            at(mc, ModSounds.RUMBLE.get(), px, py, pz, a, 24, 1.0f * vol, 0.4f);
+            at(mc, SoundEvents.GENERIC_EXPLODE, px, py, pz, a, 30, 0.45f * vol, 0.35f);
+            if (particles) {
+                double gx = px + Math.cos(a) * 22, gz = pz + Math.sin(a) * 22;
+                for (int i = 0; i < 40; i++) mc.level.addParticle(ParticleTypes.LAVA, gx + (RNG.nextDouble() - .5) * 3, py + RNG.nextDouble() * 14, gz + (RNG.nextDouble() - .5) * 3, (RNG.nextDouble() - .5) * .3, .3 + RNG.nextDouble() * .3, (RNG.nextDouble() - .5) * .3);
+                for (int i = 0; i < 12; i++) mc.level.addParticle(ParticleTypes.LARGE_SMOKE, gx + (RNG.nextDouble() - .5) * 4, py + 2 + RNG.nextDouble() * 6, gz + (RNG.nextDouble() - .5) * 4, 0, .15, 0);
+            }
         } else silence = 200 + RNG.nextInt(200);                                                                              // sudden silence (10-20 s)
     }
 

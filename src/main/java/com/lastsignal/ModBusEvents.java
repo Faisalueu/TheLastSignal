@@ -29,13 +29,5 @@ public final class ModBusEvents {
                 net.minecraftforge.event.entity.SpawnPlacementRegisterEvent.Operation.REPLACE);
     }
 
-    @SubscribeEvent
-    public static void volcanoSpawnRules(net.minecraftforge.event.entity.SpawnPlacementRegisterEvent e) {
-        for (String id : new String[]{"hollow", "crawler"})
-            e.register(ModEntities.BY_ID.get(id).get(), net.minecraft.world.entity.SpawnPlacements.Type.ON_GROUND,
-                    net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, com.lastsignal.entity.VolcanoSpawns::check,
-                    net.minecraftforge.event.entity.SpawnPlacementRegisterEvent.Operation.REPLACE);
-    }
-
     private ModBusEvents() {}
 }

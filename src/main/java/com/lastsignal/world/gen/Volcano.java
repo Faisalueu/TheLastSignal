@@ -173,6 +173,7 @@ public final class Volcano {
             else if (lv[0] > h) for (int y = h + 1; y <= lv[0]; y++) g.set(x, y, z, lavaS);
         }
         lavafalls(g);
+        statues(g);
         // smoke signals on two crest points of the ring (campfires with signal smoke on hay): visible from the road end, not on the way
         for (int k = -1; k <= 1; k += 2) {
             double a = Math.atan2(r.gapZ, r.gapX) + Math.PI + k * Math.toRadians(55);
@@ -255,6 +256,105 @@ public final class Volcano {
                 for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++) {         // landing pool
                     g.set(cx + dx, ground, cz + dz, lava);
                     g.set(cx + dx, ground - 1, cz + dz, basalt);
+                }
+            }
+    }
+
+
+    // ---------------------------------------------------------------------------------------------------- the congregation
+    /**
+     * Charred figures: small groups of 3-5 blackstone humanoids (arms raised, magma-block heads that glow faintly) standing 8-24 blocks from the ash road,
+     * all turned toward it. They are only blocks - nothing here moves, attacks or spawns. Pure function of position like the lavafalls; the client uses
+     * {@link #statuesNear} for the "they are closer than before" cue. Never on the road, within 40 of the spawn plateau, or within 30 of the exit bowl.
+     */
+    public static final int STAT_CELL = 44;
+
+    private static double[] roadNearest(Route r, double x, double z) {
+        double best = 1e9; double[] p = new double[2];
+        for (int i = 0; i < 5; i++) {
+            double ax = r.pts[i][0], az = r.pts[i][1], dx = r.pts[i + 1][0] - ax, dz = r.pts[i + 1][1] - az, l2 = dx * dx + dz * dz;
+            double u = l2 == 0 ? 0 : Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / l2));
+            double d = Math.hypot(x - (ax + dx * u), z - (az + dz * u));
+            if (d < best) { best = d; p[0] = ax + dx * u; p[1] = az + dz * u; }
+        }
+        return p;
+    }
+    private static final java.util.concurrent.ConcurrentHashMap<Long, int[]> STAT = new java.util.concurrent.ConcurrentHashMap<>();
+
+    /** {x, z, dirX, dirZ} of the group's centre and the unit direction (scaled x100) toward the road, or null */
+    public static int[] statueGroup(Theme t, int gx, int gz) {
+        int[] a = STAT.computeIfAbsent(((long) gx << 32) ^ (gz & 0xffffffffL), k -> computeStat(t, gx, gz));
+        return a.length == 0 ? null : a;
+    }
+
+    private static int[] computeStat(Theme t, int gx, int gz) {
+        int hh = Noise.hash(t.seed + 313, gx, gz);
+        if (hh % 100 >= 62) return NONE;
+        int ax = gx * STAT_CELL + 8 + (hh >> 8) % (STAT_CELL - 16), az = gz * STAT_CELL + 8 + (hh >> 16) % (STAT_CELL - 16);
+        Route r = route(t);
+        if (Math.hypot(ax - 8, az - 8) < 40 || Math.hypot(ax - r.ex, az - r.ez) < 30) return NONE;
+        double[] out = new double[2];
+        double rd = roadDist(r, ax, az, out);
+        if (rd < 8 || rd > 24) return NONE;
+        int[] lv = new int[1];
+        int ground = terrain(t, ax, az, lv, null);
+        if (ground < LAVA + 3 || lv[0] > ground || ground > 100) return NONE;
+        for (int[] d : new int[][]{{3, 0}, {-3, 0}, {0, 3}, {0, -3}})
+            if (Math.abs(terrain(t, ax + d[0], az + d[1], null, null) - ground) > 2) return NONE;
+        double[] np = roadNearest(r, ax, az);
+        double dx = np[0] - ax, dz = np[1] - az, len = Math.max(1e-6, Math.hypot(dx, dz));
+        return new int[]{ax, az, (int) Math.round(dx / len * 100), (int) Math.round(dz / len * 100)};
+    }
+
+    public static java.util.List<int[]> statuesNear(Theme t, double x, double z, double r) {
+        java.util.List<int[]> res = new java.util.ArrayList<>();
+        for (int gx = Math.floorDiv((int) (x - r), STAT_CELL); gx <= Math.floorDiv((int) (x + r), STAT_CELL); gx++)
+            for (int gz = Math.floorDiv((int) (z - r), STAT_CELL); gz <= Math.floorDiv((int) (z + r), STAT_CELL); gz++) {
+                int[] a = statueGroup(t, gx, gz);
+                if (a != null && Math.hypot(a[0] - x, a[1] - z) <= r) res.add(a);
+            }
+        return res;
+    }
+
+    /** figure offsets (dx, dz) around the group centre; the count (3-5) is fixed by the cell hash */
+    public static int[][] statueFigures(Theme t, int[] a) {
+        int n = 3 + (Noise.hash(t.seed + 314, a[0], a[1]) & 0x7fffffff) % 3;
+        int[][] f = new int[n][2];
+        double px = -a[3] / 100.0, pz = a[2] / 100.0;          // perpendicular to the facing direction: they stand in a line across the road's view
+        for (int i = 0; i < n; i++) {
+            double s = (i - (n - 1) / 2.0) * 3.0, jitter = ((Noise.hash(t.seed + 315 + i, a[0], a[1]) & 0xff) / 255.0 - .5) * 2.0;
+            f[i][0] = (int) Math.round(px * s - a[2] / 100.0 * jitter); f[i][1] = (int) Math.round(pz * s - a[3] / 100.0 * jitter);
+        }
+        return f;
+    }
+
+    private static void statues(Gen g) {
+        Theme t = g.t;
+        BlockState black = Blocks.POLISHED_BLACKSTONE.defaultBlockState(), rough = Blocks.BLACKSTONE.defaultBlockState(), head = Blocks.MAGMA_BLOCK.defaultBlockState();
+        BlockState bone = Blocks.BONE_BLOCK.defaultBlockState(), wall = Blocks.BLACKSTONE_WALL.defaultBlockState();
+        for (int gx = Math.floorDiv(g.bx - 12, STAT_CELL); gx <= Math.floorDiv(g.bx + 28, STAT_CELL); gx++)
+            for (int gz = Math.floorDiv(g.bz - 12, STAT_CELL); gz <= Math.floorDiv(g.bz + 28, STAT_CELL); gz++) {
+                int[] a = statueGroup(t, gx, gz);
+                if (a == null) continue;
+                double fx = a[2] / 100.0, fz = a[3] / 100.0;
+                for (int[] o : statueFigures(t, a)) {
+                    int wx = a[0] + o[0], wz = a[1] + o[1];
+                    int lx = wx - g.bx, lz = wz - g.bz;
+                    if (lx < -2 || lx > 17 || lz < -2 || lz > 17) continue;
+                    int[] lv = new int[1];
+                    int y0 = terrain(t, wx, wz, lv, null);
+                    if (lv[0] > y0 || y0 <= LAVA + 1) continue;
+                    // the arms reach along the axis perpendicular to the facing direction
+                    int ax = Math.abs(fz) > Math.abs(fx) ? 1 : 0, az = 1 - ax;
+                    g.set(lx, y0, lz, rough);
+                    for (int y = 1; y <= 2; y++) g.set(lx, y0 + y, lz, black);                         // legs
+                    for (int y = 3; y <= 4; y++) g.set(lx, y0 + y, lz, rough);                         // torso
+                    g.set(lx, y0 + 5, lz, head);                                                        // head
+                    g.set(lx + ax, y0 + 4, lz + az, wall); g.set(lx - ax, y0 + 4, lz - az, wall);       // shoulders
+                    g.set(lx + ax, y0 + 5, lz + az, wall); g.set(lx - ax, y0 + 5, lz - az, wall);       // arms raised toward the sky
+                    g.set(lx + ax, y0 + 6, lz + az, wall); g.set(lx - ax, y0 + 6, lz - az, wall);
+                    // bones at the feet, one side only (they were kneeling once)
+                    g.set(lx + (int) Math.signum(fx), y0 + 1, lz + (int) Math.signum(fz), bone);
                 }
             }
     }
