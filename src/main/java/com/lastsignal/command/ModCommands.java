@@ -55,11 +55,11 @@ public final class ModCommands {
                         .executes(c -> dimension(c.getSource(), StringArgumentType.getString(c, "dimension_id")))));
         root.then(Commands.literal("locate").requires(s -> s.hasPermission(2))
                 .then(Commands.argument("structure_id", StringArgumentType.word())
-                        .suggests((c, b) -> SharedSuggestionProvider.suggest(Structures.IDS, b))
+                        .suggests((c, b) -> SharedSuggestionProvider.suggest(java.util.stream.Stream.concat(Structures.IDS.stream(), com.lastsignal.world.Houses.BUILT.stream()), b))
                         .executes(c -> locate(c.getSource(), StringArgumentType.getString(c, "structure_id")))));
         root.then(Commands.literal("place").requires(s -> s.hasPermission(2))
                 .then(Commands.argument("structure_id", StringArgumentType.word())
-                        .suggests((c, b) -> SharedSuggestionProvider.suggest(Structures.IDS, b))
+                        .suggests((c, b) -> SharedSuggestionProvider.suggest(java.util.stream.Stream.concat(Structures.IDS.stream(), com.lastsignal.world.Houses.BUILT.stream()), b))
                         .executes(c -> place(c.getSource(), StringArgumentType.getString(c, "structure_id")))));
         root.then(Commands.literal("story").executes(c -> story(c.getSource())));
         root.then(Commands.literal("debug").requires(s -> s.hasPermission(2)).executes(c -> {
@@ -166,7 +166,7 @@ public final class ModCommands {
         ServerPlayer p = s.getPlayerOrException();
         var look = p.getLookAngle();
         BlockPos at = BlockPos.containing(p.getX() + look.x * 12, p.getY(), p.getZ() + look.z * 12);
-        boolean ok = Structures.place(p.serverLevel(), id, at);
+        boolean ok = com.lastsignal.world.Houses.isHouse(id) ? com.lastsignal.world.Houses.place(p.serverLevel(), id, at) : Structures.place(p.serverLevel(), id, at);
         if (ok) s.sendSuccess(() -> Component.literal("Placed " + id + " at " + at.toShortString()), true);
         else s.sendFailure(Component.literal("Could not place '" + id + "' (unknown id, or player-made blocks are in the way)."));
         return ok ? 1 : 0;

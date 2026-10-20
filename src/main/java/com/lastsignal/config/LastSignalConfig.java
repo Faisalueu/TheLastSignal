@@ -42,6 +42,7 @@ public final class LastSignalConfig {
         public final ForgeConfigSpec.DoubleValue lakeDiveSeconds;
         public final ForgeConfigSpec.DoubleValue chestDensity;
         public final ForgeConfigSpec.DoubleValue structureDensity;
+        public final ForgeConfigSpec.DoubleValue hauntedHouseFrequency;
 
         Common(ForgeConfigSpec.Builder b) {
             b.push("general");
@@ -85,6 +86,7 @@ public final class LastSignalConfig {
             lakeDiveSeconds = b.comment("Seconds the head must stay under water in a lake before the transition starts.").defineInRange("lakeDiveSeconds", 2.0, 0.5, 15.0);
             chestDensity = b.comment("Multiplier on the number of chests generated in the 48 dimensions (0 = none). Applies to chunks generated after the change.").defineInRange("chestDensity", 1.0, 0.0, 1.0);
             structureDensity = b.comment("Multiplier on scattered set-piece density in the 48 dimensions. Applies to chunks generated after the change.").defineInRange("structureDensity", 1.0, 0.0, 2.0);
+            hauntedHouseFrequency = b.comment("Chance multiplier for the haunted-house event (HOUSE_01..). 0 disables houses; each house exists at most once per dimension and never closer than 160 blocks to another house.").defineInRange("hauntedHouseFrequency", 1.0, 0.0, 4.0);
             b.pop();
         }
     }

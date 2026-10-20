@@ -415,6 +415,15 @@ public final class EventManager {
             BlockPos at = Placement.ANY_GROUND.find(c.l, c.p, 45, 80);
             return at != null && Structures.place(c.l, pool[c.r.nextInt(pool.length)], at);
         }).surface();
+        reg("env_haunted_house", Cat.ENVIRONMENT, Target.SHARED, 2, 2400, 3, 6, c -> {
+            if (!LastSignalConfig.COMMON.enableStructureEvents.get()) return false;
+            if (c.r.nextDouble() >= LastSignalConfig.COMMON.hauntedHouseFrequency.get() / 4.0) return false;
+            var free = new java.util.ArrayList<>(com.lastsignal.world.Houses.BUILT);
+            free.removeIf(h -> com.lastsignal.world.Structures.data(c.l).entries.stream().anyMatch(e -> e.type().equals(h)));
+            if (free.isEmpty()) return false;
+            BlockPos at = Placement.ANY_GROUND.find(c.l, c.p, 70, 130);
+            return at != null && com.lastsignal.world.Houses.place(c.l, free.get(c.r.nextInt(free.size())), at);
+        }).surface();
         reg("env_impossible_door", Cat.ENVIRONMENT, Target.SHARED, 4, 900, 2, 6, c -> {
             if (!LastSignalConfig.COMMON.enableStructureEvents.get()) return false;
             BlockPos at = Placement.OPEN_FIELD.find(c.l, c.p, 25, 50);

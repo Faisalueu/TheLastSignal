@@ -35,6 +35,7 @@ final class ExtraSmoke {
         fails += check(out, "cloud-realm", () -> cloud(server.getLevel(Dimensions.key(ExtraThemes.CLOUD)), Themes.get(ExtraThemes.CLOUD)));
         fails += check(out, "volcano", () -> volcano(server.getLevel(Dimensions.key(ExtraThemes.VOLCANO)), Themes.get(ExtraThemes.VOLCANO)));
         fails += check(out, "white-presence", () -> whitePresence(server));
+        fails += check(out, "haunted-houses", () -> houses(server.overworld()));
         fails += check(out, "lake-5050", () -> {
             RandomSource r = RandomSource.create(20261019L);
             int n = 20000, c = 0;
@@ -46,6 +47,45 @@ final class ExtraSmoke {
         fails += check(out, "lake-validation", () -> lakes(server.overworld()));
         fails += check(out, "fall-protection", () -> protection(server.overworld()));
         return fails;
+    }
+
+    static String houses(ServerLevel l) {
+        var ids = com.lastsignal.world.Houses.IDS;
+        if (ids.size() != 30 || new java.util.HashSet<>(ids).size() != 30) throw new IllegalStateException("need 30 unique house ids");
+        int signs = 0;
+        var seen = new java.util.HashSet<String>();
+        for (String id : com.lastsignal.world.Houses.BUILT) {
+            var t = com.lastsignal.world.Houses.texts(id);
+            if (t.size() < 4) throw new IllegalStateException(id + " has too few signs");
+            for (String x : t) {
+                var lines = com.lastsignal.world.Houses.wrap(x);
+                if (lines.isEmpty() || lines.size() > 4) throw new IllegalStateException(id + " sign does not fit 4 lines: " + x);
+                for (String ln : lines) if (ln.length() > com.lastsignal.world.Houses.MAX_LINE) throw new IllegalStateException(id + " line too long: " + ln);
+                if (!seen.add(x)) throw new IllegalStateException("duplicate sign text: " + x);
+                signs++;
+            }
+        }
+        // build all five on controlled ground, 60 blocks apart, then count the signs that really exist in the world
+        int base = l.getSeaLevel() + 20, n = 0, found = 0;
+        for (String id : com.lastsignal.world.Houses.BUILT) {
+            int ox = 3000 + n * 60;
+            for (int cx = ox >> 4; cx <= (ox + 14) >> 4; cx++) for (int cz = 3000 >> 4; cz <= (3000 + 14) >> 4; cz++) l.getChunk(cx, cz);
+            net.minecraft.core.BlockPos o = new net.minecraft.core.BlockPos(ox, base, 3000);
+            for (int x = -1; x <= 14; x++) for (int z = -1; z <= 14; z++) for (int y = -12; y <= 12; y++)
+                l.setBlock(o.offset(x, y, z), y <= -1 ? Blocks.STONE.defaultBlockState() : Blocks.AIR.defaultBlockState(), 2);
+            com.lastsignal.world.Houses.build(l, id, o);
+            int here = 0;
+            for (int x = -1; x <= 14; x++) for (int z = -1; z <= 14; z++) for (int y = -12; y <= 12; y++)
+                if (l.getBlockEntity(o.offset(x, y, z)) instanceof net.minecraft.world.level.block.entity.SignBlockEntity s
+                        && !s.getFrontText().getMessage(0, false).getString().isEmpty()) here++;
+            if (here < 4) throw new IllegalStateException(id + " has only " + here + " readable signs in the world");
+            found += here; n++;
+        }
+        var d = com.lastsignal.world.Structures.data(l);
+        for (String id : com.lastsignal.world.Houses.BUILT) if (d.nearest(id, new net.minecraft.core.BlockPos(3000, base, 3000), 1000) == null) throw new IllegalStateException(id + " not recorded");
+        if (com.lastsignal.world.Houses.place(l, "HOUSE_06", new net.minecraft.core.BlockPos(3000, base, 3000))) throw new IllegalStateException("reserved house placed");
+        if (com.lastsignal.world.Houses.place(l, "HOUSE_01", new net.minecraft.core.BlockPos(3020, base, 3000))) throw new IllegalStateException("spacing rule failed: second HOUSE_01 placed");
+        return "30 ids, 5 built, " + signs + " sign texts fit 4x" + com.lastsignal.world.Houses.MAX_LINE + ", " + found + " signs found in world, recorded, spacing + reserved checks ok";
     }
 
     interface Body { String go() throws Exception; }
