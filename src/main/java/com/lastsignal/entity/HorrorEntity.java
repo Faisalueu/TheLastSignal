@@ -218,10 +218,18 @@ public class HorrorEntity extends PathfinderMob implements GeoEntity {
         if (p instanceof ServerPlayer sp && level() instanceof ServerLevel sl) {
             PlayerStory st = StoryManager.get(sp);
             if (st.wardUntil > sl.getGameTime()) return false;
-            if (nearBeacon(sl, p.blockPosition())) return false;
+            long now = sl.getGameTime();
+            if (!p.getUUID().equals(beaconUuid) || now - beaconTick > 40) {       // the 9x5x9 beacon scan is cached for 2 s per entity: AI runs every 5 ticks
+                beaconUuid = p.getUUID(); beaconTick = now; beaconNear = nearBeacon(sl, p.blockPosition());
+            }
+            if (beaconNear) return false;
         }
         return true;
     }
+
+    private UUID beaconUuid;
+    private long beaconTick;
+    private boolean beaconNear;
 
     private static boolean nearBeacon(ServerLevel sl, BlockPos c) {
         var beacon = com.lastsignal.block.ModBlocks.BY_ID.get("checkpoint_beacon").get();
