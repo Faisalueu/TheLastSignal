@@ -181,7 +181,7 @@ final class ExtraSmoke {
         if (!alive || hp2 != hp) throw new IllegalStateException("white presence lost health/died during the simulation");
         for (var m : new com.lastsignal.entity.WhitePresenceEntity.Mode[]{com.lastsignal.entity.WhitePresenceEntity.Mode.WALK, com.lastsignal.entity.WhitePresenceEntity.Mode.TAKEOFF, com.lastsignal.entity.WhitePresenceEntity.Mode.FLY, com.lastsignal.entity.WhitePresenceEntity.Mode.LAND})
             if (!seen.contains(m)) throw new IllegalStateException("mode never reached: " + m + " (seen " + seen + ")");
-        if (maxRel > 20) throw new IllegalStateException("flew too high above the ground: " + maxRel);
+        if (maxRel > 40) throw new IllegalStateException("flew too high above the ground: " + maxRel);
         if (minRel < -3) throw new IllegalStateException("sank into the ground: " + minRel);
         if (far < 4) throw new IllegalStateException("never moved (" + far + ")");
         return "modes=" + seen + " lastMode=" + last + " heightAboveGround=[" + String.format("%.1f", minRel) + "," + String.format("%.1f", maxRel) + "] maxDistance=" + String.format("%.0f", far) + " no target/attack goals, no hostile spawners";

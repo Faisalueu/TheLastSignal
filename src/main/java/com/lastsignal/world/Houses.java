@@ -70,28 +70,28 @@ public final class Houses {
         return switch (id) {
             case "HOUSE_01" -> List.of(
                     "DO NOT KNOCK. It listens for knocks.",
-                    "feeLoLzy wrote here. We stopped speaking aloud on day three.",
+                    "feeLoLzy wrote here. We stopped talking on day three.",
                     "Write, do not speak. Whatever answers, answers in ink.",
                     "The radio is off. It was never turned off by us.");
             case "HOUSE_02" -> List.of(
                     "Count the windows. There is one more each time.",
                     "majoo03 counted nineteen. The house had eighteen.",
                     "Do not look back at it from the road.",
-                    "Every chair faces the wall. Nothing here is meant to be seen.");
+                    "Every chair faces the wall. Do not be seen.");
             case "HOUSE_03" -> List.of(
                     "The door was on the ground. Now it is not.",
                     "aloneo3 said the floor was above him. He was right.",
                     "Smoke goes down here. Follow it.",
-                    "The cellar is under the chimney. It is not under the house.");
+                    "The cellar is under the chimney, not the house.");
             case "HOUSE_04" -> List.of(
                     "Twelve steps in. Twelve steps back. Count again.",
-                    "HidontmindMe33 walked this hall for an hour. The end never came closer.",
+                    "HidontmindMe33 walked this hall. The end never came.",
                     "Every door leads back to this hall.",
                     "Stop walking. Turn around. It is the same hall.");
             case "HOUSE_05" -> List.of(
-                    "Only the chimney was above ground. We think it is still breathing.",
-                    "0hunl0 climbed down and did not climb up. The ladder is warm.",
-                    "Houses do not bury themselves. Something buried this one.",
+                    "Only the chimney showed. It was still breathing.",
+                    "0hunl0 climbed down. He did not climb up.",
+                    "Houses do not bury themselves.",
                     "GOLD3002 left the last page. It says: do not dig further.");
             default -> List.of();
         };
