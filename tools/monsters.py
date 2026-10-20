@@ -522,6 +522,118 @@ def d_burrower(R, c):
     R.box("chest", c.bw / 2 - 0.4, c.by + 2, -c.bd / 2, 0.8, c.bh - 3, c.bd / 2, "dark")
 
 
+# ------------------------------------------------------------------------------------------------ stage 3 roster
+def d_black_witness(R, c):
+    d_witness(R, c)
+    R.bone("sway_cloak", "chest", (0, c.sh, c.bd / 2))
+    R.box("sway_cloak", -c.bw / 2 - 1, c.hip - 6, c.bd / 2, c.bw + 2, c.bh + 6, 0.8, "dark")
+    for i in range(3):
+        R.box("head", -c.hw / 2 - 0.6 + i * (c.hw / 2 + 0.6), c.hy + c.hh, -c.hd / 2 + 1, 1.2, 4 + i % 2 * 2, 1.2, "glow")   # pale lashes of light
+
+
+def d_tall_black(R, c):
+    for i in range(7):                                    # spine ridge, bent forward like something folded to fit under the sky
+        R.box("chest", -0.6, c.hip + c.bh * (0.15 + 0.12 * i), c.bd / 2, 1.2, 2.2 + (i % 2), 1.6 + 0.2 * i, "dark")
+    R.box("head", -c.hw / 2 + 0.4, c.hy - 4, -c.hd / 2 - 1.2, c.hw - 0.8, 4.5, 1.4, "dark")                           # stretched jaw
+    R.bone("sway_rag", "chest", (0, c.sh - 2, c.bd / 2))
+    R.box("sway_rag", -c.bw / 2, c.hip - 8, c.bd / 2 - 0.2, c.bw, c.bh * 0.6 + 8, 0.6, "dark")
+    R.box("hand_r", -c.sx - 0.3, c.wy - 3, -0.3, 0.6, 7, 0.6, "bone")
+    R.box("hand_l", c.sx - 0.3, c.wy - 3, -0.3, 0.6, 7, 0.6, "bone")
+
+
+def d_borrowed_skin(R, c):
+    R.bone("sway_flap_l", "arm_l", (c.sx, c.wy + c.al - 2, 0))
+    R.box("sway_flap_l", c.sx - 1.5, c.wy - 4, -c.aw / 2 - 0.5, 3, c.al * 0.8, 0.6, "trim")
+    R.bone("sway_flap_r", "arm_r", (-c.sx, c.wy + c.al - 2, 0))
+    R.box("sway_flap_r", -c.sx - 1.5, c.wy - 4, -c.aw / 2 - 0.5, 3, c.al * 0.8, 0.6, "trim")
+    R.box("chest", -0.3, c.hip + c.pb, -c.bd / 2 - 0.3, 0.6, c.bh - c.pb, 0.4, "dark")                                # a long seam down the front
+    for i in range(5):
+        R.box("chest", -1.4, c.hip + c.pb + i * 1.6, -c.bd / 2 - 0.35, 2.8, 0.3, 0.3, "dark")
+    R.box("head", -c.hw / 2 - 0.3, c.hy + c.hh - 1.5, -c.hd / 2 - 0.3, c.hw + 0.6, 1.8, c.hd + 0.6, "dark")          # hair of someone else
+
+
+def d_drowned_choir(R, c):
+    for i in range(4):
+        nm = f"sway_weed{i}"
+        R.bone(nm, "head", (-c.hw / 2 + 1 + i * (c.hw - 2) / 3, c.hy + c.hh - 1, 0))
+        R.box(nm, -c.hw / 2 + 0.5 + i * (c.hw - 2) / 3, c.hy - 10 - (i % 2) * 3, -0.5, 1, 10 + (i % 2) * 3 + c.hh, 1, "dark")
+    R.box("chest", -c.bw / 2 - 0.4, c.hip + c.pb, -c.bd / 2 - 0.4, c.bw + 0.8, c.bh - c.pb, 0.5, "bone")           # ribs showing through
+    R.box("chest", -c.bw / 2 - 0.4, c.hip + c.bh * 0.6, -c.bd / 2 - 0.4, c.bw + 0.8, 0.6, c.bd + 0.8, "glow")
+
+
+def d_hanging_man(R, c):
+    R.bone("sway_rope", "head", (0, c.hy + c.hh, 0))
+    R.box("sway_rope", -0.5, c.hy + c.hh, -0.5, 1, 26, 1, "bone")                                                     # the rope goes up out of sight
+    R.box("head", -c.hw / 2 - 0.5, c.hy + c.hh - 4, -c.hd / 2 - 0.5, c.hw + 1, 1, c.hd + 1, "bone")                  # noose
+    R.box("neck", -1.6, c.sh, -1.6, 3.2, 2, 3.2, "bone")
+    for sg in (-1, 1):
+        R.box("leg_r" if sg < 0 else "leg_l", sg * c.lx - c.lw / 2 - 0.3, 0.0, -c.lw / 2 - 0.3, c.lw + 0.6, 2, c.lw + 0.6, "dark")
+
+
+def d_salt_mother(R, c):
+    R.box("body", -c.bw / 2 - 2, c.hip - 6, -c.bd / 2 - 2, c.bw + 4, c.pb + 6, c.bd + 4, "trim")                      # wide skirt of crust
+    for i in range(6):
+        R.box("chest", -c.bw / 2 - 1 + i * 2.4, c.sh - 1.5, -2 + (i % 3), 1.6, 3 + i % 3, 1.6, "bone")                # salt crystals along the shoulders
+    R.box("head", -c.hw / 2 - 0.6, c.hy + c.hh - 1, -c.hd / 2 - 0.6, c.hw + 1.2, 2.5, c.hd + 1.2, "trim")            # veil
+    R.bone("sway_veil", "head", (0, c.hy + c.hh, c.hd / 2))
+    R.box("sway_veil", -c.hw / 2, c.hy - 6, c.hd / 2 - 0.2, c.hw, c.hh + 6, 0.5, "trim")
+
+
+def d_radio_shepherd(R, c):
+    R.box("hand_r", -c.sx - 0.4, c.wy - 4, -0.4, 0.8, 30, 0.8, "dark")                                                # a crook made of antenna
+    R.box("hand_r", -c.sx - 3, c.wy + 24, -0.4, 4, 0.8, 0.8, "glow")
+    R.box("chest", -c.bw / 2 - 0.6, c.hip + c.pb, c.bd / 2, c.bw + 1.2, c.bh - c.pb, 3.5, "dark")                     # radio pack
+    R.box("chest", -c.bw / 2 + 0.6, c.hip + c.bh - 3, c.bd / 2 + 3.4, c.bw - 1.2, 1.2, 0.6, "glow")
+    R.bone("sway_wire", "chest", (0, c.sh - 2, c.bd / 2 + 3))
+    R.box("sway_wire", -0.3, c.sh - 14, c.bd / 2 + 3, 0.6, 12, 0.6, "glow")
+
+
+def d_glass_walker(R, c):
+    for i in range(8):
+        R.box("chest", -c.bw / 2 + (i % 4) * (c.bw / 3.2), c.hip + c.bh * (0.25 + 0.1 * i), c.bd / 2, 1.2, 3 + i % 3, 1.2, "glow")
+    for sg in (-1, 1):
+        R.box("arm_r" if sg < 0 else "arm_l", sg * c.sx - 0.3, c.wy + c.al * 0.4, -c.aw / 2 - 2.5, 0.6, 2.2, 3, "glow")
+    R.box("head", -c.hw / 2 - 0.2, c.hy + c.hh - 0.5, -0.5, 0.6, 5, 1.4, "glow")
+
+
+def d_candle_bearer(R, c):
+    R.box("hand_r", -c.sx - 1.2, c.wy - 4, -1.8, 2.4, 6, 2.4, "bone")                                                # a candle it carries before it
+    R.box("hand_r", -c.sx - 0.2, c.wy + 2, -0.6, 0.4, 1.2, 0.4, "glow")
+    R.bone("sway_wax", "chest", (0, c.sh - 2, -c.bd / 2))
+    R.box("sway_wax", -c.bw / 2, c.hip - 2, -c.bd / 2 - 0.5, c.bw, c.bh + 2, 0.8, "bone")                             # dripped wax down the front
+    R.box("head", -c.hw / 2 - 0.4, c.hy + c.hh, -c.hd / 2 - 0.4, c.hw + 0.8, 1.2, c.hd + 0.8, "bone")
+
+
+def d_paper_man(R, c):
+    R.box("chest", -c.bw / 2 - 0.2, c.hip + c.pb, -c.bd / 2 - 0.2, c.bw + 0.4, 0.4, c.bd + 0.4, "dark")               # fold lines
+    R.box("chest", -c.bw / 2 - 0.2, c.hip + c.bh * 0.65, -c.bd / 2 - 0.2, c.bw + 0.4, 0.4, c.bd + 0.4, "dark")
+    R.box("chest", -0.2, c.hip + c.pb, -c.bd / 2 - 0.3, 0.4, c.bh - c.pb, 0.4, "dark")
+    R.bone("sway_edge", "chest", (c.bw / 2, c.sh - 2, 0))
+    R.box("sway_edge", c.bw / 2, c.hip + 1, -0.8, 1.2, c.bh - 2, 1.6, "bone")                                        # a curling edge that never lies flat
+    R.box("head", -c.hw / 2 - 0.2, c.hy + c.hh - 1.5, -c.hd / 2 - 0.3, c.hw + 0.4, 0.5, c.hd + 0.6, "dark")
+
+
+def d_stair_thing(R, c):
+    for i in range(8):
+        R.box("body", -c.bw / 2 - 0.3, c.by + c.bh + i * 0.0, 0.4 + i * 1.6, c.bw + 0.6, 0.8 + (i % 4) * 0.8, 1.2, "bone")   # steps up its back
+    R.box("chest", -c.bw / 2 - 0.2, c.by + 0.5, -c.bd / 4, c.bw + 0.4, 0.8, 0.8, "dark")
+    R.box("body", -c.bw / 2 - 0.2, c.by + 1.4, c.bd / 4, c.bw + 0.4, 0.8, 0.8, "dark")
+
+
+def d_moon_watcher(R, c):
+    R.box("head", -c.hw / 2 - 1, c.hy - 0.5, -c.hd / 2 - 0.4, c.hw + 2, 1, c.hd + 0.8, "bone")                        # pale disc rim
+    R.box("head", -c.hw / 2 - 0.4, c.hy + c.hh - 0.5, -c.hd / 2 - 0.4, c.hw + 0.8, 1, c.hd + 0.8, "bone")
+    for i in range(3):
+        R.box("head", -c.hw / 2 + 2 + i * 4, c.hy + 4 + (i % 2) * 5, -c.hd / 2 - 0.5, 2.6, 2.6, 0.5, "dark")        # craters
+    R.bone("spin4_halo", "head", (0, c.hy + c.hh + 4, 0))
+    r = c.hw * 0.55
+    y = c.hy + c.hh + 3.5
+    R.box("spin4_halo", -r, y, -r, 2 * r, 0.5, 0.5, "glow")
+    R.box("spin4_halo", -r, y, r - 0.5, 2 * r, 0.5, 0.5, "glow")
+    R.box("spin4_halo", -r, y, -r, 0.5, 0.5, 2 * r, "glow")
+    R.box("spin4_halo", r - 0.5, y, -r, 0.5, 0.5, 2 * r, "glow")
+
+
 # id -> (builder, params)
 BUILD = {
     "observer": (biped, dict(claw=6, nclaw=3, neck=3.5, deco=d_observer, foot=2)),
@@ -541,6 +653,18 @@ BUILD = {
     "signal_core": (biped, dict(deco=d_signal_core, claw=6, armgap=2, foot=3)),
     "buried_king": (biped, dict(deco=d_buried_king, claw=3.5, armgap=1.5, foot=3)),
     "unfinished": (biped, dict(deco=d_unfinished, claw=3, halfhead=True, stump_l=True, head_z=12)),
+    "black_witness": (biped, dict(neck=1.0, deco=d_black_witness, claw=3)),
+    "tall_black": (biped, dict(neck=2.5, deco=d_tall_black, claw=7, nclaw=4, darklegs=True)),
+    "borrowed_skin": (biped, dict(deco=d_borrowed_skin, claw=1.5, teeth=False)),
+    "drowned_choir": (biped, dict(deco=d_drowned_choir, claw=2.5)),
+    "hanging_man": (biped, dict(deco=d_hanging_man, claw=2, neck=2.5, teeth=False)),
+    "salt_mother": (biped, dict(deco=d_salt_mother, claw=2.5, armgap=1.5, foot=3, teeth=False)),
+    "radio_shepherd": (biped, dict(deco=d_radio_shepherd, claw=2)),
+    "glass_walker": (biped, dict(deco=d_glass_walker, claw=5, nclaw=2)),
+    "candle_bearer": (biped, dict(deco=d_candle_bearer, claw=2, teeth=False)),
+    "paper_man": (biped, dict(deco=d_paper_man, claw=3, teeth=False, neck=1.0)),
+    "stair_thing": (quad, dict(ls=0.8, tail=0, deco=d_stair_thing, head_z=30, claw=3)),
+    "moon_watcher": (biped, dict(deco=d_moon_watcher, claw=3, neck=1.0, teeth=False)),
 }
 
 

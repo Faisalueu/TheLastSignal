@@ -61,6 +61,18 @@ ENT = [
  dict(id="signal_core", name="The Signal Core", head=(16,16,16), body=(20,24,14), arm=(6,26), leg=(8,10), extra=(8,12,8,6,-14,0), quad=False, hb=(3.0,4.6), base=0x3a1f3f, dark=0x0d060f, accent=0xff3fa4, eyes="core"),
  dict(id="buried_king", name="The Buried King", head=(14,12,14), body=(18,20,12), arm=(7,26), leg=(8,12), extra=None, quad=False, hb=(2.6,4.0), base=0x5a4a3a, dark=0x1c150f, accent=0xffd36b, eyes="crown"),
  dict(id="unfinished", name="The Unfinished", head=(7,8,7), body=(7,12,4), arm=(3,16), leg=(3,14), extra=None, quad=False, hb=(0.6,2.0), base=0xb5b0a5, dark=0x2c2a26, accent=0xff5a5a, eyes="unfinished"),
+ dict(id="black_witness", name="The Black Witness", head=(12,12,10), body=(5,10,3), arm=(2,19), leg=(2,10), extra=None, quad=False, hb=(0.8,2.1), base=0x0c0c0f, dark=0x000000, accent=0xe8e8e8, eyes="many"),
+ dict(id="tall_black", name="The Tall Black", head=(6,8,6), body=(6,22,4), arm=(2,30), leg=(3,24), extra=None, quad=False, hb=(0.8,3.0), base=0x060607, dark=0x000000, accent=0xb02a1c, eyes="twin_pale"),
+ dict(id="borrowed_skin", name="The Borrowed Skin", head=(8,8,8), body=(8,12,4), arm=(4,12), leg=(4,12), extra=None, quad=False, hb=(0.6,1.8), base=0x9a7b62, dark=0x2b2019, accent=0x101010, eyes="blank"),
+ dict(id="drowned_choir", name="The Drowned Choir", head=(7,8,7), body=(7,14,4), arm=(3,15), leg=(3,14), extra=None, quad=False, hb=(0.6,1.95), base=0x3d5560, dark=0x0f1a20, accent=0xbfe8f0, eyes="sockets"),
+ dict(id="hanging_man", name="The Hanging Man", head=(6,7,6), body=(5,16,3), arm=(2,22), leg=(2,18), extra=None, quad=False, hb=(0.5,2.9), base=0x544a40, dark=0x1b1612, accent=0xdddddd, eyes="blank"),
+ dict(id="salt_mother", name="The Salt Mother", head=(8,8,8), body=(12,18,6), arm=(4,18), leg=(5,8), extra=None, quad=False, hb=(1.0,2.6), base=0xd8d4cc, dark=0x6e6a64, accent=0x303030, eyes="knot"),
+ dict(id="radio_shepherd", name="The Radio Shepherd", head=(7,8,7), body=(7,16,4), arm=(3,20), leg=(3,16), extra=None, quad=False, hb=(0.7,3.0), base=0x3f4a52, dark=0x12181c, accent=0xff8a3a, eyes="visor"),
+ dict(id="glass_walker", name="The Glass Walker", head=(7,8,7), body=(8,14,4), arm=(3,16), leg=(3,16), extra=None, quad=False, hb=(0.6,2.0), base=0x9bc4d6, dark=0x2a4552, accent=0xffffff, eyes="shards"),
+ dict(id="candle_bearer", name="The Candle Bearer", head=(6,7,6), body=(6,12,4), arm=(2,16), leg=(2,14), extra=None, quad=False, hb=(0.6,1.9), base=0x7a6a58, dark=0x241d16, accent=0xffd070, eyes="blank"),
+ dict(id="paper_man", name="The Paper Man", head=(6,8,2), body=(8,16,1), arm=(2,20), leg=(3,16), extra=None, quad=False, hb=(0.6,2.3), base=0xe9e4d0, dark=0x8b8570, accent=0x222222, eyes="slit"),
+ dict(id="stair_thing", name="The Stair Thing", head=(6,6,8), body=(7,6,18), arm=(2,16), leg=(2,16), extra=None, quad=True, hb=(1.0,1.2), base=0x4f4a46, dark=0x171513, accent=0xcfc9b4, eyes="slit"),
+ dict(id="moon_watcher", name="The Moon Watcher", head=(16,16,16), body=(6,10,4), arm=(2,22), leg=(2,12), extra=None, quad=False, hb=(1.0,2.6), base=0xb8bcc8, dark=0x30333f, accent=0xffffff, eyes="glitch"),
 ]
 
 TEX = 256

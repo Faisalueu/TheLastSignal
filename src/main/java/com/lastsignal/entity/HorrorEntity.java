@@ -78,12 +78,12 @@ public class HorrorEntity extends PathfinderMob implements GeoEntity {
 
     public static Arch archOf(String id) {
         return switch (id) {
-            case "observer", "witness", "lost_child", "pale_herd", "facet", "signalman" -> Arch.WATCHER;
-            case "hollow", "crawler", "burrower" -> Arch.HUNTER;
-            case "mimic", "lantern_widow" -> Arch.LURE;
-            case "doorman" -> Arch.BLOCKER;
+            case "observer", "witness", "lost_child", "pale_herd", "facet", "signalman", "black_witness", "hanging_man", "paper_man", "moon_watcher" -> Arch.WATCHER;
+            case "hollow", "crawler", "burrower", "tall_black", "glass_walker", "stair_thing" -> Arch.HUNTER;
+            case "mimic", "lantern_widow", "borrowed_skin", "radio_shepherd", "candle_bearer" -> Arch.LURE;
+            case "doorman", "salt_mother" -> Arch.BLOCKER;
             case "archivist" -> Arch.TRADER;
-            case "echo" -> Arch.ECHO;
+            case "echo", "drowned_choir" -> Arch.ECHO;
             default -> Arch.BOSS;
         };
     }
@@ -91,15 +91,15 @@ public class HorrorEntity extends PathfinderMob implements GeoEntity {
     public static AttributeSupplier.Builder createAttributes(String id) {
         double hp = switch (id) {
             case "signal_core" -> 600; case "buried_king" -> 400; case "unfinished" -> 300;
-            case "burrower" -> 80; case "doorman" -> 60; case "hollow", "crawler" -> 30; default -> 20;
+            case "burrower" -> 80; case "doorman", "salt_mother", "tall_black" -> 60; case "glass_walker", "stair_thing" -> 40; case "hollow", "crawler" -> 30; default -> 20;
         };
         double speed = switch (id) {
             case "hollow" -> 0.27; case "crawler" -> 0.33; case "observer" -> 0.25; case "burrower" -> 0.22;
-            case "lantern_widow" -> 0.3; case "mimic" -> 0.3; default -> 0.23;
+            case "lantern_widow" -> 0.3; case "mimic" -> 0.3; case "tall_black" -> 0.26; case "glass_walker", "stair_thing" -> 0.3; default -> 0.23;
         };
         double dmg = switch (id) {
             case "signal_core" -> 10; case "buried_king" -> 9; case "unfinished" -> 7; case "burrower" -> 8;
-            case "doorman", "hollow" -> 5; case "crawler", "mimic", "lantern_widow" -> 4; default -> 3;
+            case "doorman", "hollow", "glass_walker", "stair_thing", "salt_mother" -> 5; case "tall_black" -> 6; case "crawler", "mimic", "lantern_widow" -> 4; default -> 3;
         };
         return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, hp)

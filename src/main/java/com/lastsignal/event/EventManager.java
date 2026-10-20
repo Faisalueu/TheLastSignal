@@ -424,6 +424,41 @@ public final class EventManager {
             BlockPos at = Placement.ANY_GROUND.find(c.l, c.p, 70, 130);
             return at != null && com.lastsignal.world.Houses.place(c.l, free.get(c.r.nextInt(free.size())), at);
         }).surface();
+        // ---- Stage-gated roster events (the entities added in the third roster pass)
+        reg("sight_black_witness", Cat.SIGHTING, Target.SHARED, 4, 900, 3, 6, c -> watch(c, "black_witness", Placement.FOREST_EDGE, 40, 70)).surface().night();
+        reg("sight_borrowed_skin", Cat.SIGHTING, Target.SHARED, 5, 900, 2, 4, c -> vanishLater(c, HorrorSpawner.spawnNear(c.l, c.p, "borrowed_skin", Placement.FOREST_EDGE, 24, 40), 160) != null).surface();
+        reg("sight_moon_watcher", Cat.SIGHTING, Target.SHARED, 4, 1200, 2, 6, c -> watch(c, "moon_watcher", Placement.HIGH_GROUND, 60, 90)).surface().night();
+        reg("sight_hanging_man", Cat.SIGHTING, Target.SHARED, 4, 1200, 3, 6, c -> watch(c, "hanging_man", Placement.ANY_GROUND, 28, 48)).surface().night();
+        reg("sight_paper_man", Cat.SIGHTING, Target.SHARED, 4, 1000, 2, 6, c -> watch(c, "paper_man", Placement.OUTSIDE_WINDOW, 4, 12)).night();
+        reg("hunt_tall_black", Cat.PURSUIT, Target.PER_PLAYER, 5, 1500, 4, 6, c -> {
+            HorrorEntity e = HorrorSpawner.spawnNear(c.l, c.p, "tall_black", Placement.ANY_GROUND, 30, 42);
+            if (e == null) return false;
+            e.alertTo(c.p.position());
+            Fx.effect(c.p, "tension", 400, 0.7f);
+            return true;
+        }).surface().night();
+        reg("hunt_glass_walker", Cat.PURSUIT, Target.PER_PLAYER, 5, 900, 4, 6, c -> {
+            HorrorEntity e = HorrorSpawner.spawnNear(c.l, c.p, "glass_walker", Placement.DARK_CAVE, 18, 30);
+            if (e == null) return false;
+            e.alertTo(c.p.position());
+            return true;
+        }).underground();
+        reg("hunt_stair_thing", Cat.PURSUIT, Target.PER_PLAYER, 5, 900, 3, 6, c -> {
+            HorrorEntity e = HorrorSpawner.spawnNear(c.l, c.p, "stair_thing", Placement.DEEP_UNDERGROUND, 14, 26);
+            if (e == null) return false;
+            e.alertTo(c.p.position());
+            return true;
+        }).underground();
+        reg("lure_candle_bearer", Cat.PURSUIT, Target.PER_PLAYER, 5, 1000, 3, 6, c -> watch(c, "candle_bearer", Placement.ANY_GROUND, 20, 32)).surface().night();
+        reg("lure_radio_shepherd", Cat.PURSUIT, Target.SHARED, 4, 1200, 3, 6, c -> {
+            if (nearestStructure(c, 90, "radio_tower", "relay_station", "research_station", "HOUSE_10", "HOUSE_28") == null) return false;
+            return watch(c, "radio_shepherd", Placement.ANY_GROUND, 22, 40);
+        }).surface();
+        reg("echo_drowned_choir", Cat.PURSUIT, Target.SHARED, 4, 1200, 3, 6, c -> watch(c, "drowned_choir", Placement.BEHIND_WATER, 10, 26)).surface();
+        reg("block_salt_mother", Cat.PURSUIT, Target.SHARED, 3, 1800, 5, 6, c -> {
+            if (nearestStructure(c, 90, "sealed_entrance", "shrine", "ancient_door", "HOUSE_30") == null) return false;
+            return watch(c, "salt_mother", Placement.ANY_GROUND, 16, 28);
+        }).surface();
         reg("env_impossible_door", Cat.ENVIRONMENT, Target.SHARED, 4, 900, 2, 6, c -> {
             if (!LastSignalConfig.COMMON.enableStructureEvents.get()) return false;
             BlockPos at = Placement.OPEN_FIELD.find(c.l, c.p, 25, 50);

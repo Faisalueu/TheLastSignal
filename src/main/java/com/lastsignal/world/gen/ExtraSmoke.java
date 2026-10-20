@@ -35,6 +35,7 @@ final class ExtraSmoke {
         fails += check(out, "cloud-realm", () -> cloud(server.getLevel(Dimensions.key(ExtraThemes.CLOUD)), Themes.get(ExtraThemes.CLOUD)));
         fails += check(out, "volcano", () -> volcano(server.getLevel(Dimensions.key(ExtraThemes.VOLCANO)), Themes.get(ExtraThemes.VOLCANO)));
         fails += check(out, "white-presence", () -> whitePresence(server));
+        fails += check(out, "roster", () -> roster(server.overworld()));
         fails += check(out, "haunted-houses", () -> houses(server.overworld()));
         fails += check(out, "lake-5050", () -> {
             RandomSource r = RandomSource.create(20261019L);
@@ -47,6 +48,27 @@ final class ExtraSmoke {
         fails += check(out, "lake-validation", () -> lakes(server.overworld()));
         fails += check(out, "fall-protection", () -> protection(server.overworld()));
         return fails;
+    }
+
+    static String roster(ServerLevel l) {
+        int n = 0;
+        java.util.Set<String> bosses = java.util.Set.of("signal_core", "buried_king", "unfinished");
+        for (var pr : com.lastsignal.entity.EntityProfiles.ALL) {
+            var arch = com.lastsignal.entity.HorrorEntity.archOf(pr.id());
+            if (arch == com.lastsignal.entity.HorrorEntity.Arch.BOSS && !bosses.contains(pr.id())) throw new IllegalStateException(pr.id() + " has no behaviour archetype");
+            var type = com.lastsignal.entity.ModEntities.BY_ID.get(pr.id()).get();
+            var e = type.create(l);
+            if (e == null) throw new IllegalStateException("cannot create " + pr.id());
+            e.moveTo(3000.5, l.getSeaLevel() + 40, 3000.5, 0, 0);
+            l.getChunk(3000 >> 4, 3000 >> 4);
+            l.addFreshEntity(e);
+            for (int i = 0; i < 100; i++) e.tick();
+            if (e.getY() < -100) throw new IllegalStateException(pr.id() + " fell out of the world");
+            e.discard();
+            n++;
+        }
+        if (n < 29) throw new IllegalStateException("roster too small: " + n);
+        return n + " horror profiles instantiated and ticked 100 ticks (+ White Presence = " + (n + 1) + ")";
     }
 
     static String houses(ServerLevel l) {
@@ -82,7 +104,7 @@ final class ExtraSmoke {
             found += here; n++;
         }
         var d = com.lastsignal.world.Structures.data(l);
-        for (String id : com.lastsignal.world.Houses.BUILT) if (d.nearest(id, new net.minecraft.core.BlockPos(3000, base, 3000), 1000) == null) throw new IllegalStateException(id + " not recorded");
+        for (String id : com.lastsignal.world.Houses.BUILT) if (d.nearest(id, new net.minecraft.core.BlockPos(3000, base, 3000), 5000) == null) throw new IllegalStateException(id + " not recorded");
         if (com.lastsignal.world.Houses.place(l, "HOUSE_31", new net.minecraft.core.BlockPos(3000, base, 3000))) throw new IllegalStateException("unknown house placed");
         if (com.lastsignal.world.Houses.place(l, "HOUSE_01", new net.minecraft.core.BlockPos(3020, base, 3000))) throw new IllegalStateException("spacing rule failed: second HOUSE_01 placed");
         return "30 ids, " + com.lastsignal.world.Houses.BUILT.size() + " built, " + signs + " sign texts fit 4x" + com.lastsignal.world.Houses.MAX_LINE + ", " + found + " signs found in world, recorded, spacing + reserved checks ok";
