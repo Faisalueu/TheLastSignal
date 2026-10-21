@@ -724,6 +724,18 @@ public final class EventManager {
             });
             return !all.isEmpty();
         }).surface();
+        reg("world_knock_chorus", Cat.SOUND, Target.GLOBAL, 4, 5000, 3, 6, c -> {
+            List<ServerPlayer> all = everyone(c);
+            Tasks.every(0, 16, 4, i -> {
+                for (ServerPlayer q : all) {
+                    if (q.isRemoved()) continue;
+                    double a = (i * 1.3 + q.getId()) % (Math.PI * 2);
+                    Fx.privateSound(q, ModSounds.KNOCK.get(), q.position().add(Math.cos(a) * 9, 1, Math.sin(a) * 9), 1.1f, 0.9f);
+                }
+                return true;
+            });
+            return !all.isEmpty();
+        }).night();
         reg("world_everyone_watched", Cat.SIGHTING, Target.GLOBAL, 4, 6000, 3, 6, c -> {
             int n = 0;
             for (ServerPlayer q : everyone(c)) {
