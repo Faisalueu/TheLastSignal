@@ -125,6 +125,7 @@ public final class EventManager {
         long now = p.serverLevel().getGameTime();
         UUID id = p.getUUID();
         if (now % 200 == 0) noteVisit(p, now);
+        if (now % 6000 == 0 && COOLDOWNS.size() > 200) COOLDOWNS.values().removeIf(t -> t < now);   // expired cooldowns never accumulate (LOCAL_GROUP keys are per region)
         Long next = NEXT.get(id);
         if (next == null) { NEXT.put(id, now + 20L * 60); return; }  // first minute after joining is always quiet
         if (now < next) return;

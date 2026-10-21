@@ -66,7 +66,12 @@ jobs:
           python3 - <<'PY'
           import os
           try: L=open('run/smoke-result.txt').read().splitlines()
-          except Exception as e: L=['no result file: %s'%e]
+          except Exception as e:
+              L=['no result file: %s'%e]
+              try:
+                  log=[x for x in open('smoke.log',errors='replace').read().splitlines() if x.strip()]
+                  L += ['LOG '+x[:220] for x in log[-60:]]
+              except Exception as e2: L.append('no smoke.log: %s'%e2)
           for i in range(0,len(L),10):
               print('::notice title=smoke %d::%s'%(i//10,'%0A'.join(L[i:i+10])))
           PY
