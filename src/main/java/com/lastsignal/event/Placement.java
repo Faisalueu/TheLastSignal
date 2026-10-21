@@ -19,9 +19,32 @@ public enum Placement {
     ANY_GROUND, FOREST_EDGE, HIGH_GROUND, MOUNTAIN, DARK_CAVE, OUTSIDE_WINDOW, CORRIDOR_END,
     BEHIND_WATER, ROOFTOP, OPEN_FIELD, BEHIND_PLAYER, DEEP_UNDERGROUND;
 
+    /** Placements that scatter around a point (the others are tied to the player's view, windows, caves, water...). */
+    private boolean scatters() {
+        return this == ANY_GROUND || this == FOREST_EDGE || this == HIGH_GROUND || this == MOUNTAIN || this == ROOFTOP || this == OPEN_FIELD;
+    }
+
+    /**
+     * Spawn-centred search: most scattering events look around the player's spawn anchor (within the configured radius),
+     * as long as the player is near enough for the result to be seen. Falls back to the plain player-centred search,
+     * and never forces a spot - null still means "no suitable place, skip the event".
+     */
     public BlockPos find(ServerLevel l, ServerPlayer p, double min, double max) {
+        if (scatters()) {
+            BlockPos anchor = SpawnAnchor.of(l, p);
+            if (anchor != null && p.getRandom().nextDouble() < com.lastsignal.config.LastSignalConfig.COMMON.spawnAnchorBias.get()) {
+                double rad = com.lastsignal.config.LastSignalConfig.COMMON.spawnAnchorRadius.get();
+                for (int i = 0; i < 3; i++) {
+                    BlockPos g = search(l, p, anchor, 8, rad, min, max);
+                    if (g != null && g.distSqr(p.blockPosition()) >= 100 && Math.sqrt(g.distSqr(anchor)) <= rad + 6) return g;
+                }
+            }
+        }
+        return search(l, p, p.blockPosition(), min, max, min, max);
+    }
+
+    private BlockPos search(ServerLevel l, ServerPlayer p, BlockPos pp, double min, double max, double pmin, double pmax) {
         RandomSource r = p.getRandom();
-        BlockPos pp = p.blockPosition();
         switch (this) {
             case ANY_GROUND: {
                 for (int i = 0; i < 12; i++) {

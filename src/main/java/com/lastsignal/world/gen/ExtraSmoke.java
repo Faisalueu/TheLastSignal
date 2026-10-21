@@ -36,6 +36,7 @@ final class ExtraSmoke {
         fails += check(out, "volcano", () -> volcano(server.getLevel(Dimensions.key(ExtraThemes.VOLCANO)), Themes.get(ExtraThemes.VOLCANO)));
         fails += check(out, "white-presence", () -> whitePresence(server));
         fails += check(out, "director", () -> director(server.overworld()));
+        fails += check(out, "spawn-anchor", () -> spawnAnchor(server.overworld()));
         fails += check(out, "special-attacks", () -> specials(server.overworld()));
         fails += check(out, "roster", () -> roster(server.overworld()));
         fails += check(out, "haunted-houses", () -> houses(server.overworld()));
@@ -115,6 +116,26 @@ final class ExtraSmoke {
         int cleaned = com.lastsignal.event.Director.cleanup(a);
         for (var h : com.lastsignal.entity.HorrorEntity.near(l, a.position(), 200)) h.discard();
         return evs.size() + " events, scopes PLAYER/LOCAL_GROUP/WORLD/STORY=" + java.util.Arrays.toString(byScope) + ", minCooldown=" + minCd + "s, executed " + ran + " (" + fired + " fired, rest false alarms), cleanup removed " + cleaned;
+    }
+
+    static String spawnAnchor(ServerLevel l) {
+        var sp = l.getSharedSpawnPos();
+        var fp = FakePlayerFactory.getMinecraft(l);
+        fp.moveTo(sp.getX() + 5.5, sp.getY(), sp.getZ() + 5.5, 0, 0);
+        var anchor = com.lastsignal.event.SpawnAnchor.of(l, fp);
+        if (anchor == null) throw new IllegalStateException("no anchor next to world spawn");
+        var r = com.lastsignal.config.LastSignalConfig.COMMON.spawnAnchorRadius.get();
+        int near = 0, found = 0;
+        for (int i = 0; i < 40; i++) {
+            var g = com.lastsignal.event.Placement.ANY_GROUND.find(l, fp, 30, 60);
+            if (g == null) continue;
+            found++;
+            if (Math.sqrt(g.distSqr(anchor)) <= r + 6) near++;
+            if (!l.getBlockState(g).isAir() || !l.getBlockState(g.below()).isSolid()) throw new IllegalStateException("unsafe spot " + g);
+        }
+        fp.moveTo(sp.getX() + 5000.5, 90, sp.getZ() + 5000.5, 0, 0);
+        if (com.lastsignal.event.SpawnAnchor.of(l, fp) != null) throw new IllegalStateException("anchor used for a player 5000 blocks away");
+        return "anchor=" + anchor.toShortString() + ", radius " + r + ": " + found + "/40 placements found, " + near + " inside the spawn radius";
     }
 
     static String specials(ServerLevel l) {

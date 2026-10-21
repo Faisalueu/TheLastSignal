@@ -44,6 +44,10 @@ public final class LastSignalConfig {
         public final ForgeConfigSpec.DoubleValue chestDensity;
         public final ForgeConfigSpec.DoubleValue structureDensity;
         public final ForgeConfigSpec.DoubleValue hauntedHouseFrequency;
+        public final ForgeConfigSpec.BooleanValue spawnAnchorEnabled;
+        public final ForgeConfigSpec.EnumValue<com.lastsignal.event.SpawnAnchor.Mode> spawnAnchorMode;
+        public final ForgeConfigSpec.DoubleValue spawnAnchorRadius;
+        public final ForgeConfigSpec.DoubleValue spawnAnchorBias;
 
         Common(ForgeConfigSpec.Builder b) {
             b.push("general");
@@ -64,6 +68,13 @@ public final class LastSignalConfig {
             enableStructureEvents = b.comment("Allow events that place small procedural structures in the world.")
                     .define("enableStructureEvents", true);
             allowJumpscares = b.comment("Server-side switch for sudden-appearance events.").define("allowJumpscares", true);
+            b.pop();
+            b.push("spawn_anchor");
+            spawnAnchorEnabled = b.comment("Centre most ambient sightings/anomalies around the spawn point instead of the player's current position.").define("spawnAnchorEnabled", true);
+            spawnAnchorMode = b.comment("AUTO = player's respawn point if set, else world spawn; PERSONAL = respawn point only; WORLD = shared world spawn only.")
+                    .defineEnum("spawnAnchorMode", com.lastsignal.event.SpawnAnchor.Mode.AUTO);
+            spawnAnchorRadius = b.comment("Radius (blocks) around the spawn anchor used for event positions.").defineInRange("spawnAnchorRadius", 48.0, 16.0, 128.0);
+            spawnAnchorBias = b.comment("Chance (0-1) that a suitable event uses the spawn anchor when the player is near it.").defineInRange("spawnAnchorBias", 0.7, 0.0, 1.0);
             b.pop();
             b.push("progression");
             sharedStory = b.comment("true = one shared story/threat for the whole world; false = each player has their own.")
