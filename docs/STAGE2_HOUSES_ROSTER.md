@@ -24,5 +24,14 @@ dimensions=50 failures=0; 30 houses built in a test world, 120 signs found, 29 h
 ## NOT verified (needs a real game session)
 How anything looks or sounds; whether houses read as frightening or are comfortable to walk; AI balance and damage numbers; special-attack feel; multiplayer, death/respawn/reconnect/restart behaviour;
 new model animations; armor texture alignment. Statue arms/heads and house layouts were checked structurally only.
+## Director rules (design lock)
+`event/Director.java`: scopes PLAYER / LOCAL_GROUP / WORLD / STORY derived from each event (73 events: 37 / 26 / 0 / 10; no event is WORLD-wide yet), four phases (Suspicion, Observation, Pursuit, Final Signal)
+derived from the story state (Final Signal needs `signal_core_unlocked` or a defeated boss), cooldowns shared per scope (friends in one 64-block region share LOCAL_GROUP cooldowns),
+Pursuit events blocked before Observation unless item-gated, cleanup of hunting creatures plus quiet periods (240 s after death, 180 s after respawn, 60 s after a world change), `/lastsignal status` shows the phase.
+CI runs every event once on a fake player: no exception escaped (32 fired, 41 false alarms by design when no suitable spot exists).
+## Sounds
+Each of the 12 roster-pass creatures has its own synthesized ambient (3 variants), hurt and death sound (`tools/roster_sounds.py`); the 17 originals keep the shared set. Synthesized, not recorded: unverified by ear.
+## CI note
+The headless smoke test disables the 60 s server watchdog (it runs for minutes on the server thread). This is a test setting only.
 ## Not done
-Design-lock expansion of the director to 30 formal events with STORY scope and per-event cleanup audits; per-entity unique sound sets (new creatures reuse the shared sounds); the other 16 original entities were not re-modelled.
+The original 16 creatures were not re-modelled (they already use the same rig system; no concrete defect was identified without seeing them in game). No WORLD-scope events exist yet.
