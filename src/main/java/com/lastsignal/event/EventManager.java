@@ -415,11 +415,17 @@ public final class EventManager {
             BlockPos at = Placement.ANY_GROUND.find(c.l, c.p, 45, 80);
             return at != null && Structures.place(c.l, pool[c.r.nextInt(pool.length)], at);
         }).surface();
-        reg("env_haunted_house", Cat.ENVIRONMENT, Target.SHARED, 2, 2400, 3, 6, c -> {
+        reg("env_haunted_house", Cat.ENVIRONMENT, Target.SHARED, 2, 2400, 1, 6, c -> {
             if (!LastSignalConfig.COMMON.enableStructureEvents.get()) return false;
             if (c.r.nextDouble() >= LastSignalConfig.COMMON.hauntedHouseFrequency.get() / 4.0) return false;
-            var free = new java.util.ArrayList<>(com.lastsignal.world.Houses.BUILT);
-            free.removeIf(h -> com.lastsignal.world.Structures.data(c.l).entries.stream().anyMatch(e -> e.type().equals(h)));
+            var recorded = Structures.data(c.l).entries;
+            var free = new java.util.ArrayList<String>();
+            for (String h : com.lastsignal.world.Houses.BUILT) {
+                int no = Integer.parseInt(h.substring(6));
+                if (no > 6 * c.stage) continue;                                                       // houses unlock with the story stage (6 per stage)
+                if (h.equals("HOUSE_30") && recorded.stream().noneMatch(e -> e.type().equals("HOUSE_29"))) continue;   // its key lies in HOUSE_29
+                if (recorded.stream().noneMatch(e -> e.type().equals(h))) free.add(h);
+            }
             if (free.isEmpty()) return false;
             BlockPos at = Placement.ANY_GROUND.find(c.l, c.p, 70, 130);
             return at != null && com.lastsignal.world.Houses.place(c.l, free.get(c.r.nextInt(free.size())), at);

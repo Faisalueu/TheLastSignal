@@ -127,6 +127,11 @@ final class ExtraSmoke {
             if (here < 4) throw new IllegalStateException(id + " has only " + here + " readable signs in the world");
             found += here; n++;
         }
+        // progression chain: HOUSE_29 holds the red key, HOUSE_30's entrance is a sealed door
+        net.minecraft.core.BlockPos o29 = new net.minecraft.core.BlockPos(3000 + 28 * 60, base, 3000), o30 = new net.minecraft.core.BlockPos(3000 + 29 * 60, base, 3000);
+        if (!(l.getBlockEntity(o29.offset(11, 0, 11)) instanceof net.minecraft.world.level.block.entity.ChestBlockEntity ch) || ch.getItem(13).getItem() != com.lastsignal.item.ModItems.ITEMS_BY_ID.get("red_key").get())
+            throw new IllegalStateException("HOUSE_29 does not hold the red key");
+        if (l.getBlockState(o30.offset(6, 1, 0)).getBlock() != com.lastsignal.block.ModBlocks.BY_ID.get("sealed_door_block").get()) throw new IllegalStateException("HOUSE_30 entrance is not sealed");
         var d = com.lastsignal.world.Structures.data(l);
         for (String id : com.lastsignal.world.Houses.BUILT) if (d.nearest(id, new net.minecraft.core.BlockPos(3000, base, 3000), 5000) == null) throw new IllegalStateException(id + " not recorded");
         if (com.lastsignal.world.Houses.place(l, "HOUSE_31", new net.minecraft.core.BlockPos(3000, base, 3000))) throw new IllegalStateException("unknown house placed");

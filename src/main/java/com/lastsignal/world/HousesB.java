@@ -100,6 +100,13 @@ final class HousesB {
         return s.defaultBlockState().setValue(StairBlock.FACING, f).setValue(StairBlock.HALF, top ? Half.TOP : Half.BOTTOM);
     }
 
+    /** A chest that holds exactly one key item (the progression chain: HOUSE_29's red key opens HOUSE_30). */
+    static void keyChest(B b, int x, int y, int z, String key) {
+        b.set(x, y, z, Blocks.CHEST);
+        if (b.l.getBlockEntity(b.o.offset(x, y, z)) instanceof net.minecraft.world.level.block.entity.ChestBlockEntity c)
+            c.setItem(13, new net.minecraft.world.item.ItemStack(com.lastsignal.item.ModItems.ITEMS_BY_ID.get(key).get()));
+    }
+
     static BlockState hanging(Block lantern) { return lantern.defaultBlockState().setValue(LanternBlock.HANGING, true); }
 
     static boolean build(B b, String id, List<String> t) {
@@ -316,14 +323,14 @@ final class HousesB {
                     Direction f = Math.abs(x - 6) > Math.abs(z - 6) ? (x > 6 ? Direction.WEST : Direction.EAST) : (z > 6 ? Direction.NORTH : Direction.SOUTH);
                     if (i < 4) bed(b, x, 0, z, bedc[i], f); else b.set(x, 0, z, Blocks.GRAY_CARPET);
                 }
-                b.set(6, 0, 3, Blocks.SPRUCE_LOG); b.set(6, 0, 9, Blocks.SPRUCE_LOG); b.chest(11, 0, 11, "common"); b.set(1, 0, 11, b.m("lore_desk"));
+                b.set(6, 0, 3, Blocks.SPRUCE_LOG); b.set(6, 0, 9, Blocks.SPRUCE_LOG); keyChest(b, 11, 0, 11, "red_key"); b.set(1, 0, 11, b.m("lore_desk"));
                 Houses.standSign(b, 6, 0, 1, 8, t.get(0)); Houses.standSign(b, 1, 0, 6, 12, t.get(1));
                 Houses.standSign(b, 11, 0, 6, 4, t.get(2)); Houses.standSign(b, 6, 0, 11, 0, t.get(3));
             }
             case "HOUSE_30" -> { // the final house: the core of the signal
                 b.foundation(0, 0, 12, 12);
                 b.room(0, 0, 12, 12, 6, Blocks.CRYING_OBSIDIAN, Blocks.POLISHED_BLACKSTONE, Blocks.OBSIDIAN);
-                b.air(6, 1, 0, 6, 2, 0); Houses.door(b, 6, 1, 0, Blocks.DARK_OAK_DOOR);
+                b.set(6, 1, 0, b.m("sealed_door_block")); b.set(6, 2, 0, b.m("sealed_door_block"));   // opens with the red key from HOUSE_29
                 b.set(6, 0, -1, Blocks.POLISHED_BLACKSTONE);
                 for (int[] c : new int[][]{{3, 3}, {9, 3}, {3, 9}, {9, 9}}) for (int y = 1; y <= 5; y++) b.set(c[0], y, c[1], b.m("strange_pillar"));
                 b.set(6, 1, 6, b.m("signal_crystal"));
