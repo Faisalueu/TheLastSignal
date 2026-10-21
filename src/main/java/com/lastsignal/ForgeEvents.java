@@ -96,5 +96,19 @@ public final class ForgeEvents {
         NoiseBus.clear();
     }
 
+    /** Full Lantern Warden set: 15% less damage from the signal's creatures. */
+    @SubscribeEvent
+    public static void wardenDamage(net.minecraftforge.event.entity.living.LivingHurtEvent e) {
+        if (e.getEntity() instanceof net.minecraft.world.entity.player.Player p && e.getSource().getEntity() instanceof com.lastsignal.entity.HorrorEntity
+                && com.lastsignal.item.GearItems.fullSet(p)) e.setAmount(e.getAmount() * 0.85f);
+    }
+
+    /** Full Lantern Warden set: Darkness cannot be applied (counters the Tall Black's step and the Witness's stare). */
+    @SubscribeEvent
+    public static void wardenDarkness(net.minecraftforge.event.entity.living.MobEffectEvent.Applicable e) {
+        if (e.getEntity() instanceof net.minecraft.world.entity.player.Player p && e.getEffectInstance().getEffect() == MobEffects.DARKNESS
+                && com.lastsignal.item.GearItems.fullSet(p)) e.setResult(net.minecraftforge.eventbus.api.Event.Result.DENY);
+    }
+
     private ForgeEvents() {}
 }

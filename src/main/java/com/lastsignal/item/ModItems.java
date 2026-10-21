@@ -52,6 +52,10 @@ public final class ModItems {
     }
 
     static {
+        GearItems.init();
+    }
+
+    static {
         ITEMS.register("white_presence_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.WHITE_PRESENCE, 0xFFFFFF, 0xE6E6E6, new Item.Properties()));
     }
 

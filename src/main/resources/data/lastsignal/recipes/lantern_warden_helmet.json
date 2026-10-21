@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "IFI",
+    "I I"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "F": {
+      "item": "lastsignal:signal_fragment"
+    }
+  },
+  "result": {
+    "item": "lastsignal:lantern_warden_helmet"
+  }
+}

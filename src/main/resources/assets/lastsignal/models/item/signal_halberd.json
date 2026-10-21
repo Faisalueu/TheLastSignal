@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "lastsignal:item/signal_halberd"
+  }
+}

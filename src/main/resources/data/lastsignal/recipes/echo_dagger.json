@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "W",
+    "I",
+    "S"
+  ],
+  "key": {
+    "W": {
+      "item": "lastsignal:echo_whistle"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "lastsignal:echo_dagger"
+  }
+}

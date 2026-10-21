@@ -680,5 +680,12 @@
   "entity.lastsignal.stair_thing": "The Stair Thing",
   "item.lastsignal.stair_thing_spawn_egg": "The Stair Thing Spawn Egg",
   "entity.lastsignal.moon_watcher": "The Moon Watcher",
-  "item.lastsignal.moon_watcher_spawn_egg": "The Moon Watcher Spawn Egg"
+  "item.lastsignal.moon_watcher_spawn_egg": "The Moon Watcher Spawn Egg",
+  "item.lastsignal.lantern_warden_helmet": "Lantern Warden Helm",
+  "item.lastsignal.lantern_warden_chestplate": "Lantern Warden Plate",
+  "item.lastsignal.lantern_warden_leggings": "Lantern Warden Greaves",
+  "item.lastsignal.lantern_warden_boots": "Lantern Warden Boots",
+  "item.lastsignal.salt_iron_sword": "Salt Iron Sword",
+  "item.lastsignal.echo_dagger": "Echo Dagger",
+  "item.lastsignal.signal_halberd": "Signal Halberd"
 }
