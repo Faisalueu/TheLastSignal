@@ -110,5 +110,31 @@ public final class ForgeEvents {
                 && com.lastsignal.item.GearItems.fullSet(p)) e.setResult(net.minecraftforge.eventbus.api.Event.Result.DENY);
     }
 
+    /** Death / respawn / logout / world change: clean up what was hunting the player and leave a quiet period (design lock: death and respawn rules). */
+    @SubscribeEvent
+    public static void playerDied(LivingDeathEvent e) {
+        if (e.getEntity() instanceof ServerPlayer p) {
+            com.lastsignal.event.Director.cleanup(p);
+            EventManager.restUntil(p.getUUID(), p.serverLevel().getGameTime() + 20L * 240);
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerRespawned(PlayerEvent.PlayerRespawnEvent e) {
+        if (e.getEntity() instanceof ServerPlayer p) EventManager.restUntil(p.getUUID(), p.serverLevel().getGameTime() + 20L * 180);
+    }
+
+    @SubscribeEvent
+    public static void playerChangedWorld(PlayerEvent.PlayerChangedDimensionEvent e) {
+        if (e.getEntity() instanceof ServerPlayer p) {
+            EventManager.restUntil(p.getUUID(), p.serverLevel().getGameTime() + 20L * 60);
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerLeft(PlayerEvent.PlayerLoggedOutEvent e) {
+        if (e.getEntity() instanceof ServerPlayer p) com.lastsignal.event.Director.cleanup(p);
+    }
+
     private ForgeEvents() {}
 }

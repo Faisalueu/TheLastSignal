@@ -170,13 +170,19 @@ public final class EventManager {
         if (d.underground && sky) return false;
         if (d.rain && !c.l.isRaining()) return false;
         if (d.jumpscare && (!LastSignalConfig.COMMON.allowJumpscares.get())) return false;
+        if (!Director.phaseAllows(d, c.stage)) return false;
         if (d.cat == Cat.PURSUIT && HorrorSpawner.countNear(c.l, c.p) > 0) return false;  // never overlap major encounters
         Long cd = COOLDOWNS.get(cdKey(d, c.p));
         return cd == null || now >= cd;
     }
 
     private static String cdKey(Def d, ServerPlayer p) {
-        return (d.tgt == Target.PER_PLAYER ? p.getUUID().toString() : "world") + ":" + d.id;
+        return Director.cooldownKey(d, p);
+    }
+
+    /** Quiet period after a death / respawn / dimension change: no new event for this player until the given game time. */
+    public static void restUntil(UUID id, long gameTime) {
+        NEXT.merge(id, gameTime, Math::max);
     }
 
     private static boolean run(Def d, Ctx c, long now) {
@@ -195,6 +201,9 @@ public final class EventManager {
         }
         return ok;
     }
+
+    /** CI audit only: runs the action directly and lets exceptions escape (the normal path logs and swallows them). */
+    public static boolean auditRun(ServerPlayer p, Def d) { return d.action.run(new Ctx(p)); }
 
     /** Admin / hook trigger. force = ignore eligibility but still respect the action's own preconditions. */
     public static boolean trigger(ServerPlayer p, String id, boolean force) {

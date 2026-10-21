@@ -35,6 +35,7 @@ final class ExtraSmoke {
         fails += check(out, "cloud-realm", () -> cloud(server.getLevel(Dimensions.key(ExtraThemes.CLOUD)), Themes.get(ExtraThemes.CLOUD)));
         fails += check(out, "volcano", () -> volcano(server.getLevel(Dimensions.key(ExtraThemes.VOLCANO)), Themes.get(ExtraThemes.VOLCANO)));
         fails += check(out, "white-presence", () -> whitePresence(server));
+        fails += check(out, "director", () -> director(server.overworld()));
         fails += check(out, "special-attacks", () -> specials(server.overworld()));
         fails += check(out, "roster", () -> roster(server.overworld()));
         fails += check(out, "haunted-houses", () -> houses(server.overworld()));
@@ -70,6 +71,45 @@ final class ExtraSmoke {
         }
         if (n < 29) throw new IllegalStateException("roster too small: " + n);
         return n + " horror profiles instantiated and ticked 100 ticks (+ White Presence = " + (n + 1) + ")";
+    }
+
+    static String director(ServerLevel l) {
+        var evs = com.lastsignal.event.EventManager.EVENTS.values();
+        if (evs.size() < 60) throw new IllegalStateException("only " + evs.size() + " events");
+        int[] byScope = new int[4];
+        int minCd = Integer.MAX_VALUE;
+        for (var d : evs) {
+            var sc = com.lastsignal.event.Director.scopeOf(d);
+            byScope[sc.ordinal()]++;
+            if (d.cat == com.lastsignal.event.EventManager.Cat.STORY && sc != com.lastsignal.event.Director.Scope.STORY) throw new IllegalStateException(d.id + " story event without STORY scope");
+            if (d.weight < 0 || d.minStage < 0 || d.maxStage > 6 || d.minStage > d.maxStage) throw new IllegalStateException(d.id + " has an invalid stage range / weight");
+            if (d.cooldownSec < 0) throw new IllegalStateException(d.id + " has a negative cooldown");
+            minCd = Math.min(minCd, d.cooldownSec);
+        }
+        if (com.lastsignal.event.Director.phaseOf(0) != com.lastsignal.event.Director.Phase.SUSPICION || com.lastsignal.event.Director.phaseOf(3) != com.lastsignal.event.Director.Phase.OBSERVATION
+                || com.lastsignal.event.Director.phaseOf(5) != com.lastsignal.event.Director.Phase.PURSUIT || com.lastsignal.event.Director.phaseOf(6) != com.lastsignal.event.Director.Phase.FINAL_SIGNAL)
+            throw new IllegalStateException("phase mapping wrong");
+        var a = FakePlayerFactory.getMinecraft(l);
+        var b = FakePlayerFactory.get(l, new com.mojang.authlib.GameProfile(java.util.UUID.fromString("00000000-0000-0000-0000-0000000000b2"), "ls_audit_b"));
+        a.moveTo(100.5, 90, 100.5, 0, 0); b.moveTo(110.5, 90, 105.5, 0, 0);
+        var any = evs.iterator().next();
+        var shared = evs.stream().filter(d -> com.lastsignal.event.Director.scopeOf(d) == com.lastsignal.event.Director.Scope.LOCAL_GROUP).findFirst().orElseThrow();
+        var solo = evs.stream().filter(d -> com.lastsignal.event.Director.scopeOf(d) == com.lastsignal.event.Director.Scope.PLAYER).findFirst().orElseThrow();
+        if (!com.lastsignal.event.Director.cooldownKey(shared, a).equals(com.lastsignal.event.Director.cooldownKey(shared, b))) throw new IllegalStateException("friends in one area do not share a LOCAL_GROUP cooldown");
+        if (com.lastsignal.event.Director.cooldownKey(solo, a).equals(com.lastsignal.event.Director.cooldownKey(solo, b))) throw new IllegalStateException("PLAYER cooldown is shared between players");
+        // run every event once on a fake player in the overworld; exceptions are failures, "false alarm" results are fine
+        long t0 = System.currentTimeMillis();
+        int ran = 0, fired = 0;
+        java.util.List<String> broke = new java.util.ArrayList<>();
+        for (var d : evs) {
+            if (System.currentTimeMillis() - t0 > 60000) break;
+            try { if (com.lastsignal.event.EventManager.auditRun(a, d)) fired++; ran++; }
+            catch (Throwable ex) { broke.add(d.id + ": " + ex); }
+        }
+        if (!broke.isEmpty()) throw new IllegalStateException("events threw: " + broke);
+        int cleaned = com.lastsignal.event.Director.cleanup(a);
+        for (var h : com.lastsignal.entity.HorrorEntity.near(l, a.position(), 200)) h.discard();
+        return evs.size() + " events, scopes PLAYER/LOCAL_GROUP/WORLD/STORY=" + java.util.Arrays.toString(byScope) + ", minCooldown=" + minCd + "s, executed " + ran + " (" + fired + " fired, rest false alarms), cleanup removed " + cleaned;
     }
 
     static String specials(ServerLevel l) {

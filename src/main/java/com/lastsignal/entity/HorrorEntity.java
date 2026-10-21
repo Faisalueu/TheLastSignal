@@ -77,6 +77,10 @@ public class HorrorEntity extends PathfinderMob implements GeoEntity {
         this.xpReward = 0;
     }
 
+    public java.util.UUID targetUuid() { return targetId; }
+
+    public boolean isBoss() { return arch == Arch.BOSS; }
+
     public static Arch archOf(String id) {
         return switch (id) {
             case "observer", "witness", "lost_child", "pale_herd", "facet", "signalman", "black_witness", "hanging_man", "paper_man", "moon_watcher" -> Arch.WATCHER;

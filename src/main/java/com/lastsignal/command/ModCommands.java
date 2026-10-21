@@ -117,8 +117,8 @@ public final class ModCommands {
         PlayerStory st = StoryManager.get(p);
         int near = HorrorSpawner.countNear(p.serverLevel(), p);
         s.sendSuccess(() -> Component.literal(String.format(
-                "stage=%d exposure=%.1f recordings=%d notes=%d evidence=%s nights=%d encounters=%d hostilesNear=%d shared=%s",
-                st.stage(), st.exposure, st.recordings.size(), st.notes.size(), st.evidence, st.nights, st.encounters, near,
+                "phase=%s stage=%d exposure=%.1f recordings=%d notes=%d evidence=%s nights=%d encounters=%d hostilesNear=%d shared=%s",
+                com.lastsignal.event.Director.phaseOf(st), st.stage(), st.exposure, st.recordings.size(), st.notes.size(), st.evidence, st.nights, st.encounters, near,
                 com.lastsignal.config.LastSignalConfig.COMMON.sharedStory.get())), false);
         return 1;
     }
