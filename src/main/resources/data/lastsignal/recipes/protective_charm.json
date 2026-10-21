@@ -3,13 +3,13 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "lastsignal:salt_pouch"
+      "item": "minecraft:bone_meal"
     },
     {
       "item": "minecraft:gold_nugget"
     },
     {
-      "item": "lastsignal:static_dust"
+      "item": "minecraft:redstone"
     }
   ],
   "result": {

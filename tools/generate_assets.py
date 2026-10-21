@@ -273,7 +273,6 @@ ITEMS = [
  ("signal_detector", "Signal Detector", "detector", "Beeps faster near Signal anomalies."),
  ("archive_key", "Archive Key", "key", "Opens Archive Terminals and sealed archive doors."),
  ("research_notebook", "Research Notebook", "book", "Your personal journal: notes and transmissions."),
- ("damaged_recording", "Damaged Recording", "tape", "Play near a Radio Receiver to unlock a transmission."),
  ("frequency_tuner", "Frequency Tuner", "dial", "Fine-tunes the Broken Radio."),
  ("protective_charm", "Protective Charm", "charm", "Weakens the pull of the Signal for a while."),
  ("emergency_flare", "Emergency Flare", "flare", "Repels the Pale Herd and Lantern Widow briefly."),
@@ -287,17 +286,10 @@ ITEMS = [
  ("long_hall_key", "Long Hall Key", "key2", "Opens the doors of the Long Hall."),
  ("red_key", "Red Key", "key3", "Opens something in the Red Silence."),
  ("power_cell", "Power Cell", "cell", "Restores power to Archive machinery."),
- ("cassette_tape", "Cassette Tape", "tape", "A blank-looking tape."),
- ("copper_wire_spool", "Copper Wire Spool", "spool", "Crafting material."),
- ("static_dust", "Static Dust", "dust", "Fine grey dust that hums."),
  ("void_lens", "Void Lens", "lens", "Reveals false illusions made by The Facet."),
- ("lantern_oil", "Lantern Oil", "bottle", "Crafting material from the Lantern Widow."),
- ("doorframe_splinter", "Doorframe Splinter", "splinter", "A piece of the Doorman."),
  ("archivist_stamp", "Archivist Stamp", "stamp", "Proof of an exchange."),
- ("containment_badge", "Containment Badge", "badge", "Staff badge of Project Containment."),
  ("echo_whistle", "Echo Whistle", "whistle", "Calls attention. Use carefully."),
  ("signal_blade", "Signal Blade", "blade", "A weapon that hurts signal-touched creatures more."),
- ("salt_pouch", "Salt Pouch", "pouch", "Place to mark a boundary."),
  ("field_journal_page", "Field Journal Page", "page", "A torn page. Collect them all."),
  ("silent_bell", "Silent Bell", "bell", "Rings without sound. Something hears it."),
  ("buried_crown_shard", "Buried Crown Shard", "crown", "Reward from The Buried King."),
@@ -538,12 +530,10 @@ def gen_items_blocks_assets():
 
 def gen_loot():
     tiers = {
-        "common": [("ancient_coin", 4, 1, 3), ("static_dust", 5, 1, 4), ("copper_wire_spool", 4, 1, 3), ("field_journal_page", 5, 1, 1),
-                   ("emergency_flare", 3, 1, 2), ("salt_pouch", 3, 1, 2), ("sealed_envelope", 3, 1, 1), ("cassette_tape", 2, 1, 1),
-                   ("strange_photograph", 2, 1, 1), ("lantern_oil", 2, 1, 1), ("rusted_keycard", 2, 1, 1), ("damaged_recording", 3, 1, 1)],
+        "common": [("ancient_coin", 4, 1, 3), ("field_journal_page", 5, 1, 1),
+                   ("emergency_flare", 3, 1, 2), ("sealed_envelope", 3, 1, 1), ("strange_photograph", 2, 1, 1), ("rusted_keycard", 2, 1, 1), ],
         "archive": [("archive_key", 3, 1, 1), ("power_cell", 4, 1, 1), ("research_notebook", 3, 1, 1), ("frequency_tuner", 3, 1, 1),
-                    ("memory_shard", 4, 1, 2), ("signal_fragment", 5, 1, 3), ("void_lens", 2, 1, 1), ("containment_badge", 3, 1, 1),
-                    ("sealed_envelope", 5, 1, 2), ("protective_charm", 3, 1, 1), ("signal_detector", 2, 1, 1), ("broken_radio", 2, 1, 1)],
+                    ("memory_shard", 4, 1, 2), ("signal_fragment", 5, 1, 3), ("void_lens", 2, 1, 1), ("sealed_envelope", 5, 1, 2), ("protective_charm", 3, 1, 1), ("signal_detector", 2, 1, 1), ("broken_radio", 2, 1, 1)],
         "endgame": [("signal_blade", 2, 1, 1), ("distorted_compass", 3, 1, 1), ("silent_bell", 3, 1, 1), ("memory_shard", 5, 2, 4),
                     ("signal_fragment", 5, 2, 5), ("protective_charm", 4, 1, 2), ("echo_whistle", 2, 1, 1), ("archivist_stamp", 3, 1, 2)],
     }
@@ -570,14 +560,13 @@ def gen_recipes():
     shapeless("research_notebook", ["minecraft:book", "minecraft:ink_sac"], "research_notebook")
     shaped("frequency_tuner", [" C ", "RIR", " C "], {"C": "minecraft:copper_ingot", "R": "minecraft:redstone", "I": "minecraft:iron_nugget"}, "frequency_tuner")
     shaped("signal_detector", [" R ", "ICI", "IRI"], {"R": "minecraft:redstone", "I": "minecraft:iron_ingot", "C": "minecraft:compass"}, "signal_detector")
-    shapeless("salt_pouch", ["minecraft:bone_meal", "minecraft:bone_meal", "minecraft:string"], "salt_pouch")
-    shapeless("protective_charm", [f"{MOD}:salt_pouch", "minecraft:gold_nugget", f"{MOD}:static_dust"], "protective_charm")
+    shapeless("protective_charm", ["minecraft:bone_meal", "minecraft:gold_nugget", "minecraft:redstone"], "protective_charm")
     shapeless("emergency_flare", ["minecraft:gunpowder", "minecraft:red_dye", "minecraft:paper"], "emergency_flare", 2)
     shapeless("power_cell", ["minecraft:redstone", "minecraft:copper_ingot", "minecraft:iron_ingot", f"{MOD}:signal_fragment"], "power_cell")
     shapeless("void_lens", ["minecraft:glass_pane", f"{MOD}:signal_fragment", f"{MOD}:memory_shard"], "void_lens")
     shaped("signal_blade", [" F ", " F ", " S "], {"F": f"{MOD}:signal_fragment", "S": "minecraft:stick"}, "signal_blade")
     shaped("distorted_compass", [" I ", "IFI", " I "], {"I": "minecraft:iron_ingot", "F": f"{MOD}:signal_fragment"}, "distorted_compass")
-    shaped("copper_wire_spool", ["CCC", "CSC", "CCC"], {"C": "minecraft:copper_ingot", "S": "minecraft:stick"}, "copper_wire_spool")
+    
 
 
 def gen_particles_and_icon():

@@ -77,7 +77,7 @@ def recipes():
     shaped("lantern_warden_chestplate", ["I I", "IFI", "III"], {"I": I, "F": F}, "lantern_warden_chestplate")
     shaped("lantern_warden_leggings", ["IFI", "I I", "I I"], {"I": I, "F": F}, "lantern_warden_leggings")
     shaped("lantern_warden_boots", ["F F", "I I"], {"I": I, "F": F}, "lantern_warden_boots")
-    shaped("salt_iron_sword", ["P", "I", "S"], {"P": {"item": "lastsignal:salt_pouch"}, "I": I, "S": S}, "salt_iron_sword")
+    shaped("salt_iron_sword", ["P", "I", "S"], {"P": {"item": "minecraft:bone_meal"}, "I": I, "S": S}, "salt_iron_sword")
     shaped("echo_dagger", ["W", "I", "S"], {"W": {"item": "lastsignal:echo_whistle"}, "I": I, "S": S}, "echo_dagger")
     shaped("signal_halberd", ["FI", "FS", " S"], {"I": I, "F": F, "S": S}, "signal_halberd")
 
