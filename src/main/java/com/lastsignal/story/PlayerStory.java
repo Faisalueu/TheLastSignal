@@ -15,6 +15,8 @@ public class PlayerStory {
     public int nights = 0;
     public int doorsOpened = 0;
     public int encounters = 0;
+    /** Sightings that happened near this player's spawn; each one pushes the next ones a little further away. */
+    public int sightings = 0;
     public int dimensionsEscaped = 0;
     public long wardUntil = 0;
     public String checkpointDim = "";
@@ -34,7 +36,7 @@ public class PlayerStory {
         t.putInt("band", band); t.putInt("fine", fine);
         t.putDouble("exposure", exposure);
         t.putInt("nights", nights); t.putInt("doors", doorsOpened);
-        t.putInt("enc", encounters); t.putInt("esc", dimensionsEscaped);
+        t.putInt("enc", encounters); t.putInt("sight", sightings); t.putInt("esc", dimensionsEscaped);
         t.putLong("ward", wardUntil);
         t.putString("rdim", returnDim); t.putLong("rpos", returnPos);
         t.putString("cpDim", checkpointDim); t.putLong("cpPos", checkpointPos);
@@ -48,7 +50,7 @@ public class PlayerStory {
         s.band = t.getInt("band"); s.fine = t.getInt("fine");
         s.exposure = t.getDouble("exposure");
         s.nights = t.getInt("nights"); s.doorsOpened = t.getInt("doors");
-        s.encounters = t.getInt("enc"); s.dimensionsEscaped = t.getInt("esc");
+        s.encounters = t.getInt("enc"); s.sightings = t.getInt("sight"); s.dimensionsEscaped = t.getInt("esc");
         s.wardUntil = t.getLong("ward");
         s.returnDim = t.getString("rdim"); s.returnPos = t.getLong("rpos");
         s.checkpointDim = t.getString("cpDim"); s.checkpointPos = t.getLong("cpPos");

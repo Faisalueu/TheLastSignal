@@ -95,6 +95,7 @@ final class ExtraSmoke {
         if (com.lastsignal.event.Director.phaseOf(0) != com.lastsignal.event.Director.Phase.SUSPICION || com.lastsignal.event.Director.phaseOf(3) != com.lastsignal.event.Director.Phase.OBSERVATION
                 || com.lastsignal.event.Director.phaseOf(5) != com.lastsignal.event.Director.Phase.PURSUIT || com.lastsignal.event.Director.phaseOf(6) != com.lastsignal.event.Director.Phase.FINAL_SIGNAL)
             throw new IllegalStateException("phase mapping wrong");
+        if (byScope[com.lastsignal.event.Director.Scope.WORLD.ordinal()] < 5) throw new IllegalStateException("only " + byScope[com.lastsignal.event.Director.Scope.WORLD.ordinal()] + " WORLD-scope events");
         var a = FakePlayerFactory.getMinecraft(l);
         var b = FakePlayerFactory.get(l, new com.mojang.authlib.GameProfile(java.util.UUID.fromString("00000000-0000-0000-0000-0000000000b2"), "ls_audit_b"));
         a.moveTo(100.5, 90, 100.5, 0, 0); b.moveTo(110.5, 90, 105.5, 0, 0);
@@ -114,6 +115,7 @@ final class ExtraSmoke {
         }
         if (!broke.isEmpty()) throw new IllegalStateException("events threw: " + broke);
         int cleaned = com.lastsignal.event.Director.cleanup(a);
+        com.lastsignal.event.SpawnArea.restoreAll();
         for (var h : com.lastsignal.entity.HorrorEntity.near(l, a.position(), 200)) h.discard();
         return evs.size() + " events, scopes PLAYER/LOCAL_GROUP/WORLD/STORY=" + java.util.Arrays.toString(byScope) + ", minCooldown=" + minCd + "s, executed " + ran + " (" + fired + " fired, rest false alarms), cleanup removed " + cleaned;
     }

@@ -198,6 +198,7 @@ public final class EventManager {
         if (ok) {
             COOLDOWNS.put(cdKey(d, c.p), now + d.cooldownSec * 20L);
             if (d.cat == Cat.PURSUIT) c.st.encounters++;
+            if (d.cat == Cat.SIGHTING && SpawnAnchor.of(c.l, c.p) != null) c.st.sightings = Math.min(c.st.sightings + 1, 8);
             StoryManager.markDirty(c.p);
         }
         return ok;
@@ -222,7 +223,7 @@ public final class EventManager {
     }
 
     public static void shutdown() {
-        COOLDOWNS.clear(); NEXT.clear(); VISITED.clear(); TEMP_LIGHTS.clear();
+        SpawnArea.restoreAll(); COOLDOWNS.clear(); NEXT.clear(); VISITED.clear(); TEMP_LIGHTS.clear();
         Tasks.clear();
     }
 
@@ -239,6 +240,13 @@ public final class EventManager {
         if (ro == null) return false;
         for (ItemStack s : p.getInventory().items) if (s.getItem() == ro.get()) return true;
         return p.getOffhandItem().getItem() == ro.get();
+    }
+
+    /** Players a world-wide event reaches: same dimension, alive, not spectating. */
+    static List<ServerPlayer> everyone(Ctx c) {
+        List<ServerPlayer> out = new ArrayList<>();
+        for (ServerPlayer q : c.l.players()) if (q.isAlive() && !q.isSpectator()) out.add(q);
+        return out;
     }
 
     private static Vec3 behind(ServerPlayer p, double dist) {
@@ -686,6 +694,45 @@ public final class EventManager {
         }).underground();
 
         // ---- Story and dimension events (10)
+        // ---- Spawn-area events and world-wide events
+        reg("env_spawn_footprints", Cat.ENVIRONMENT, Target.PER_PLAYER, 6, 900, 1, 6, SpawnArea::footprints).surface();
+        reg("env_spawn_sign", Cat.ENVIRONMENT, Target.PER_PLAYER, 3, 3000, 1, 6, SpawnArea::sign).surface();
+        reg("world_distant_calls", Cat.SOUND, Target.GLOBAL, 5, 3600, 2, 6, c -> {
+            List<ServerPlayer> all = everyone(c);
+            for (ServerPlayer q : all) {
+                double a = c.r.nextDouble() * Math.PI * 2;
+                Fx.privateSound(q, ModSounds.DISTANT_CALL.get(), q.position().add(Math.cos(a) * 60, 0, Math.sin(a) * 60), 1.5f, 0.8f);
+            }
+            return !all.isEmpty();
+        }).surface();
+        reg("world_static_wave", Cat.ENVIRONMENT, Target.GLOBAL, 5, 4800, 2, 6, c -> {
+            List<ServerPlayer> all = everyone(c);
+            for (ServerPlayer q : all) {
+                Fx.privateSound(q, ModSounds.STATIC_LOOP.get(), q.position(), 0.6f, 0.9f);
+                Fx.effect(q, "distort", 80, 0.4f);
+            }
+            return !all.isEmpty();
+        });
+        reg("world_hush", Cat.SOUND, Target.GLOBAL, 4, 5400, 3, 6, c -> {
+            List<ServerPlayer> all = everyone(c);
+            Tasks.every(0, 10, 24, i -> {
+                for (ServerPlayer q : all) {
+                    if (q.isRemoved()) continue;
+                    Fx.stopSounds(q, SoundSource.NEUTRAL); Fx.stopSounds(q, SoundSource.HOSTILE); Fx.stopSounds(q, SoundSource.WEATHER);
+                }
+                return true;
+            });
+            return !all.isEmpty();
+        }).surface();
+        reg("world_everyone_watched", Cat.SIGHTING, Target.GLOBAL, 4, 6000, 3, 6, c -> {
+            int n = 0;
+            for (ServerPlayer q : everyone(c)) {
+                if (!q.serverLevel().canSeeSky(q.blockPosition())) continue;
+                if (HorrorSpawner.spawnNear(c.l, q, "observer", Placement.FOREST_EDGE, 40, 70) != null) n++;
+            }
+            return n > 0;
+        }).surface().night();
+
         reg("story_first_transmission", Cat.STORY, Target.PER_PLAYER, 50, 100000, 0, 6, c -> {
             if (!c.st.recordings.isEmpty()) return false;
             Transmissions.Entry e = Transmissions.byId("t01_first");

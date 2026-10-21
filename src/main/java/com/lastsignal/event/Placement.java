@@ -36,7 +36,8 @@ public enum Placement {
                 double rad = com.lastsignal.config.LastSignalConfig.COMMON.spawnAnchorRadius.get();
                 for (int i = 0; i < 3; i++) {
                     BlockPos g = search(l, p, anchor, 8, rad, min, max);
-                    if (g != null && g.distSqr(p.blockPosition()) >= 100 && Math.sqrt(g.distSqr(anchor)) <= rad + 6) return g;
+                    double need = Math.min(44, 14 + 4 * com.lastsignal.story.StoryManager.get(p).sightings);
+                    if (g != null && g.distSqr(p.blockPosition()) >= need * need && Math.sqrt(g.distSqr(anchor)) <= rad + 6) return g;
                 }
             }
         }

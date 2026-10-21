@@ -110,7 +110,7 @@ public final class Houses {
         fillSign(b.l, b.o.offset(x, y, z), text);
     }
 
-    private static void fillSign(ServerLevel l, BlockPos p, String text) {
+    public static void fillSign(ServerLevel l, BlockPos p, String text) {
         if (!(l.getBlockEntity(p) instanceof SignBlockEntity s)) return;
         List<String> lines = wrap(text);
         net.minecraft.world.level.block.entity.SignText t = new net.minecraft.world.level.block.entity.SignText();
