@@ -33,5 +33,13 @@ CI runs every event once on a fake player: no exception escaped (32 fired, 41 fa
 Each of the 12 roster-pass creatures has its own synthesized ambient (3 variants), hurt and death sound (`tools/roster_sounds.py`); the 17 originals keep the shared set. Synthesized, not recorded: unverified by ear.
 ## CI note
 The headless smoke test disables the 60 s server watchdog (it runs for minutes on the server thread). This is a test setting only.
+## Stage 3 additions
+- **Spawn anchor** (`event/SpawnAnchor.java`): AUTO / PERSONAL (respawn point) / WORLD (shared spawn). Scattering placements (ground, forest edge, high ground, mountain, rooftop, open field) look around the anchor within `spawnAnchorRadius` (48) with chance `spawnAnchorBias` (0.7), only if the player is within radius+64 blocks. Never teleports anyone, never loads chunks, falls back to the player-centred search, and skips the event when nothing safe exists. Not applied in mod dimensions.
+- **Escalating distance**: each sighting near the spawn raises `PlayerStory.sightings` (saved); the next anchored sighting must be at least 14 + 4 x sightings blocks from the player (cap 44).
+- **Spawn-area events**: `env_spawn_footprints` (coarse-dirt footprints leading to the spawn, or to the player from stage 4) and `env_spawn_sign` (standing sign whose text follows the phase). Every block is temporary: original state restored after 4.5-6 min / 7.5 min or on server stop, and never over a block the player changed.
+- **WORLD-scope events** (Target.GLOBAL, shared cooldown): `world_distant_calls`, `world_static_wave`, `world_hush`, `world_everyone_watched` (reach every living non-spectator player in that dimension; no teleports).
+- **Re-modelled originals**: `tools/monsters_orig.py` adds second-pass silhouette parts to all 17 original creatures; geo/animations regenerated with `tools/monsters.py` (safe, does not touch sounds/lang).
+- **Keys**: sealed doors in overworld structures no longer need a key nobody can find: they open for a player who has read 3 notes, heard 2 recordings, or has the door/archive hint evidence (keys still work; the dimension maze and House 30 still use real keys found in the world).
+- **Removed items**: damaged_recording, cassette_tape, lantern_oil, doorframe_splinter, containment_badge, static_dust, copper_wire_spool, salt_pouch.
 ## Not done
-The original 16 creatures were not re-modelled (they already use the same rig system; no concrete defect was identified without seeing them in game). No WORLD-scope events exist yet.
+Everything above is verified by CI only structurally. The in-game feel (looks, sound, distances, balance) and multiplayer death/reconnect behaviour need a real session. tools/preview.py is only a rough silhouette sheet, not a render.

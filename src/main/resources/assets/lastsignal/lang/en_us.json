@@ -707,5 +707,6 @@
   "subtitles.lastsignal.stair_thing.death": "The Stair Thing fades",
   "subtitles.lastsignal.moon_watcher.ambient": "The Moon Watcher murmurs",
   "subtitles.lastsignal.moon_watcher.hurt": "The Moon Watcher cries out",
-  "subtitles.lastsignal.moon_watcher.death": "The Moon Watcher fades"
+  "subtitles.lastsignal.moon_watcher.death": "The Moon Watcher fades",
+  "lastsignal.msg.locked_hint": "It almost opens. Something you have read or heard must explain how."
 }

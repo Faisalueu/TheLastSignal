@@ -111,5 +111,6 @@
   "subtitles.lastsignal.stair_thing.death": "كائن الدرج يتلاشى",
   "subtitles.lastsignal.moon_watcher.ambient": "مراقب القمر يهمس",
   "subtitles.lastsignal.moon_watcher.hurt": "مراقب القمر يصرخ",
-  "subtitles.lastsignal.moon_watcher.death": "مراقب القمر يتلاشى"
+  "subtitles.lastsignal.moon_watcher.death": "مراقب القمر يتلاشى",
+  "lastsignal.msg.locked_hint": "يكاد ينفتح. لازم في شي قرأته أو سمعته يشرح كيف."
 }

@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 /**
- * Sealed Door: unbreakable until opened with an Archive Key, Long Hall Key, Red Key or Rusted Keycard.
+ * Sealed Door: unbreakable until opened with a key (Archive / Long Hall / Red / Rusted Keycard) or by a player who has followed enough of the story to know how it works (3 notes, 2 recordings, or the door / archive hint).
  * Opening consumes one key use and removes a small 1x2x1 column (so it re-seals for nobody; it is permanent).
  */
 public class SealedDoorBlock extends Block {
@@ -36,8 +36,12 @@ public class SealedDoorBlock extends Block {
         for (String k : keys) {
             if (held.getItem() == ModItems.ITEMS_BY_ID.get(k).get()) { ok = true; break; }
         }
+        PlayerStory known = StoryManager.get(sp);
+        // Environmental clue instead of a mandatory key: a player who has followed enough of the story (notes read, transmissions heard,
+        // or the specific door / archive hints) understands how the door lets people through.
+        if (!ok && (known.notes.size() >= 3 || known.recordings.size() >= 2 || known.evidence.contains("door_hint") || known.evidence.contains("archive_location"))) ok = true;
         if (!ok) {
-            sp.displayClientMessage(Component.translatable("lastsignal.msg.locked"), true);
+            sp.displayClientMessage(Component.translatable(known.notes.isEmpty() && known.recordings.isEmpty() ? "lastsignal.msg.locked" : "lastsignal.msg.locked_hint"), true);
             level.playSound(null, pos, SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 0.5f, 0.6f);
             return InteractionResult.CONSUME;
         }
