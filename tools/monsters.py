@@ -15,6 +15,7 @@ import json, math, os, random, sys, zlib
 from types import SimpleNamespace
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import generate_assets as GA
+import monsters_orig as MO
 from PIL import Image, ImageDraw
 
 MOD = GA.MOD
@@ -672,12 +673,14 @@ def build_rig(E):
     fn, X = BUILD[E["id"]]
     R = Rig(E["id"], 1.0)
     fn(R, E, X)
+    if E["id"] in MO.POST: MO.POST[E["id"]](R, E, X)
     target = E["hb"][1] * 16 * 0.97
     sc = max(0.8, min(1.35, target / max(R.maxy, 1.0)))
     if E["id"] == "burrower":
         sc = max(sc, 1.0)
     R = Rig(E["id"], sc)
     fn(R, E, X)
+    if E["id"] in MO.POST: MO.POST[E["id"]](R, E, X)
     return R, X, fn
 
 
