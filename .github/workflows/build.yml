@@ -55,7 +55,7 @@ jobs:
           gradle-version: 8.8
       - name: Headless server smoke test (generates chunks in all 48 dimensions)
         run: |
-          mkdir -p run && echo "eula=true" > run/eula.txt
+          mkdir -p run && echo "eula=true" > run/eula.txt && echo "max-tick-time=-1" > run/server.properties   # the smoke test runs on the server thread for minutes; the 60 s watchdog must not kill it
           timeout 1200 gradle runServer -Psmoke --no-daemon -Dorg.gradle.jvmargs=-Xmx3g 2>&1 | tee smoke.log || true
           echo "---- result ----"
           cat run/smoke-result.txt || { echo "no result file"; tail -80 smoke.log; exit 1; }
