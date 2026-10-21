@@ -19,5 +19,20 @@ public final class EntitySounds {
             WP_DEATH = reg("entity.white_presence.death"), WP_WINGS = reg("entity.white_presence.wings"), WP_STEP = reg("entity.white_presence.step"),
             WP_TAKEOFF = reg("entity.white_presence.takeoff");
 
+    /** Roster-pass creatures with their own ambient/hurt/death sets (tools/roster_sounds.py). */
+    public static final String[] ROSTER = {"black_witness", "tall_black", "borrowed_skin", "drowned_choir", "hanging_man", "salt_mother", "radio_shepherd",
+            "glass_walker", "candle_bearer", "paper_man", "stair_thing", "moon_watcher"};
+    private static final java.util.Map<String, RegistryObject<SoundEvent>> ROSTER_SOUNDS = new java.util.HashMap<>();
+
+    static {
+        for (String id : ROSTER) for (String g : new String[]{"ambient", "hurt", "death"}) ROSTER_SOUNDS.put(id + "." + g, reg("entity." + id + "." + g));
+    }
+
+    /** the creature's own sound, or null when it uses the shared set */
+    public static SoundEvent of(String entityId, String kind) {
+        RegistryObject<SoundEvent> r = ROSTER_SOUNDS.get(entityId + "." + kind);
+        return r == null ? null : r.get();
+    }
+
     private EntitySounds() {}
 }

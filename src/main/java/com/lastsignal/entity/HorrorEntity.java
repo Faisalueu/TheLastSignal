@@ -516,6 +516,8 @@ public class HorrorEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     protected SoundEvent getAmbientSound() {
+        SoundEvent own = com.lastsignal.sound.EntitySounds.of(profileId, "ambient");
+        if (own != null) return random.nextInt(3) == 0 || getHorrorState() == State.CHASING ? own : null;
         return getHorrorState() == State.CHASING ? ModSounds.CREATURE_BREATH.get() : (random.nextInt(4) == 0 ? ModSounds.CREATURE_BREATH.get() : null);
     }
 
@@ -523,10 +525,10 @@ public class HorrorEntity extends PathfinderMob implements GeoEntity {
     public int getAmbientSoundInterval() { return 160; }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource s) { return ModSounds.GLITCH.get(); }
+    protected SoundEvent getHurtSound(DamageSource s) { SoundEvent own = com.lastsignal.sound.EntitySounds.of(profileId, "hurt"); return own != null ? own : ModSounds.GLITCH.get(); }
 
     @Override
-    protected SoundEvent getDeathSound() { return ModSounds.GLITCH.get(); }
+    protected SoundEvent getDeathSound() { SoundEvent own = com.lastsignal.sound.EntitySounds.of(profileId, "death"); return own != null ? own : ModSounds.GLITCH.get(); }
 
     @Override
     protected float getSoundVolume() { return (float) (0.8 * 1.0); }

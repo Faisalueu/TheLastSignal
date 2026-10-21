@@ -70,6 +70,11 @@ final class ExtraSmoke {
             n++;
         }
         if (n < 29) throw new IllegalStateException("roster too small: " + n);
+        for (String id : com.lastsignal.sound.EntitySounds.ROSTER) for (String g : new String[]{"ambient", "hurt", "death"}) {
+            if (com.lastsignal.sound.EntitySounds.of(id, g) == null) throw new IllegalStateException("missing sound event " + id + "." + g);
+            for (String f : g.equals("ambient") ? new String[]{"ambient1", "ambient2", "ambient3"} : new String[]{g})
+                if (ExtraSmoke.class.getResource("/assets/lastsignal/sounds/entity/" + id + "/" + f + ".ogg") == null) throw new IllegalStateException("missing ogg " + id + "/" + f);
+        }
         return n + " horror profiles instantiated and ticked 100 ticks (+ White Presence = " + (n + 1) + ")";
     }
 
