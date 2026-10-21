@@ -1,504 +1,209 @@
 {
- "type": "minecraft:chest",
- "pools": [
-  {
-   "rolls": {
-    "type": "minecraft:uniform",
-    "min": 2,
-    "max": 4
-   },
-   "entries": [
+  "type": "minecraft:chest",
+  "pools": [
     {
-     "type": "minecraft:item",
-     "name": "minecraft:stick",
-     "weight": 6,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 2,
-        "max": 8
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:stone",
-     "weight": 6,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 4,
-        "max": 9
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:string",
-     "weight": 4,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 4
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:iron_ingot",
-     "weight": 6,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 4
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:paper",
-     "weight": 4,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 4
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:iron_ingot",
-     "weight": 8,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 5
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:chain",
-     "weight": 5,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 4
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:rail",
-     "weight": 5,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 2,
+      "rolls": {
+        "min": 3,
         "max": 6
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:redstone",
-     "weight": 8,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 2,
-        "max": 6
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:copper_ingot",
-     "weight": 6,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 4
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:iron_nugget",
-     "weight": 6,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 2,
-        "max": 7
-       }
-      }
-     ]
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:leather",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stick",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 3,
+                "max": 12
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:candle",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:flint",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:oak_log",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 4,
+                "max": 12
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:cobblestone",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 6,
+                "max": 16
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:rotten_flesh",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:ink_sac",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bowl",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bread",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bone",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:carrot",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:torch",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:spruce_log",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 4,
+                "max": 10
+              }
+            }
+          ]
+        }
+      ]
     }
-   ]
-  },
-  {
-   "rolls": {
-    "type": "minecraft:uniform",
-    "min": 1,
-    "max": 2
-   },
-   "entries": [
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:hopper",
-     "weight": 4,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 1
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:piston",
-     "weight": 4,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 2
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:lever",
-     "weight": 4,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 2
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:copper_ingot",
-     "weight": 5,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 2,
-        "max": 5
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:repeater",
-     "weight": 5,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 2
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:comparator",
-     "weight": 4,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 2
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:quartz",
-     "weight": 5,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 4
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:lightning_rod",
-     "weight": 3,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 1
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:empty",
-     "weight": 14
-    }
-   ]
-  },
-  {
-   "rolls": 1,
-   "entries": [
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:anvil",
-     "weight": 2,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 1
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:iron_pickaxe",
-     "weight": 3
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:bucket",
-     "weight": 4
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:observer",
-     "weight": 4,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 2
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:ender_pearl",
-     "weight": 3,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 2
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:amethyst_shard",
-     "weight": 4,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 2,
-        "max": 5
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:empty",
-     "weight": 60
-    }
-   ]
-  },
-  {
-   "rolls": 1,
-   "entries": [
-    {
-     "type": "minecraft:item",
-     "name": "lastsignal:copper_wire_spool",
-     "weight": 10,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 2
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "lastsignal:power_cell",
-     "weight": 9,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 2
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "lastsignal:rusted_keycard",
-     "weight": 8,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 2
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:empty",
-     "weight": 26
-    }
-   ]
-  },
-  {
-   "rolls": 1,
-   "entries": [
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:diamond",
-     "weight": 3,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 2
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:diamond",
-     "weight": 3,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 2
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "minecraft:redstone_block",
-     "weight": 3,
-     "functions": [
-      {
-       "function": "minecraft:set_count",
-       "count": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 2
-       }
-      }
-     ]
-    },
-    {
-     "type": "minecraft:item",
-     "name": "lastsignal:signal_blade",
-     "weight": 4
-    },
-    {
-     "type": "minecraft:empty",
-     "weight": 220
-    }
-   ]
-  }
- ]
+  ]
 }

@@ -9,22 +9,22 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "lastsignal:ancient_coin",
-          "weight": 4,
+          "name": "minecraft:stick",
+          "weight": 8,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
-                "min": 1,
-                "max": 3
+                "min": 3,
+                "max": 12
               }
             }
           ]
         },
         {
           "type": "minecraft:item",
-          "name": "lastsignal:static_dust",
-          "weight": 5,
+          "name": "minecraft:carrot",
+          "weight": 8,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -37,8 +37,50 @@
         },
         {
           "type": "minecraft:item",
-          "name": "lastsignal:copper_wire_spool",
-          "weight": 4,
+          "name": "minecraft:birch_log",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 3,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:coal",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bucket",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:ink_sac",
+          "weight": 8,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -51,66 +93,115 @@
         },
         {
           "type": "minecraft:item",
-          "name": "lastsignal:field_journal_page",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "name": "lastsignal:emergency_flare",
-          "weight": 3,
+          "name": "minecraft:paper",
+          "weight": 8,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "min": 1,
-                "max": 2
+                "max": 6
               }
             }
           ]
         },
         {
           "type": "minecraft:item",
-          "name": "lastsignal:salt_pouch",
-          "weight": 3,
+          "name": "minecraft:flint",
+          "weight": 8,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "min": 1,
-                "max": 2
+                "max": 4
               }
             }
           ]
         },
         {
           "type": "minecraft:item",
-          "name": "lastsignal:sealed_envelope",
-          "weight": 3
+          "name": "minecraft:glass_bottle",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
-          "name": "lastsignal:cassette_tape",
-          "weight": 2
+          "name": "minecraft:bowl",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
-          "name": "lastsignal:strange_photograph",
-          "weight": 2
+          "name": "minecraft:compass",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
-          "name": "lastsignal:lantern_oil",
-          "weight": 2
+          "name": "minecraft:wheat",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 6
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
-          "name": "lastsignal:rusted_keycard",
-          "weight": 2
+          "name": "minecraft:torch",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 8
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
-          "name": "lastsignal:damaged_recording",
-          "weight": 3
+          "name": "minecraft:apple",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
         }
       ]
     }
