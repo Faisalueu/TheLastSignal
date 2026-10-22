@@ -28,6 +28,7 @@ public final class Gen {
     final Theme t;
     final ChunkAccess c;
     final int cx, cz, bx, bz;
+    int fcx, fcz, fbx, fbz;                // 'folded' chunk coordinates for repeating tile dimensions (equal to cx.. otherwise)
     Random r;
     final Profile p;
     boolean obj; int ox, oz;               // object mode: scattered set pieces drawn from a world-anchored seed
@@ -41,6 +42,7 @@ public final class Gen {
         this.t = t; this.c = c;
         this.cx = c.getPos().x; this.cz = c.getPos().z;
         this.bx = cx << 4; this.bz = cz << 4;
+        this.fcx = cx; this.fcz = cz; this.fbx = bx; this.fbz = bz;
         this.r = new Random(Noise.hash(t.seed, cx, cz));
         this.p = Themes.profile(t);
         for (int[] row : gh) java.util.Arrays.fill(row, -1);

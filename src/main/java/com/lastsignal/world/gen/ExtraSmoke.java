@@ -37,6 +37,7 @@ final class ExtraSmoke {
         fails += check(out, "white-presence", () -> whitePresence(server));
         fails += check(out, "director", () -> director(server.overworld()));
         fails += check(out, "spawn-anchor", () -> spawnAnchor(server.overworld()));
+        fails += check(out, "tile-rules", () -> tileRules(server));
         fails += check(out, "special-attacks", () -> specials(server.overworld()));
         fails += check(out, "roster", () -> roster(server.overworld()));
         fails += check(out, "haunted-houses", () -> houses(server.overworld()));
@@ -138,6 +139,43 @@ final class ExtraSmoke {
         fp.moveTo(sp.getX() + 5000.5, 90, sp.getZ() + 5000.5, 0, 0);
         if (com.lastsignal.event.SpawnAnchor.of(l, fp) != null) throw new IllegalStateException("anchor used for a player 5000 blocks away");
         return "anchor=" + anchor.toShortString() + ", radius " + r + ": " + found + "/40 placements found, " + near + " inside the spawn radius";
+    }
+
+    static String tileRules(net.minecraft.server.MinecraftServer server) {
+        StringBuilder sb = new StringBuilder();
+        for (var en : Wonder.RULES.entrySet()) {
+            Theme t = Themes.get(en.getKey());
+            Wonder.Rule w = en.getValue();
+            if (t == null || !"rooms".equals(t.kind)) throw new IllegalStateException("not a rooms theme: " + en.getKey());
+            Profile p = Themes.profile(t);
+            int same = 0, tested = 0, anomalies = 0;
+            for (int cx = 3; cx < 40; cx++) for (int cz = 3; cz < 40; cz++) {
+                if (Wonder.anomaly(t, w, cx, cz) || Wonder.anomaly(t, w, cx + w.period, cz) || Wonder.anomaly(t, w, cx, cz + w.period)) { anomalies++; continue; }
+                tested++;
+                var a = Rooms.desc(t, p, cx, cz); var b = Rooms.desc(t, p, cx + w.period, cz); var c = Rooms.desc(t, p, cx, cz + w.period);
+                if (a.arch == b.arch && a.arch == c.arch) same++;
+                if (Rooms.open(t, p, cx, cz, cx + 1, cz) != Rooms.open(t, p, cx + w.period, cz, cx + w.period + 1, cz)) throw new IllegalStateException(t.slug + ": door differs between repeats at " + cx + "," + cz);
+            }
+            if (same != tested) throw new IllegalStateException(t.slug + ": layout does not repeat (" + same + "/" + tested + ")");
+            if (w.lattice > 0) {
+                int open = 0, n = 0;
+                for (int k = 3; k < 60; k++) if (!Wonder.anomaly(t, w, k, 0) && !Wonder.anomaly(t, w, k + 1, 0)) { n++; if (Rooms.open(t, p, k, 0, k + 1, 0)) open++; }
+                if (open != n) throw new IllegalStateException(t.slug + ": lattice corridor row has closed doors (" + open + "/" + n + ")");
+            }
+            sb.append(t.slug).append(" P=").append(w.period).append(" L=").append(w.lattice).append(w.mono ? " mono" : "").append(" repeat ").append(same).append("/").append(tested).append(" anomalies~").append(anomalies).append("; ");
+        }
+        // really generate a block of chunks in each of the tile dimensions (no exception, bedrock ceiling in place)
+        for (String slug : Wonder.RULES.keySet()) {
+            ServerLevel l = server.getLevel(Dimensions.key(slug));
+            if (l == null) throw new IllegalStateException("dimension not loaded: " + slug);
+            for (int cx = 5; cx <= 8; cx++) for (int cz = -2; cz <= 1; cz++) {
+                var ch = l.getChunk(cx, cz);
+                boolean solidTop = false;
+                for (int y = 66; y < 140 && !solidTop; y++) if (ch.getBlockState(new net.minecraft.core.BlockPos(cx * 16 + 8, y, cz * 16 + 8)).is(net.minecraft.world.level.block.Blocks.BEDROCK)) solidTop = true;
+                if (!solidTop) throw new IllegalStateException(slug + ": no bedrock ceiling in chunk " + cx + "," + cz);
+            }
+        }
+        return sb.toString();
     }
 
     static String specials(ServerLevel l) {

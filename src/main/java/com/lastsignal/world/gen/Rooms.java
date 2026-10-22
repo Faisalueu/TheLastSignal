@@ -17,6 +17,10 @@ final class Rooms {
     static Desc desc(Theme t, Profile p, int cx, int cz) {
         Desc d = new Desc();
         int M = Math.max(1, p.sc);
+        final boolean trueOrigin = cx == 0 && cz == 0;
+        Wonder.Rule wd = Wonder.of(t);
+        boolean anom = wd != null && Wonder.anomaly(t, wd, cx, cz);
+        if (wd != null && !anom) { cx = wd.fold(cx); cz = wd.fold(cz); }
         d.sx = Math.floorDiv(cx, M); d.sz = Math.floorDiv(cz, M);
         double total = 0; for (double w : p.arch) total += w;
         double hp = total <= 0 ? 0 : p.arch[Profile.HALL] / total;
@@ -25,7 +29,8 @@ final class Rooms {
         double v = (Noise.hash(t.seed + 402, cx, cz) % 10000) / 10000.0 * rest;
         int pick = Profile.CELL;
         for (int i = 0; i < p.arch.length; i++) { if (i == Profile.HALL) continue; if (v < p.arch[i]) { pick = i; break; } v -= p.arch[i]; }
-        if (cx == 0 && cz == 0 && (pick == Profile.PIT || pick == Profile.SHAFT || pick == Profile.ORGANIC)) pick = Profile.CELL;
+        if (trueOrigin && (pick == Profile.PIT || pick == Profile.SHAFT || pick == Profile.ORGANIC)) pick = Profile.CELL;
+        if (anom) pick = new int[]{Profile.SHAFT, Profile.PIT, Profile.COLUMNS}[Noise.hash(t.seed + 778, cx, cz) % 3];
         d.arch = pick;
         return d;
     }
@@ -42,7 +47,17 @@ final class Rooms {
         if (a.arch == Profile.COLUMNS || b.arch == Profile.COLUMNS) return true;
         boolean horiz = ax != bx;
         int lim = (int) t.p[Theme.P_OPEN] + ((a.hall || b.hall) ? 15 : 0);
-        return Noise.hash(t.seed + (horiz ? 101 : 202), Math.min(ax, bx), Math.min(az, bz)) % 100 < lim;
+        int hx = Math.min(ax, bx), hz = Math.min(az, bz);
+        Wonder.Rule w = Wonder.of(t);
+        if (w != null && !Wonder.anomaly(t, w, ax, az) && !Wonder.anomaly(t, w, bx, bz)) {
+            if (w.lattice > 0 && !a.hall && !b.hall) {
+                boolean line = horiz ? Math.floorMod(az, w.lattice) == 0 : Math.floorMod(ax, w.lattice) == 0;
+                if (line) return true;
+                lim = 6;
+            }
+            hx = w.fold(hx); hz = w.fold(hz);
+        }
+        return Noise.hash(t.seed + (horiz ? 101 : 202), hx, hz) % 100 < lim;
     }
 
     static int ceilH(Theme t, Profile p, Desc d, int cx, int cz) {
@@ -61,8 +76,10 @@ final class Rooms {
     static void run(Gen g) {
         final Theme t = g.t; final Profile p = g.p;
         final int cx = g.cx, cz = g.cz;
+        final Wonder.Rule wr = Wonder.of(t);
+        if (wr != null) Wonder.apply(g, wr);
         Desc d = desc(t, p, cx, cz);
-        int H = ceilH(t, p, d, cx, cz);
+        int H = ceilH(t, p, d, g.fcx, g.fcz);
         final int ceilY = Y0 + H;
         g.ceilY = ceilY;
         boolean wN = !same(t, p, d, cx, cz - 1), wS = !same(t, p, d, cx, cz + 1), wW = !same(t, p, d, cx - 1, cz), wE = !same(t, p, d, cx + 1, cz);
@@ -77,6 +94,7 @@ final class Rooms {
         boolean[][] in = new boolean[16][16], door = new boolean[16][16];
         int[][] colCeil = new int[16][16];
         BlockState stone = g.S(Theme.STONE), floor = g.S(Theme.FLOOR), wall = g.S(Theme.WALL), ceil = g.S(Theme.CEIL);
+        if (wr != null && wr.mono) { floor = wall; ceil = wall; }
         boolean rough = t.has("rough") || d.arch == Profile.CRAWL;
         boolean organic = d.arch == Profile.ORGANIC;
         for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) {
@@ -86,6 +104,15 @@ final class Rooms {
             if (x >= dlo && x <= dhi) { if (z < bw && dN && wN) dr = true; if (z > 15 - bw && dS && wS) dr = true; }
             if (z >= dlo && z <= dhi) { if (x < bw && dW && wW) dr = true; if (x > 15 - bw && dE && wE) dr = true; }
             in[x][z] = inside; door[x][z] = dr;
+        }
+        boolean corridor = false;
+        if (wr != null && d.arch == Profile.CELL && Wonder.onLattice(wr, cx, cz) && !Wonder.anomaly(t, wr, cx, cz) && ((dN || dS) != (dW || dE) || (dN || dS) && (dW || dE))) {
+            corridor = true;
+            boolean ns = dN || dS, ew = dW || dE;      // long straight corridor: keep only the strips that connect the open sides
+            for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) {
+                boolean keep = (ns && x >= dlo && x <= dhi) || (ew && z >= dlo && z <= dhi);
+                if (!keep) in[x][z] = false;
+            }
         }
         if (organic) organic(g, d, in, door, colCeil, dN, dS, dW, dE, H);
         // ---- base column fill
@@ -129,7 +156,7 @@ final class Rooms {
             for (int y = Y0; y < ceilY; y++) {
                 if (g.get(x, y, z) != wall) continue;
                 if (!(g.get(x + 1, y, z).isAir() || g.get(x - 1, y, z).isAir() || g.get(x, y, z + 1).isAir() || g.get(x, y, z - 1).isAir())) continue;
-                int h = Noise.hash(t.seed + 9, (g.bx + x) * 31 + y, (g.bz + z) * 17 + y * 3) % 1000;
+                int h = Noise.hash(t.seed + 9, (g.fbx + x) * 31 + y, (g.fbz + z) * 17 + y * 3) % 1000;
                 if (h < 35) g.set(x, y, z, acc); else if (h < 50) g.set(x, y, z, mark);
             }
         }
@@ -138,7 +165,7 @@ final class Rooms {
         if (d.arch != Profile.SHAFT && d.arch != Profile.PIT && g.chance(t.p[Theme.P_MARK])) g.stampFloor(2 + g.r.nextInt(2), 2 + g.r.nextInt(2), Y0 - 1, false);
         if (H >= 12 && wN && g.chance(t.p[Theme.P_MURAL])) g.stampWall(true, 1, 2 + g.r.nextInt(2), Y0 + 1 + Math.max(0, (H - 12) / 2), wall);
         boolean small = d.arch == Profile.CELL || d.arch == Profile.CRAWL || d.arch == Profile.COLUMNS || d.arch == Profile.ORGANIC;
-        if (!spawn && small && t.feats.length > 0 && g.chance(t.p[Theme.P_FEAT]))
+        if (!spawn && small && !corridor && t.feats.length > 0 && g.chance(t.p[Theme.P_FEAT]))
             Features.build(t.feats[g.r.nextInt(t.feats.length)], g, Y0, Math.min(H, 8), true);
         int lamps = g.chance(t.p[Theme.P_LIGHT]) ? 1 + (g.chance(.4) ? 1 : 0) : 0;
         if (spawn) lamps = 2;
@@ -207,7 +234,7 @@ final class Rooms {
         boolean gallery = H >= 12 && (style.equals("shelves") || style.equals("colonnade") || style.equals("pews") || style.equals("machines") || style.equals("seats"));
         for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) {
             if (!in[x][z]) continue;
-            int rx = g.bx + x - wx0, rz = g.bz + z - wz0;
+            int rx = g.fbx + x - wx0, rz = g.fbz + z - wz0;
             // hanging lights on a grid
             if (rx % 12 == 6 && rz % 12 == 6) g.lampXZ(x, z, Y0 + H);
             if (gallery) {
@@ -250,7 +277,7 @@ final class Rooms {
                     if ((rx == mid - 3 || rx == mid + 2)) g.set(x, Y0 - 1, z, acc);
                 }
                 case "machines" -> {
-                    int h = Noise.hash(t.seed + 77, (g.bx + x - ((rx % 8) )) >> 3, (g.bz + z - (rz % 8)) >> 3);
+                    int h = Noise.hash(t.seed + 77, (g.fbx + x - ((rx % 8) )) >> 3, (g.fbz + z - (rz % 8)) >> 3);
                     int mx = rx % 8, mz = rz % 8;
                     if (h % 100 < 48 && mx >= 1 && mx <= 5 && mz >= 1 && mz <= 5) {
                         int mh = 2 + h % 5;
@@ -284,7 +311,7 @@ final class Rooms {
                     if (rz % 12 == 6 && rx % 14 >= 3 && rx % 14 <= 8) { for (int y = Y0; y < Y0 + 6; y++) g.set(x, y, z, glass); if (rx % 14 == 3 || rx % 14 == 8) for (int y = Y0; y < Y0 + 6; y++) g.set(x, y, z, acc); }
                 }
                 case "toys" -> {
-                    int h = Noise.hash(t.seed + 78, (g.bx + x - rx % 10) / 10, (g.bz + z - rz % 10) / 10);
+                    int h = Noise.hash(t.seed + 78, (g.fbx + x - rx % 10) / 10, (g.fbz + z - rz % 10) / 10);
                     int tx = rx % 10, tz = rz % 10;
                     if (h % 100 < 55 && tx >= 1 && tx <= 6 && tz >= 1 && tz <= 6) {
                         int th = 2 + h % 7;
@@ -294,7 +321,7 @@ final class Rooms {
                 }
                 case "monoliths" -> {
                     int tx = rx % 12, tz = rz % 12;
-                    if (tx >= 4 && tx <= 6 && tz >= 4 && tz <= 6 && Noise.hash(t.seed + 79, (g.bx + x - tx) / 12, (g.bz + z - tz) / 12) % 100 < 70) {
+                    if (tx >= 4 && tx <= 6 && tz >= 4 && tz <= 6 && Noise.hash(t.seed + 79, (g.fbx + x - tx) / 12, (g.fbz + z - tz) / 12) % 100 < 70) {
                         for (int y = Y0; y < Y0 + H - 1; y++) g.set(x, y, z, (tx == 5 && tz == 4 && y % 3 == 1) ? mark : (y % 6 == 5 ? acc : wall));
                     }
                 }
@@ -306,18 +333,18 @@ final class Rooms {
     // ------------------------------------------------------------------ organic chambers
     private static void organic(Gen g, Desc d, boolean[][] in, boolean[][] door, int[][] colCeil, boolean dN, boolean dS, boolean dW, boolean dE, int H) {
         Theme t = g.t;
-        double ocx = 7.5 + (Noise.rnd(t.seed + 410, g.cx, g.cz) - .5) * 3, ocz = 7.5 + (Noise.rnd(t.seed + 411, g.cx, g.cz) - .5) * 3;
-        double rad = 4.2 + Noise.rnd(t.seed + 412, g.cx, g.cz) * 3.2;
+        double ocx = 7.5 + (Noise.rnd(t.seed + 410, g.fcx, g.fcz) - .5) * 3, ocz = 7.5 + (Noise.rnd(t.seed + 411, g.fcx, g.fcz) - .5) * 3;
+        double rad = 4.2 + Noise.rnd(t.seed + 412, g.fcx, g.fcz) * 3.2;
         int maxC = Y0 + H;
         for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) {
             double dx = x - ocx, dz = z - ocz;
-            double n = (Noise.value(t.seed + 413, (g.bx + x) / 3.5, (g.bz + z) / 3.5) - .5) * 2.4;
+            double n = (Noise.value(t.seed + 413, (g.fbx + x) / 3.5, (g.fbz + z) / 3.5) - .5) * 2.4;
             double dist = Math.sqrt(dx * dx + dz * dz) + n;
             boolean inside = dist <= rad;
             in[x][z] = inside; door[x][z] = false;
             if (inside) {
                 double q = 1 - Math.max(0, dist) / rad;
-                colCeil[x][z] = Math.min(maxC, Y0 + 3 + (int) Math.round(q * (H - 2) + (Noise.value(t.seed + 414, (g.bx + x) / 2.5, (g.bz + z) / 2.5) - .5) * 2));
+                colCeil[x][z] = Math.min(maxC, Y0 + 3 + (int) Math.round(q * (H - 2) + (Noise.value(t.seed + 414, (g.fbx + x) / 2.5, (g.fbz + z) / 2.5) - .5) * 2));
                 if (colCeil[x][z] < Y0 + 3) colCeil[x][z] = Y0 + 3;
             }
         }
