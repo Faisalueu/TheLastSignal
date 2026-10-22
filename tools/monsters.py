@@ -669,7 +669,47 @@ BUILD = {
 }
 
 
+# Wonderland-inspired body language (from the wiki's textual descriptions: tall stickman builds, thin limbs, hunched posture, elongated heads, matte black bodies).
+# (width, leg length, arm length, body height, head width, head height, hunch degrees). Original proportions otherwise; hitboxes are untouched.
+THIN = (0.68, 1.2, 1.45, 1.12, 0.82, 1.45, 20)
+LEAN = (0.78, 1.12, 1.3, 1.08, 0.88, 1.3, 14)
+BULKY = (0.9, 1.0, 1.22, 1.0, 0.95, 1.15, 9)
+SMALL = (0.9, 1.0, 1.15, 1.0, 0.95, 1.2, 10)
+STYLE = {
+    "observer": THIN, "tall_black": THIN, "pale_herd": THIN, "hanging_man": THIN, "radio_shepherd": THIN, "signalman": LEAN, "hollow": THIN,
+    "echo": LEAN, "facet": LEAN, "unfinished": LEAN, "drowned_choir": LEAN, "glass_walker": THIN, "candle_bearer": LEAN, "archivist": LEAN,
+    "witness": (0.8, 1.2, 1.4, 1.1, 1.0, 1.0, 16), "black_witness": (0.8, 1.2, 1.4, 1.1, 1.0, 1.0, 16), "moon_watcher": (0.8, 1.2, 1.35, 1.1, 1.0, 1.0, 14),
+    "doorman": BULKY, "salt_mother": BULKY, "signal_core": BULKY, "buried_king": BULKY,
+    "lost_child": SMALL, "borrowed_skin": LEAN, "paper_man": (1.0, 1.15, 1.3, 1.05, 1.0, 1.2, 8),
+    "crawler": (0.8, 1.35, 1.35, 1.0, 0.9, 1.0, 0),
+}
+
+
+def styled(E):
+    st = STYLE.get(E["id"])
+    if not st or E.get("quad") and E["id"] not in ("crawler",):
+        return E
+    w, ll, al, bh, hw, hh, _ = st
+    e = dict(E)
+    e["head"] = (E["head"][0] * hw, E["head"][1] * hh, E["head"][2] * (0.9 if E["head"][2] > 2 else 1))
+    e["body"] = (E["body"][0] * w, E["body"][1] * bh, max(E["body"][2] * (w if E["body"][2] > 1 else 1), 1))
+    e["arm"] = (max(1.2, E["arm"][0] * w), E["arm"][1] * al)
+    e["leg"] = (max(1.2, E["leg"][0] * w), E["leg"][1] * ll)
+    return e
+
+
+def hunch(R, E):
+    st = STYLE.get(E["id"])
+    if not st or st[6] <= 0 or E.get("quad"): return
+    a = st[6]
+    for b in R.bones:
+        if b["name"] == "chest": b["rotation"] = [a, 0, 0]
+        elif b["name"] == "neck": b["rotation"] = [a * 0.7, 0, 0]
+        elif b["name"] == "head": b["rotation"] = [-a * 0.35, 0, 0]
+
+
 def build_rig(E):
+    E = styled(E)
     fn, X = BUILD[E["id"]]
     R = Rig(E["id"], 1.0)
     fn(R, E, X)
@@ -681,6 +721,7 @@ def build_rig(E):
     R = Rig(E["id"], sc)
     fn(R, E, X)
     if E["id"] in MO.POST: MO.POST[E["id"]](R, E, X)
+    hunch(R, E)
     return R, X, fn
 
 
