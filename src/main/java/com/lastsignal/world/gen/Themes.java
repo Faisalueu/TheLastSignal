@@ -25,7 +25,8 @@ public final class Themes {
     }
 
     public static Profile profile(Theme t) {
-        return t.index <= ThemeData.ALL.length ? ProfileData.ALL[t.index - 1] : ExtraThemes.PROFILES[t.index - ThemeData.ALL.length - 1];
+        Profile base = t.index <= ThemeData.ALL.length ? ProfileData.ALL[t.index - 1] : ExtraThemes.PROFILES[t.index - ThemeData.ALL.length - 1];
+        return Wonder.profile(t, base);
     }
 
     public static Theme get(String slug) { return BY_SLUG.get(slug); }

@@ -61,7 +61,7 @@ final class Rooms {
     }
 
     static int ceilH(Theme t, Profile p, Desc d, int cx, int cz) {
-        int H = (int) t.p[Theme.P_H];
+        int H = Wonder.height(t);
         switch (d.arch) {
             case Profile.HALL: return Math.max(p.hallH, H);
             case Profile.CRAWL: return 3;
@@ -86,6 +86,7 @@ final class Rooms {
         boolean dN = wN && open(t, p, cx, cz - 1, cx, cz), dS = wS && open(t, p, cx, cz, cx, cz + 1),
                 dW = wW && open(t, p, cx - 1, cz, cx, cz), dE = wE && open(t, p, cx, cz, cx + 1, cz);
         int bw = d.arch == Profile.SHAFT ? 3 : 2;
+        if (wr != null && wr.openPlan && d.arch == Profile.COLUMNS) bw = 0;      // fields: open plan, no walls between chunks
         int xlo = wW ? bw : 0, xhi = wE ? 15 - bw : 15, zlo = wN ? bw : 0, zhi = wS ? 15 - bw : 15;
         int dw = d.arch == Profile.CRAWL ? 2 : d.arch == Profile.COLUMNS ? 6 : 4;
         int dlo = 8 - dw / 2, dhi = dlo + dw - 1;

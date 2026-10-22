@@ -34,7 +34,7 @@ public final class Theme {
 
     public Theme(int index, String slug, String name, String kind, String[] roleIds, String[] feats, String[][] glyph, double[] p,
                  String flags, int fogColor, float fogFar, String bed, String acc1, String acc2, float bedSecs) {
-        this.index = index; this.slug = slug; this.name = name; this.kind = kind; this.roleIds = roleIds; this.feats = feats;
+        this.index = index; this.slug = slug; this.name = name; this.kind = Wonder.kindFor(slug, kind); this.roleIds = roleIds; this.feats = feats;
         this.glyph = glyph; this.p = p; this.fogColor = fogColor; this.fogFar = fogFar; this.bed = bed; this.acc1 = acc1; this.acc2 = acc2;
         this.bedSecs = bedSecs;
         if (!flags.isEmpty()) this.flags.addAll(Arrays.asList(flags.split(",")));

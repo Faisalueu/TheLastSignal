@@ -143,11 +143,14 @@ final class ExtraSmoke {
 
     static String tileRules(net.minecraft.server.MinecraftServer server) {
         StringBuilder sb = new StringBuilder();
+        boolean sbShort = false; int count = 0;
         for (var en : Wonder.RULES.entrySet()) {
+            count++; if (count > 8) sbShort = true;
             Theme t = Themes.get(en.getKey());
             Wonder.Rule w = en.getValue();
             if (t == null || !"rooms".equals(t.kind)) throw new IllegalStateException("not a rooms theme: " + en.getKey());
             Profile p = Themes.profile(t);
+            if (w.period % Math.max(1, p.sc) != 0 || (w.lattice > 0 && w.period % w.lattice != 0)) throw new IllegalStateException(t.slug + ": period " + w.period + " does not fit sc " + p.sc + " / lattice " + w.lattice);
             int same = 0, tested = 0, anomalies = 0;
             for (int cx = 3; cx < 40; cx++) for (int cz = 3; cz < 40; cz++) {
                 if (Wonder.anomaly(t, w, cx, cz) || Wonder.anomaly(t, w, cx + 1, cz) || Wonder.anomaly(t, w, cx + w.period, cz) || Wonder.anomaly(t, w, cx + w.period + 1, cz) || Wonder.anomaly(t, w, cx, cz + w.period)) { anomalies++; continue; }
@@ -162,7 +165,7 @@ final class ExtraSmoke {
                 for (int k = 3; k < 60; k++) if (!Wonder.anomaly(t, w, k, 0) && !Wonder.anomaly(t, w, k + 1, 0)) { n++; if (Rooms.open(t, p, k, 0, k + 1, 0)) open++; }
                 if (open != n) throw new IllegalStateException(t.slug + ": lattice corridor row has closed doors (" + open + "/" + n + ")");
             }
-            sb.append(t.slug).append(" P=").append(w.period).append(" L=").append(w.lattice).append(w.mono ? " mono" : "").append(" repeat ").append(same).append("/").append(tested).append(" anomalies~").append(anomalies).append("; ");
+            if (!sbShort) sb.append(t.slug).append(" P=").append(w.period).append(" L=").append(w.lattice).append(w.mono ? " mono" : "").append(" repeat ").append(same).append("/").append(tested).append(" anomalies~").append(anomalies).append("; ");
         }
         // really generate a block of chunks in each of the tile dimensions (no exception, bedrock ceiling in place)
         for (String slug : Wonder.RULES.keySet()) {
@@ -175,7 +178,7 @@ final class ExtraSmoke {
                 if (!solidTop) throw new IllegalStateException(slug + ": no bedrock ceiling in chunk " + cx + "," + cz);
             }
         }
-        return sb.toString();
+        return Wonder.RULES.size() + " dimensions on tile rules; e.g. " + sb;
     }
 
     static String specials(ServerLevel l) {
