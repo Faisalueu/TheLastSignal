@@ -150,7 +150,7 @@ final class ExtraSmoke {
             Profile p = Themes.profile(t);
             int same = 0, tested = 0, anomalies = 0;
             for (int cx = 3; cx < 40; cx++) for (int cz = 3; cz < 40; cz++) {
-                if (Wonder.anomaly(t, w, cx, cz) || Wonder.anomaly(t, w, cx + w.period, cz) || Wonder.anomaly(t, w, cx, cz + w.period)) { anomalies++; continue; }
+                if (Wonder.anomaly(t, w, cx, cz) || Wonder.anomaly(t, w, cx + 1, cz) || Wonder.anomaly(t, w, cx + w.period, cz) || Wonder.anomaly(t, w, cx + w.period + 1, cz) || Wonder.anomaly(t, w, cx, cz + w.period)) { anomalies++; continue; }
                 tested++;
                 var a = Rooms.desc(t, p, cx, cz); var b = Rooms.desc(t, p, cx + w.period, cz); var c = Rooms.desc(t, p, cx, cz + w.period);
                 if (a.arch == b.arch && a.arch == c.arch) same++;
