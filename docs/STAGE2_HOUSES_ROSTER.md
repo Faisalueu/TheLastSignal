@@ -43,3 +43,7 @@ The headless smoke test disables the 60 s server watchdog (it runs for minutes o
 - **Removed items**: damaged_recording, cassette_tape, lantern_oil, doorframe_splinter, containment_badge, static_dust, copper_wire_spool, salt_pouch.
 ## Not done
 Everything above is verified by CI only structurally. The in-game feel (looks, sound, distances, balance) and multiplayer death/reconnect behaviour need a real session. tools/preview.py is only a rough silhouette sheet, not a render.
+## Tile-rule pilot (6 rooms dimensions)
+`world/gen/Wonder.java` (hand-written; generated ThemeData/ProfileData untouched) gives 6 rooms dimensions repeating-tile layouts: endless_archive, yellow_silence, forgotten_childhood, nameless_catacombs, living_walls, sealed_bunker.
+Rules per dimension: period (layout repeats every N chunks), lattice (straight corridors every L-th chunk row/column, sealed cells in between), mono (one material), anomaly (rare unrepeated rooms, never within 2 chunks of the origin).
+CI checks repetition, door equality between repeats, open corridor rows, and real chunk generation with a bedrock ceiling. Not verified: how it looks or feels, door/loot balance, whether corridors read as frightening.
