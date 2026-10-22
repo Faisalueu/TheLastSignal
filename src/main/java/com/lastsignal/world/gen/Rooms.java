@@ -50,10 +50,10 @@ final class Rooms {
         int hx = Math.min(ax, bx), hz = Math.min(az, bz);
         Wonder.Rule w = Wonder.of(t);
         if (w != null && !Wonder.anomaly(t, w, ax, az) && !Wonder.anomaly(t, w, bx, bz)) {
-            if (w.lattice > 0 && !a.hall && !b.hall) {
+            if (w.lattice > 0) {
                 boolean line = horiz ? Math.floorMod(az, w.lattice) == 0 : Math.floorMod(ax, w.lattice) == 0;
                 if (line) return true;
-                lim = 6;
+                if (!a.hall && !b.hall) lim = 6;
             }
             hx = w.fold(hx); hz = w.fold(hz);
         }
