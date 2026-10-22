@@ -2829,5 +2829,345 @@
       "lastsignal:entity/moon_watcher/death"
     ],
     "subtitle": "subtitles.lastsignal.moon_watcher.death"
+  },
+  "entity.observer.ambient": {
+    "sounds": [
+      "lastsignal:entity/observer/ambient1",
+      "lastsignal:entity/observer/ambient2",
+      "lastsignal:entity/observer/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.observer.ambient"
+  },
+  "entity.observer.hurt": {
+    "sounds": [
+      "lastsignal:entity/observer/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.observer.hurt"
+  },
+  "entity.observer.death": {
+    "sounds": [
+      "lastsignal:entity/observer/death"
+    ],
+    "subtitle": "subtitles.lastsignal.observer.death"
+  },
+  "entity.hollow.ambient": {
+    "sounds": [
+      "lastsignal:entity/hollow/ambient1",
+      "lastsignal:entity/hollow/ambient2",
+      "lastsignal:entity/hollow/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.hollow.ambient"
+  },
+  "entity.hollow.hurt": {
+    "sounds": [
+      "lastsignal:entity/hollow/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.hollow.hurt"
+  },
+  "entity.hollow.death": {
+    "sounds": [
+      "lastsignal:entity/hollow/death"
+    ],
+    "subtitle": "subtitles.lastsignal.hollow.death"
+  },
+  "entity.mimic.ambient": {
+    "sounds": [
+      "lastsignal:entity/mimic/ambient1",
+      "lastsignal:entity/mimic/ambient2",
+      "lastsignal:entity/mimic/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.mimic.ambient"
+  },
+  "entity.mimic.hurt": {
+    "sounds": [
+      "lastsignal:entity/mimic/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.mimic.hurt"
+  },
+  "entity.mimic.death": {
+    "sounds": [
+      "lastsignal:entity/mimic/death"
+    ],
+    "subtitle": "subtitles.lastsignal.mimic.death"
+  },
+  "entity.signalman.ambient": {
+    "sounds": [
+      "lastsignal:entity/signalman/ambient1",
+      "lastsignal:entity/signalman/ambient2",
+      "lastsignal:entity/signalman/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.signalman.ambient"
+  },
+  "entity.signalman.hurt": {
+    "sounds": [
+      "lastsignal:entity/signalman/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.signalman.hurt"
+  },
+  "entity.signalman.death": {
+    "sounds": [
+      "lastsignal:entity/signalman/death"
+    ],
+    "subtitle": "subtitles.lastsignal.signalman.death"
+  },
+  "entity.witness.ambient": {
+    "sounds": [
+      "lastsignal:entity/witness/ambient1",
+      "lastsignal:entity/witness/ambient2",
+      "lastsignal:entity/witness/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.witness.ambient"
+  },
+  "entity.witness.hurt": {
+    "sounds": [
+      "lastsignal:entity/witness/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.witness.hurt"
+  },
+  "entity.witness.death": {
+    "sounds": [
+      "lastsignal:entity/witness/death"
+    ],
+    "subtitle": "subtitles.lastsignal.witness.death"
+  },
+  "entity.crawler.ambient": {
+    "sounds": [
+      "lastsignal:entity/crawler/ambient1",
+      "lastsignal:entity/crawler/ambient2",
+      "lastsignal:entity/crawler/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.crawler.ambient"
+  },
+  "entity.crawler.hurt": {
+    "sounds": [
+      "lastsignal:entity/crawler/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.crawler.hurt"
+  },
+  "entity.crawler.death": {
+    "sounds": [
+      "lastsignal:entity/crawler/death"
+    ],
+    "subtitle": "subtitles.lastsignal.crawler.death"
+  },
+  "entity.lost_child.ambient": {
+    "sounds": [
+      "lastsignal:entity/lost_child/ambient1",
+      "lastsignal:entity/lost_child/ambient2",
+      "lastsignal:entity/lost_child/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.lost_child.ambient"
+  },
+  "entity.lost_child.hurt": {
+    "sounds": [
+      "lastsignal:entity/lost_child/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.lost_child.hurt"
+  },
+  "entity.lost_child.death": {
+    "sounds": [
+      "lastsignal:entity/lost_child/death"
+    ],
+    "subtitle": "subtitles.lastsignal.lost_child.death"
+  },
+  "entity.doorman.ambient": {
+    "sounds": [
+      "lastsignal:entity/doorman/ambient1",
+      "lastsignal:entity/doorman/ambient2",
+      "lastsignal:entity/doorman/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.doorman.ambient"
+  },
+  "entity.doorman.hurt": {
+    "sounds": [
+      "lastsignal:entity/doorman/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.doorman.hurt"
+  },
+  "entity.doorman.death": {
+    "sounds": [
+      "lastsignal:entity/doorman/death"
+    ],
+    "subtitle": "subtitles.lastsignal.doorman.death"
+  },
+  "entity.pale_herd.ambient": {
+    "sounds": [
+      "lastsignal:entity/pale_herd/ambient1",
+      "lastsignal:entity/pale_herd/ambient2",
+      "lastsignal:entity/pale_herd/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.pale_herd.ambient"
+  },
+  "entity.pale_herd.hurt": {
+    "sounds": [
+      "lastsignal:entity/pale_herd/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.pale_herd.hurt"
+  },
+  "entity.pale_herd.death": {
+    "sounds": [
+      "lastsignal:entity/pale_herd/death"
+    ],
+    "subtitle": "subtitles.lastsignal.pale_herd.death"
+  },
+  "entity.echo.ambient": {
+    "sounds": [
+      "lastsignal:entity/echo/ambient1",
+      "lastsignal:entity/echo/ambient2",
+      "lastsignal:entity/echo/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.echo.ambient"
+  },
+  "entity.echo.hurt": {
+    "sounds": [
+      "lastsignal:entity/echo/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.echo.hurt"
+  },
+  "entity.echo.death": {
+    "sounds": [
+      "lastsignal:entity/echo/death"
+    ],
+    "subtitle": "subtitles.lastsignal.echo.death"
+  },
+  "entity.burrower.ambient": {
+    "sounds": [
+      "lastsignal:entity/burrower/ambient1",
+      "lastsignal:entity/burrower/ambient2",
+      "lastsignal:entity/burrower/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.burrower.ambient"
+  },
+  "entity.burrower.hurt": {
+    "sounds": [
+      "lastsignal:entity/burrower/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.burrower.hurt"
+  },
+  "entity.burrower.death": {
+    "sounds": [
+      "lastsignal:entity/burrower/death"
+    ],
+    "subtitle": "subtitles.lastsignal.burrower.death"
+  },
+  "entity.lantern_widow.ambient": {
+    "sounds": [
+      "lastsignal:entity/lantern_widow/ambient1",
+      "lastsignal:entity/lantern_widow/ambient2",
+      "lastsignal:entity/lantern_widow/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.lantern_widow.ambient"
+  },
+  "entity.lantern_widow.hurt": {
+    "sounds": [
+      "lastsignal:entity/lantern_widow/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.lantern_widow.hurt"
+  },
+  "entity.lantern_widow.death": {
+    "sounds": [
+      "lastsignal:entity/lantern_widow/death"
+    ],
+    "subtitle": "subtitles.lastsignal.lantern_widow.death"
+  },
+  "entity.facet.ambient": {
+    "sounds": [
+      "lastsignal:entity/facet/ambient1",
+      "lastsignal:entity/facet/ambient2",
+      "lastsignal:entity/facet/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.facet.ambient"
+  },
+  "entity.facet.hurt": {
+    "sounds": [
+      "lastsignal:entity/facet/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.facet.hurt"
+  },
+  "entity.facet.death": {
+    "sounds": [
+      "lastsignal:entity/facet/death"
+    ],
+    "subtitle": "subtitles.lastsignal.facet.death"
+  },
+  "entity.archivist.ambient": {
+    "sounds": [
+      "lastsignal:entity/archivist/ambient1",
+      "lastsignal:entity/archivist/ambient2",
+      "lastsignal:entity/archivist/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.archivist.ambient"
+  },
+  "entity.archivist.hurt": {
+    "sounds": [
+      "lastsignal:entity/archivist/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.archivist.hurt"
+  },
+  "entity.archivist.death": {
+    "sounds": [
+      "lastsignal:entity/archivist/death"
+    ],
+    "subtitle": "subtitles.lastsignal.archivist.death"
+  },
+  "entity.signal_core.ambient": {
+    "sounds": [
+      "lastsignal:entity/signal_core/ambient1",
+      "lastsignal:entity/signal_core/ambient2",
+      "lastsignal:entity/signal_core/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.signal_core.ambient"
+  },
+  "entity.signal_core.hurt": {
+    "sounds": [
+      "lastsignal:entity/signal_core/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.signal_core.hurt"
+  },
+  "entity.signal_core.death": {
+    "sounds": [
+      "lastsignal:entity/signal_core/death"
+    ],
+    "subtitle": "subtitles.lastsignal.signal_core.death"
+  },
+  "entity.buried_king.ambient": {
+    "sounds": [
+      "lastsignal:entity/buried_king/ambient1",
+      "lastsignal:entity/buried_king/ambient2",
+      "lastsignal:entity/buried_king/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.buried_king.ambient"
+  },
+  "entity.buried_king.hurt": {
+    "sounds": [
+      "lastsignal:entity/buried_king/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.buried_king.hurt"
+  },
+  "entity.buried_king.death": {
+    "sounds": [
+      "lastsignal:entity/buried_king/death"
+    ],
+    "subtitle": "subtitles.lastsignal.buried_king.death"
+  },
+  "entity.unfinished.ambient": {
+    "sounds": [
+      "lastsignal:entity/unfinished/ambient1",
+      "lastsignal:entity/unfinished/ambient2",
+      "lastsignal:entity/unfinished/ambient3"
+    ],
+    "subtitle": "subtitles.lastsignal.unfinished.ambient"
+  },
+  "entity.unfinished.hurt": {
+    "sounds": [
+      "lastsignal:entity/unfinished/hurt"
+    ],
+    "subtitle": "subtitles.lastsignal.unfinished.hurt"
+  },
+  "entity.unfinished.death": {
+    "sounds": [
+      "lastsignal:entity/unfinished/death"
+    ],
+    "subtitle": "subtitles.lastsignal.unfinished.death"
   }
 }

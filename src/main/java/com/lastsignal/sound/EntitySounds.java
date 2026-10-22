@@ -21,7 +21,9 @@ public final class EntitySounds {
 
     /** Roster-pass creatures with their own ambient/hurt/death sets (tools/roster_sounds.py). */
     public static final String[] ROSTER = {"black_witness", "tall_black", "borrowed_skin", "drowned_choir", "hanging_man", "salt_mother", "radio_shepherd",
-            "glass_walker", "candle_bearer", "paper_man", "stair_thing", "moon_watcher"};
+            "glass_walker", "candle_bearer", "paper_man", "stair_thing", "moon_watcher",
+            "observer", "hollow", "mimic", "signalman", "witness", "crawler", "lost_child", "doorman", "pale_herd", "echo", "burrower", "lantern_widow", "facet",
+            "archivist", "signal_core", "buried_king", "unfinished"};
     private static final java.util.Map<String, RegistryObject<SoundEvent>> ROSTER_SOUNDS = new java.util.HashMap<>();
 
     static {
