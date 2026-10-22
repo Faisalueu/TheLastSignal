@@ -671,17 +671,20 @@ BUILD = {
 
 # Wonderland-inspired body language (from the wiki's textual descriptions: tall stickman builds, thin limbs, hunched posture, elongated heads, matte black bodies).
 # (width, leg length, arm length, body height, head width, head height, hunch degrees). Original proportions otherwise; hitboxes are untouched.
-THIN = (0.68, 1.2, 1.45, 1.12, 0.82, 1.45, 20)
-LEAN = (0.78, 1.12, 1.3, 1.08, 0.88, 1.3, 14)
-BULKY = (0.9, 1.0, 1.22, 1.0, 0.95, 1.15, 9)
-SMALL = (0.9, 1.0, 1.15, 1.0, 0.95, 1.2, 10)
+# Measured from the reference geometry (the_entity, messenger, no_one_twisted, silhouette, woodseeker): a normal-sized HEAD (6-8 px, not stretched)
+# on a 22-24 px torso, with legs and arms 1.5-2x longer than a normal biped (arms hang to the knees), limbs 3 px wide, little or no hunch except stalkers.
+TALL = (0.95, 1.7, 1.9, 1.12, 0.95, 1.0, 8)       # long-limbed standing figures
+POLE = (0.62, 1.8, 2.0, 1.2, 0.9, 1.0, 12)        # pole-thin stalkers
+LEAN = (0.95, 1.4, 1.55, 1.05, 0.95, 1.0, 8)
+BULKY = (0.95, 1.05, 1.4, 1.0, 0.95, 1.0, 6)
+SMALL = (0.95, 1.25, 1.35, 1.0, 1.0, 1.0, 8)
 STYLE = {
-    "observer": THIN, "tall_black": THIN, "pale_herd": THIN, "hanging_man": THIN, "radio_shepherd": THIN, "signalman": LEAN, "hollow": THIN,
-    "echo": LEAN, "facet": LEAN, "unfinished": LEAN, "drowned_choir": LEAN, "glass_walker": THIN, "candle_bearer": LEAN, "archivist": LEAN,
-    "witness": (0.8, 1.2, 1.4, 1.1, 1.0, 1.0, 16), "black_witness": (0.8, 1.2, 1.4, 1.1, 1.0, 1.0, 16), "moon_watcher": (0.8, 1.2, 1.35, 1.1, 1.0, 1.0, 14),
+    "observer": TALL, "tall_black": POLE, "pale_herd": TALL, "hanging_man": POLE, "radio_shepherd": TALL, "signalman": LEAN, "hollow": POLE,
+    "echo": LEAN, "facet": LEAN, "unfinished": LEAN, "drowned_choir": LEAN, "glass_walker": TALL, "candle_bearer": LEAN, "archivist": LEAN,
+    "witness": (0.95, 1.5, 1.7, 1.1, 1.0, 1.0, 10), "black_witness": (0.95, 1.5, 1.7, 1.1, 1.0, 1.0, 10), "moon_watcher": (0.95, 1.5, 1.7, 1.1, 1.0, 1.0, 8),
     "doorman": BULKY, "salt_mother": BULKY, "signal_core": BULKY, "buried_king": BULKY,
-    "lost_child": SMALL, "borrowed_skin": LEAN, "paper_man": (1.0, 1.15, 1.3, 1.05, 1.0, 1.2, 8),
-    "crawler": (0.8, 1.35, 1.35, 1.0, 0.9, 1.0, 0),
+    "lost_child": SMALL, "borrowed_skin": LEAN, "paper_man": (1.0, 1.3, 1.4, 1.05, 1.0, 1.0, 6),
+    "crawler": (0.9, 1.35, 1.35, 1.0, 0.95, 1.0, 0),
 }
 
 
@@ -691,7 +694,7 @@ def styled(E):
         return E
     w, ll, al, bh, hw, hh, _ = st
     e = dict(E)
-    e["head"] = (E["head"][0] * hw, E["head"][1] * hh, E["head"][2] * (0.9 if E["head"][2] > 2 else 1))
+    e["head"] = (E["head"][0] * hw, E["head"][1] * hh, E["head"][2])
     e["body"] = (E["body"][0] * w, E["body"][1] * bh, max(E["body"][2] * (w if E["body"][2] > 1 else 1), 1))
     e["arm"] = (max(1.2, E["arm"][0] * w), E["arm"][1] * al)
     e["leg"] = (max(1.2, E["leg"][0] * w), E["leg"][1] * ll)
@@ -715,7 +718,7 @@ def build_rig(E):
     fn(R, E, X)
     if E["id"] in MO.POST: MO.POST[E["id"]](R, E, X)
     target = E["hb"][1] * 16 * 0.97
-    sc = max(0.8, min(1.35, target / max(R.maxy, 1.0)))
+    sc = max(0.5, min(1.35, target / max(R.maxy, 1.0)))
     if E["id"] == "burrower":
         sc = max(sc, 1.0)
     R = Rig(E["id"], sc)
