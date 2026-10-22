@@ -696,8 +696,8 @@ def styled(E):
     e = dict(E)
     e["head"] = (E["head"][0] * hw, E["head"][1] * hh, E["head"][2])
     e["body"] = (E["body"][0] * w, E["body"][1] * bh, max(E["body"][2] * (w if E["body"][2] > 1 else 1), 1))
-    e["arm"] = (max(1.2, E["arm"][0] * w), E["arm"][1] * al)
-    e["leg"] = (max(1.2, E["leg"][0] * w), E["leg"][1] * ll)
+    e["arm"] = (min(3.0, max(1.2, E["arm"][0] * w)), E["arm"][1] * al)
+    e["leg"] = (min(3.2, max(1.2, E["leg"][0] * w)), E["leg"][1] * ll)
     return e
 
 
@@ -711,19 +711,31 @@ def hunch(R, E):
         elif b["name"] == "head": b["rotation"] = [-a * 0.35, 0, 0]
 
 
+SIMPLE = True   # Wonderland-style: few plain cubes, thin limbs, no claws/teeth/decorations
+
+
+def simplify(E, X):
+    X = dict(X)
+    if SIMPLE:
+        X.pop("deco", None)
+        X["nclaw"] = 0; X["claw"] = 0; X["teeth"] = False; X["foot"] = 1
+    return X
+
+
 def build_rig(E):
     E = styled(E)
     fn, X = BUILD[E["id"]]
+    X = simplify(E, X)
     R = Rig(E["id"], 1.0)
     fn(R, E, X)
-    if E["id"] in MO.POST: MO.POST[E["id"]](R, E, X)
+    if E["id"] in MO.POST and not SIMPLE: MO.POST[E["id"]](R, E, X)
     target = E["hb"][1] * 16 * 0.97
     sc = max(0.5, min(1.35, target / max(R.maxy, 1.0)))
     if E["id"] == "burrower":
         sc = max(sc, 1.0)
     R = Rig(E["id"], sc)
     fn(R, E, X)
-    if E["id"] in MO.POST: MO.POST[E["id"]](R, E, X)
+    if E["id"] in MO.POST and not SIMPLE: MO.POST[E["id"]](R, E, X)
     hunch(R, E)
     return R, X, fn
 
@@ -1015,8 +1027,8 @@ def gen_texture(E, R):
                 r, g, b, _ = px[xx, yy]
                 px[xx, yy] = (r, g, b, alpha)
 
-    fill("skin", base, dark, 0.20, 165 if ghost else 255)
-    fill("dark", dark, mix(dark, (0, 0, 0), 0.5), 0.25, 175 if ghost else 255)
+    fill("skin", base, dark, 0.04 if SIMPLE else 0.20, 165 if ghost else 255)
+    fill("dark", dark, mix(dark, (0, 0, 0), 0.5), 0.05 if SIMPLE else 0.25, 175 if ghost else 255)
     fill("trim", trim, dark, 0.2, 190 if ghost else 255)
     fill("bone", bone, mix(bone, dark, 0.5), 0.18, 200 if ghost else 255)
     fill("face", base, dark, 0.15, 165 if ghost else 255)
@@ -1031,12 +1043,12 @@ def gen_texture(E, R):
             img.putpixel((xx, yy), c + (255,))
             glow.putpixel((xx, yy), c + (255,))
     # damage/scars on skin + dark
-    for nm, n in (("skin", 26), ("dark", 14), ("bone", 10)):
+    for nm, n in ((("skin", 3), ("dark", 2), ("bone", 2)) if SIMPLE else (("skin", 26), ("dark", 14), ("bone", 10))):
         x, y = REG[nm]
         GA.damage(img, (x, y, 64, 64), E["dark"], rng, n)
     # seams on skin: horizontal stitch lines
     sx, sy = REG["skin"]
-    for _ in range(5):
+    for _ in range(0 if SIMPLE else 5):
         yy = sy + rng.randrange(4, 60)
         d.line([(sx, yy), (sx + 63, yy)], fill=mix(base, dark, 0.45) + (255,))
     # face
